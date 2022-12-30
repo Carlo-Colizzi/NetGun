@@ -2,7 +2,7 @@ import re
 
 class Target:
 
-    def __init__(self, ip: str = "127.0.0.1", ports_range: str = "0-65535"):
+    def __init__(self, ip: str = "127.0.0.1", ports_range: str = "1-65535"):
         assert Target.check_ip(ip) == True, "Invalid IPv4 Address, check_ip(ip) failed"
         assert Target.check_ports(ports_range) == True, "Invalid Ports Range, check_ports(ports_range) failed"
         self.ip = ip
