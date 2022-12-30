@@ -14,35 +14,98 @@ class Scan:
         self.scan_mode = scan_mode
         self.filter.advanced_options = Scan.__MODES_SUPPORTED[scan_mode] + self.filter.advanced_options
 
-
     def start_scan(self) -> dict :
+        if self.scan_mode == "SHALLOW":
+            resoult = self.start_shallow_scan()
+        else:
+            resoult = self.start_deep_scan()
+
+        return resoult
+
+    def start_deep_scan(self):
         nm = nmap3.Nmap()
-        resoults = nm.scan_top_ports(self.target.ip, args=self.filter.advanced_options + " -p " + self.target.ports_range)
+        resoults = nm.nmap_version_detection(self.target.ip,
+                                             self.filter.advanced_options + " -p " + self.target.ports_range)
 
-        resoults = self.parseResoult(resoults)
-        return resoults
+        if resoults.__contains__(self.target.ip):
+            resoults = self.parse_resoult_deep(resoults)
+            return resoults
+        else:
+            return {}
 
-    def parseResoult(self, resoult : """nmap dict"""):
+    def start_shallow_scan(self):
+        nm = nmap3.Nmap()
+        resoults = nm.nmap_stealth_scan(self.target.ip,
+                                             self.filter.advanced_options + " -p " + self.target.ports_range)
+
+        if resoults.__contains__(self.target.ip):
+            resoults = self.parse_resoult_shallow(resoults)
+            return resoults
+        else:
+            return {}
+
+    def parse_resoult_shallow(self, resoult : """nmap dict"""):
         tmp_resoult = resoult[self.target.ip]["ports"]
         new_resoult = {}
         for r in tmp_resoult:
-            del r["cpe"]
-            del r["reason"]
-            del r["reason_ttl"]
-            r["service"] = r["service"]["name"]
-            swap_id = r["portid"]
-            del r["portid"]
+            if r.__contains__("cpe"):
+                del r["cpe"]
+            if r.__contains__("reason"):
+                del r["reason"]
+            if r.__contains__("reason_ttl"):
+                del r["reason_ttl"]
+            if r.__contains__("scripts"):
+                del r["scripts"]
+            if r.__contains__("service"):
+                r["service"] = r["service"]["name"]
+
+            if r.__contains__("portid"):
+                swap_id = r["portid"]
+                del r["portid"]
+
+            new_resoult[swap_id] = r
+
+        return new_resoult
+
+    def parse_resoult_deep(self, resoult : """nmap dict"""):
+        tmp_resoult = resoult[self.target.ip]["ports"]
+        new_resoult = {}
+        for r in tmp_resoult:
+            if r.__contains__("cpe"):
+                del r["cpe"]
+            if r.__contains__("reason"):
+                del r["reason"]
+            if r.__contains__("reason_ttl"):
+                del r["reason_ttl"]
+            if r.__contains__("scripts"):
+                del r["scripts"]
+            if r.__contains__("service"):
+                tmp = r["service"]
+                r["service"] = tmp["name"]
+                if tmp.__contains__("version") and tmp.__contains__("product"):
+                    r["version"] = tmp["product"] + " " + tmp["version"]
+                elif tmp.__contains__("version"):
+                    r["version"] = tmp["version"]
+                elif tmp.__contains__("product"):
+                    r["product"] = tmp["product"]
+
+            if r.__contains__("extrainfo"):
+                r["extrainfo"] = tmp["extrainfo"]
+
+            if r.__contains__("portid"):
+                swap_id = r["portid"]
+                del r["portid"]
+
             new_resoult[swap_id] = r
 
         return new_resoult
 
 
 
-
-t = Target("192.168.1.1","1-1024")
+t = Target("192.168.1.1")
 f = Filter()
 
-s = Scan(t,f)
+s = Scan(t,f,"SHALLOW")
 
 resoult = s.start_scan()
 
