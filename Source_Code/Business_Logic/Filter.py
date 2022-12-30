@@ -7,7 +7,7 @@ class Filter:
         assert transport_protocol in Filter.__TRANSPORT_PROTOCOLS_SUPPORTED, "Invalid Transport Protocol Selected. Use TCP or UDP"
         self.transport_protocol = transport_protocol
 
-        if list is not None:
+        if advanced_options is not None:
             self.advanced_options = Filter.advanced_options_to_string(advanced_options)
         else:
             self.advanced_options = ""
