@@ -11,7 +11,6 @@ class Cve:
 		os.system(f"searchsploit -j {self.service} >> $HOME/Documents/result_search_cve.json")
 		file = open(f"$HOME/Documents/result_search_cve.json")
 		dictionary_cve = json.loads(file.read())
-		os.system(f"rm $HOME/Documents/result_search_cve.json")
 		return dictionary_cve
 
 	# control which CVE is valide
