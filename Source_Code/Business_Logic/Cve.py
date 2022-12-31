@@ -7,7 +7,6 @@ class Cve:
     url = "https://www.exploit-db.com/search"
 
     version: str
-    type: str
     platform: str
     port: int
     result: dict
@@ -16,28 +15,39 @@ class Cve:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " \
                  "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
 
-    def __init__(self, version, type=None, platform=None, port=None):
+    def __init__(self, version, platform=None, port=None):
         assert version is not None, "Version not exists"
         self.version = version
-        self.type = type
         self.platform = platform
-        self.port = None
+        self.port = port
 
-    # searches verified CVEs with the service
+    # searches verified CVEs with the service (and platform and port if exists)
     def search_cve(self) -> dict:
-        params = "?q=" + self.version + "&verified=true"
+        params = f"?q=" + self.version
         self.url += params
-
-        if self.platform is not None:
-            self.url += f"&platform={self.platform}"
-
+        self.url = Cve.filter_searching_string(self.url, self.port, self.platform)
+        self.url += "&verified=true"
         response = requests.get(self.url, headers={"User-Agent": self.USER_AGENT})
-        data = response.content
-        print(data)
+
+        if response.status_code != 200:
+            raise Exception(f"Error {response.status_code}! Cannot reach exploitDB server")
+        print(self.url)
+
+    # add filter to searching string
+    @classmethod
+    def filter_searching_string(cls, url, port=None, platform=None) -> str:
+        if platform is not None:  # control if platform is not empty from scan result
+            url += f"&platform={platform}"
+
+        if port is not None:  # control if port number is not empty from scan result
+            url += f"&port={port}"
+
+        return url.lower()
 
 
-
-version = input("Inserisci servizio:\n")
-cve = Cve(version)
+version = "http"  # input("Inserisci servizio:\n")
+platform = "Ruby"  # input("Inserisci Piattaforma:\n")
+port = 80  # input("Inserisci porta:\n")
+cve = Cve(version, platform, port)
 cve_dictionary = cve.search_cve()
 print(cve_dictionary)
