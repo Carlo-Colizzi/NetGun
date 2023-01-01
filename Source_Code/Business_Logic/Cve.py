@@ -2,7 +2,7 @@ import requests, json
 from bs4 import BeautifulSoup
 
 
-# function that replace space with '%20' for create a valid URL
+# function that replaces space with '%20' for create a valid URL
 def replace_space_with_url_encode(url: str) -> str:
     return url.replace(" ", "%20")
 
@@ -47,7 +47,7 @@ class Cve:
         if response.status_code != 200:
             raise Exception(f"Error! Cannot reach ExploitDB server")
 
-    # add filter to searching string
+    # add filters to searching string
     @classmethod
     def filter_searching_string(cls, url, port=None, platform=None) -> str:
         if platform is not None:  # control if platform is not empty from scan result
