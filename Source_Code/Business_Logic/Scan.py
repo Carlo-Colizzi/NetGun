@@ -1,10 +1,10 @@
-import nmap3
+import nmap
 from pprint import pprint
 from Target import Target
 from Filter import Filter
 
 class Scan:
-    __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV -sC "}
+    __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV -sC"}
     def __init__(self, target : Target = None, filter : Filter = None, scan_mode : str = "SHALLOW"):
         assert scan_mode in Scan.__MODES_SUPPORTED, "Invalid Mode Selected. Use SHALLOW or DEEP"
         assert target is not None, "Target is not selected"
@@ -14,98 +14,71 @@ class Scan:
         self.scan_mode = scan_mode
         self.filter.advanced_options = Scan.__MODES_SUPPORTED[scan_mode] + self.filter.advanced_options
 
+
     def start_scan(self) -> dict :
+        nm = nmap.PortScanner()
+
+        resoults = nm.scan(self.target.ip,self.target.ports_range,self.filter.advanced_options)
         if self.scan_mode == "SHALLOW":
-            resoult = self.start_shallow_scan()
+            return self.parse_resoult_shallow(resoults)
         else:
-            resoult = self.start_deep_scan()
-
-        return resoult
-
-    def start_deep_scan(self):
-        nm = nmap3.Nmap()
-        resoults = nm.nmap_version_detection(self.target.ip,
-                                             self.filter.advanced_options + " -p " + self.target.ports_range)
-
-        if resoults.__contains__(self.target.ip):
-            resoults = self.parse_resoult_deep(resoults)
-            return resoults
-        else:
-            return {}
-
-    def start_shallow_scan(self):
-        nm = nmap3.Nmap()
-        resoults = nm.nmap_stealth_scan(self.target.ip,
-                                             self.filter.advanced_options + " -p " + self.target.ports_range)
-
-        if resoults.__contains__(self.target.ip):
-            resoults = self.parse_resoult_shallow(resoults)
-            return resoults
-        else:
-            return {}
+            return self.parse_resoult_deep(resoults)
 
     def parse_resoult_shallow(self, resoult : """nmap dict"""):
-        tmp_resoult = resoult[self.target.ip]["ports"]
         new_resoult = {}
-        for r in tmp_resoult:
-            if r.__contains__("cpe"):
-                del r["cpe"]
-            if r.__contains__("reason"):
-                del r["reason"]
-            if r.__contains__("reason_ttl"):
-                del r["reason_ttl"]
-            if r.__contains__("scripts"):
-                del r["scripts"]
-            if r.__contains__("service"):
-                r["service"] = r["service"]["name"]
+        new_resoult["status"] = resoult["scan"][self.target.ip]["status"]["state"]
+        new_resoult["ports"] = {}
 
-            if r.__contains__("portid"):
-                swap_id = r["portid"]
-                del r["portid"]
+        if new_resoult["status"] == "up":
+            if self.filter.transport_protocol in resoult["scan"][self.target.ip]:
+                for p in resoult["scan"][self.target.ip][self.filter.transport_protocol]:
+                    p_tmp = str(p) + "/" + self.filter.transport_protocol
+                    new_resoult["ports"][p_tmp] = {}
+                    if "name" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                        new_resoult["ports"][p_tmp]["service"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["name"]
+                    if "state" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                        new_resoult["ports"][p_tmp]["state"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["state"]
 
-            new_resoult[swap_id] = r
+            if "osmatch" in resoult["scan"][self.target.ip]:
+                if len(resoult["scan"][self.target.ip]["osmatch"]) == 1:
+                    if "name" in resoult["scan"][self.target.ip]["osmatch"][0] and "accuracy" in \
+                            resoult["scan"][self.target.ip]["osmatch"][0]:
+                        new_resoult["os"] = {"name": resoult["scan"][self.target.ip]["osmatch"][0]["name"],
+                                             "accuracy": resoult["scan"][self.target.ip]["osmatch"][0]["accuracy"]}
 
         return new_resoult
 
     def parse_resoult_deep(self, resoult : """nmap dict"""):
-        tmp_resoult = resoult[self.target.ip]["ports"]
         new_resoult = {}
-        for r in tmp_resoult:
-            if r.__contains__("cpe"):
-                del r["cpe"]
-            if r.__contains__("reason"):
-                del r["reason"]
-            if r.__contains__("reason_ttl"):
-                del r["reason_ttl"]
-            if r.__contains__("scripts"):
-                del r["scripts"]
-            if r.__contains__("service"):
-                tmp = r["service"]
-                r["service"] = tmp["name"]
-                if tmp.__contains__("version") and tmp.__contains__("product"):
-                    r["version"] = tmp["product"] + " " + tmp["version"]
-                elif tmp.__contains__("version"):
-                    r["version"] = tmp["version"]
-                elif tmp.__contains__("product"):
-                    r["product"] = tmp["product"]
+        new_resoult["status"] = resoult["scan"][self.target.ip]["status"]["state"]
+        new_resoult["ports"] = {}
 
-            if r.__contains__("extrainfo"):
-                r["extrainfo"] = tmp["extrainfo"]
+        if new_resoult["status"] == "up":
+            if self.filter.transport_protocol in resoult["scan"][self.target.ip]:
+                for p in resoult["scan"][self.target.ip][self.filter.transport_protocol]:
+                    p_tmp = str(p) + "/" + self.filter.transport_protocol
+                    new_resoult["ports"][p_tmp] = {}
+                    if "name" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                        new_resoult["ports"][p_tmp]["service"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["name"]
+                    if "product" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                        new_resoult["ports"][p_tmp]["version"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["product"]
+                    if "version" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                        new_resoult["ports"][p_tmp]["version"] += " " + resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["version"]
+                    if "state" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                        new_resoult["ports"][p_tmp]["state"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["state"]
 
-            if r.__contains__("portid"):
-                swap_id = r["portid"]
-                del r["portid"]
-
-            new_resoult[swap_id] = r
+            if "osmatch" in resoult["scan"][self.target.ip]:
+                if len(resoult["scan"][self.target.ip]["osmatch"]) == 1:
+                    if "name" in resoult["scan"][self.target.ip]["osmatch"][0] and "accuracy" in resoult["scan"][self.target.ip]["osmatch"][0]:
+                        new_resoult["os"] = {"name": resoult["scan"][self.target.ip]["osmatch"][0]["name"], "accuracy": resoult["scan"][self.target.ip]["osmatch"][0]["accuracy"]}
 
         return new_resoult
 
 
+t = Target("192.168.1.1","1-1024")
+f = Filter("tcp",["O"],1)
 
-t = Target("192.168.1.1")
-f = Filter()
-
-s = Scan(t,f,"SHALLOW")
+s = Scan(t,f,"DEEP")
 
 resoult = s.start_scan()
 
