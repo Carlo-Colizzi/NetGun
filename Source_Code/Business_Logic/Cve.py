@@ -1,5 +1,17 @@
-import requests
+import requests, json
 from bs4 import BeautifulSoup
+
+
+# function that replace space with '%20' for create a valid URL
+def replace_space_with_url_encode(url: str) -> str:
+    return url.replace(" ", "%20")
+
+
+def html_to_json(response):
+    soup = BeautifulSoup(response.text, "html.parser")
+    elements = soup.select("table.exploit_list tbody tr")
+    for element in elements:
+        print(element)
 
 
 class Cve:
@@ -27,11 +39,13 @@ class Cve:
         self.url += params
         self.url = Cve.filter_searching_string(self.url, self.port, self.platform)
         self.url += "&verified=true"
-        response = requests.get(self.url, headers={"User-Agent": self.USER_AGENT})
+        self.url = replace_space_with_url_encode(self.url)
+        response = requests.get(self.url.lower(), headers={"User-Agent": self.USER_AGENT})
+        print(self.url.lower())
+        html_to_json(response)
 
         if response.status_code != 200:
-            raise Exception(f"Error {response.status_code}! Cannot reach exploitDB server")
-        print(self.url)
+            raise Exception(f"Error! Cannot reach ExploitDB server")
 
     # add filter to searching string
     @classmethod
@@ -42,10 +56,10 @@ class Cve:
         if port is not None:  # control if port number is not empty from scan result
             url += f"&port={port}"
 
-        return url.lower()
+        return url
 
 
-version = "http"  # input("Inserisci servizio:\n")
+version = "http apache"  # input("Inserisci servizio:\n")
 platform = "Ruby"  # input("Inserisci Piattaforma:\n")
 port = 80  # input("Inserisci porta:\n")
 cve = Cve(version, platform, port)
