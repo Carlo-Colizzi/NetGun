@@ -10,6 +10,7 @@ class Target:
 
     @classmethod
     def check_ip(cls, ip: str):
+        """Check if the ip is in the correct format for IPv4"""
         pattern = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
         if re.match(pattern, ip):
             return True
@@ -17,6 +18,7 @@ class Target:
 
     @classmethod
     def check_ports(cls, ports:str):
+        """Check if the ports range is correct"""
         pattern = "^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-5][0-9][0-9][0-9]|6[0-4][0-9][0-9]|65[0-4][0-9]|655[0-2])-(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]|6[0-4][0-9][0-9]|[1-5][0-9][0-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9]|[0-9])$";
         if re.match(pattern, ports):
             values = ports.split("-", 1)

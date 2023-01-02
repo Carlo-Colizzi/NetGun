@@ -4,7 +4,7 @@ from Target import Target
 from Filter import Filter
 
 class Scan:
-    __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV -sC"}
+    __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV"}
     def __init__(self, target : Target = None, filter : Filter = None, scan_mode : str = "SHALLOW"):
         assert scan_mode in Scan.__MODES_SUPPORTED, "Invalid Mode Selected. Use SHALLOW or DEEP"
         assert target is not None, "Target is not selected"
@@ -16,15 +16,18 @@ class Scan:
 
 
     def start_scan(self) -> dict :
+        """Start the scanner on the specified Target and using the specified Filters, with the selected mode"""
         nm = nmap.PortScanner()
 
         resoults = nm.scan(self.target.ip,self.target.ports_range,self.filter.advanced_options)
         if self.scan_mode == "SHALLOW":
             return self.parse_resoult_shallow(resoults)
-        else:
+        elif self.scan_mode == "DEEP":
             return self.parse_resoult_deep(resoults)
 
     def parse_resoult_shallow(self, resoult : """nmap dict"""):
+        """The basic results received by nmap library aren't what we looking for, so,
+                this function parse the results, filtering the original dictionary"""
         new_resoult = {}
         new_resoult["ports"] = {}
         if self.target.ip in resoult["scan"]:
@@ -51,6 +54,8 @@ class Scan:
         return new_resoult
 
     def parse_resoult_deep(self, resoult : """nmap dict"""):
+        """The basic results received by nmap library aren't what we looking for, so,
+                this function parse the results, filtering the original dictionary"""
         new_resoult = {}
         new_resoult["ports"] = {}
         if self.target.ip in resoult["scan"]:
@@ -80,16 +85,15 @@ class Scan:
 
         return new_resoult
 
-
-t = Target("10.0.2.15","1-1024")
-f = Filter("tcp",["O"],1)
+t = Target("192.168.1.26","1-1024")
+f = Filter("tcp",["T4","O"])
 
 s = Scan(t,f,"DEEP")
 
 resoult = s.start_scan()
 
 
-pprint(resoult)
+print(resoult)
 
 
 

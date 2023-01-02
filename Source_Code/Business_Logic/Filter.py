@@ -21,6 +21,7 @@ class Filter:
 
     @classmethod
     def advanced_options_to_string(self, advanced_options : list[str]):
+        """Convert the list of advanced options specified in a string that can be used in nmap library"""
         output = ""
         for option in advanced_options:
             output += " -" + option
@@ -29,6 +30,7 @@ class Filter:
 
     @classmethod
     def check_threads(cls, threads : int):
+        """Check if the number of threads specified is realistic"""
         effective_threads = os.cpu_count()
         if threads > 0 and threads < (effective_threads - 2):
             return True
