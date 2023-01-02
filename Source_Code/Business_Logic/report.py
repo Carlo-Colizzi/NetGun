@@ -2,7 +2,7 @@ import os, json
 
 
 
-class Report:
+class report:
 	def __init__(self):
 		pass
 
