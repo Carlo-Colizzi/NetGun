@@ -10,7 +10,7 @@ class App(customtkinter.CTk):
 
         # configuration window
         self.title("NetGun")
-        self.geometry(f"1200x600")
+        self.geometry(f"1300x700")
 
         # variables
         color_option_variable = customtkinter.StringVar(value="System")
@@ -19,6 +19,7 @@ class App(customtkinter.CTk):
         tcp_udp_var = customtkinter.StringVar(value="TCP-UDP")
         type_adv_var = customtkinter.StringVar(value="Advanced")
         scan_type_var = customtkinter.StringVar(value="Shallow")
+        scan_aggro_var = customtkinter.StringVar(value="0")
 
         def options_settings():
             
@@ -44,7 +45,7 @@ class App(customtkinter.CTk):
 
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")
-        self.main_frame.grid(pady=15, padx=15, sticky="nsew")
+        self.main_frame.grid(sticky="nsew")
         self.main_frame.place(relx=0.5, rely=0.5, anchor="c")
 
         # label
@@ -58,28 +59,31 @@ class App(customtkinter.CTk):
         # buttons and text in main
         # set the frame first
         self.center_frame = customtkinter.CTkFrame(self.main_frame)
-        self.center_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=20)
+        self.center_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
 
         # placeholders entry
         self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address", textvariable=ip_var)
         self.ip_entry.grid(row=0, column=0, sticky="w", padx=10)
 
-        self.port_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="Port", textvariable=port_var)
+        self.port_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="Port", textvariable=port_var, width=90)
         self.port_entry.grid(row=0, column=1, sticky="w", padx=10)
 
         # option menus
-        self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"], variable=tcp_udp_var)
+        self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"], variable=tcp_udp_var, width=100)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
-        self.type_adv_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Base", "Advanced"], variable=type_adv_var)
+        self.type_adv_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Base", "Advanced"], variable=type_adv_var, width=100)
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
-        self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Shallow", "Deep"], variable=scan_type_var)
+        self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Shallow", "Deep"], variable=scan_type_var, width=100)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
+
+        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0","1","2","3","4"], variable=scan_aggro_var, width=10)
+        self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
 
         # button scan
         self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan", width=70, height=25)
-        self.scan_button.grid(row=0, column=5, sticky="nsew")
+        self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
 
 if __name__ == "__main__":
     app = App()
