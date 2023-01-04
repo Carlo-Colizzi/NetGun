@@ -1,5 +1,5 @@
 
-class scan_result:
+class Scan_result:
 
     def __init__(self, result : dict):
         """An example of result:
