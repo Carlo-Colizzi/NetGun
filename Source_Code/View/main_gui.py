@@ -41,6 +41,7 @@ class App(customtkinter.CTk):
             appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable)
             appearence_mode.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
+
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")
         self.main_frame.grid(pady=15, padx=15, sticky="nsew")
@@ -51,13 +52,13 @@ class App(customtkinter.CTk):
         self.main_frame_label.grid(row=0, column=0, sticky="nw")
 
         # options button
-        self.options_button = customtkinter.CTkButton(self.main_frame, text="Options", command=options_settings)
-        self.options_button.grid(row=0, column=2, sticky="e")
+        self.options_button = customtkinter.CTkButton(self.main_frame, text="Opt", command=options_settings, width=30, height=30)
+        self.options_button.grid(row=0, column=1, sticky="e")
 
         # buttons and text in main
         # set the frame first
         self.center_frame = customtkinter.CTkFrame(self.main_frame)
-        self.center_frame.grid(row=1, column=1, sticky="nsew", padx=20, pady=20)
+        self.center_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=20)
 
         # placeholders entry
         self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address", textvariable=ip_var)
@@ -67,7 +68,7 @@ class App(customtkinter.CTk):
         self.port_entry.grid(row=0, column=1, sticky="w", padx=10)
 
         # option menus
-        self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP", "TCP-UDP"], variable=tcp_udp_var)
+        self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"], variable=tcp_udp_var)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
         self.type_adv_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Base", "Advanced"], variable=type_adv_var)
