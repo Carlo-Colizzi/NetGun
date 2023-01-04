@@ -1,11 +1,11 @@
 import nmap
 from pprint import pprint
-from target import target
-from filter import filter
+from target import Target
+from filter import Filter
 
 class Scan:
     __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV"}
-    def __init__(self, target : target = None, filter : filter = None, scan_mode : str = "SHALLOW"):
+    def __init__(self, target : Target = None, filter : filter = None, scan_mode : str = "SHALLOW"):
         assert scan_mode in Scan.__MODES_SUPPORTED, "Invalid Mode Selected. Use SHALLOW or DEEP"
         assert target is not None, "Target is not selected"
         assert filter is not None, "Filter is not selected"
@@ -18,7 +18,6 @@ class Scan:
     def start_scan(self) -> dict :
         """Start the scanner on the specified Target and using the specified Filters, with the selected mode"""
         nm = nmap.PortScanner()
-
         resoults = nm.scan(self.target.ip,self.target.ports_range,self.filter.advanced_options)
         if self.scan_mode == "SHALLOW":
             return self.parse_resoult_shallow(resoults)
@@ -51,6 +50,7 @@ class Scan:
                                                  "accuracy": resoult["scan"][self.target.ip]["osmatch"][0]["accuracy"]}
         else:
             new_resoult["status"] = "down"
+
         return new_resoult
 
     def parse_resoult_deep(self, resoult : """nmap dict"""):
@@ -85,8 +85,8 @@ class Scan:
 
         return new_resoult
 
-t = target("192.168.1.26","1-1024")
-f = filter("tcp",["T4","O"])
+t = Target("192.168.1.1","1-1024")
+f = Filter("tcp",["O"],4)
 
 s = Scan(t,f,"DEEP")
 
