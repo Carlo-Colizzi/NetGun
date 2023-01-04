@@ -27,7 +27,7 @@ class cve:
                 if response_version.status_code == 200:
                     data = response_version.json()
                     key_counter += 1
-                    results[key_counter] = [cve.get_vulnerabilities(data, info["version"])]
+                    results[key_counter] = cve.get_vulnerabilities(data, info["version"])
 
         self.results = results
         return results
@@ -63,4 +63,5 @@ class cve:
     'os': {'name': 'Linux 2.6.9 - 2.6.33', 'accuracy': '100'}
 }
 cve_element = cve(versions)
-pprint(cve_element.search_cve())"""
+pprint(cve_element.search_cve())
+"""

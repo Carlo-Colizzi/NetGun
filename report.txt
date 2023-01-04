@@ -1,0 +1,131 @@
+ 1:  'Version': 'vsftpd 2.3.4'
+ 'id': 'CVE-2011-2523'
+ 'description':   'lang': 'en'
+ 'value': 'vsftpd 2.3.4 downloaded between 20110630 and 20110703 contains a backdoor which opens a shell on port 6200/tcp.'
+
+  'lang': 'es'
+ 'value': 'vsftpd versión 2.3.4 descargado entre 20110630 y 20110703
+ contiene una puerta trasera (backdoor) que abre un shell en el puerto 6200/tcp.'
+ 
+ 'references':   'url': 'http://packetstormsecurity.com/files/162145/vsftpd-2.3.4-Backdoor-Command-Execution.html'
+ 'source': 'secalert@redhat.com'
+
+  'url': 'https://access.redhat.com/security/cve/cve-2011-2523'
+ 'source': 'secalert@redhat.com'
+ 'tags':  'Third Party Advisory' 
+
+  'url': 'https://packetstormsecurity.com/files/102745/VSFTPD-2.3.4-Backdoor-Command-Execution.html'
+ 'source': 'secalert@redhat.com'
+ 'tags':  'Exploit'
+ 'Third Party Advisory'
+ 'VDB Entry' 
+
+  'url': 'https://security-tracker.debian.org/tracker/CVE-2011-2523'
+ 'source': 'secalert@redhat.com'
+ 'tags':  'Third Party Advisory' 
+ 
+
+ 2:  'Version': 'OpenSSH 4.7p1 Debian 8ubuntu1'
+
+ 3:  'Version': 'Linux telnetd '
+ 'id': 'CVE-2022-39028'
+ 'description':   'lang': 'en'
+ 'value': 'telnetd in GNU Inetutils through 2.3
+ MIT krb5-appl through 1.0.3
+ and derivative works has a NULL pointer dereference via 0xff 0xf7 or 0xff 0xf8. In a typical installation
+ the telnetd application would crash but the telnet service would remain available through inetd. However
+ if the telnetd application has many crashes within a short time interval
+ the telnet service would become unavailable after inetd logs a "telnet/tcp server failing (looping)
+ service terminated" error. NOTE: MIT krb5-appl is not supported upstream but is shipped by a few Linux distributions. The affected code was removed from the supported MIT Kerberos 5 (aka krb5) product many years ago
+ at version 1.8.'
+
+  'lang': 'es'
+ 'value': 'telnetd en GNU Inetutils versiones hasta 2.3
+ MIT krb5-appl versiones hasta 1.0.3
+ y trabajos derivados presenta una desreferencia de puntero NULL por medio de 0xff 0xf7 o 0xff 0xf8. En una instalación típica
+ la aplicación telnetd sería bloqueada pero el servicio telnet seguiría estando disponible mediante inetd. Sin embargo
+ si la aplicación telnetd presenta muchos bloqueos en un intervalo de tiempo corto
+ el servicio telnet dejará de estar disponible después de que inetd registre un error "telnet/tcp server failing (looping)
+ service terminated". NOTA: MIT krb5-appl no está soportado por la corriente principal
+ pero está incluido en algunas distribuciones de Linux. El código afectado fue retirado del producto MIT Kerberos 5 (aka krb5) soportado hace muchos años
+ en versión 1.8'
+ 
+ 'references':   'url': 'https://git.hadrons.org/cgit/debian/pkgs/inetutils.git/commit/?id=113da8021710d871c7dd72d2a4d5615d42d64289'
+ 'source': 'cve@mitre.org'
+ 'tags':  'Mailing List'
+ 'Patch'
+ 'Vendor Advisory' 
+
+  'url': 'https://lists.debian.org/debian-lts-announce/2022/11/msg00033.html'
+ 'source': 'cve@mitre.org'
+ 'tags':  'Mailing List'
+ 'Third Party Advisory' 
+
+  'url': 'https://lists.gnu.org/archive/html/bug-inetutils/2022-08/msg00002.html'
+ 'source': 'cve@mitre.org'
+ 'tags':  'Mailing List'
+ 'Vendor Advisory' 
+
+  'url': 'https://pierrekim.github.io/blog/2022-08-24-2-byte-dos-freebsd-netbsd-telnetd-netkit-telnetd-inetutils-telnetd-kerberos-telnetd.html'
+ 'source': 'cve@mitre.org'
+ 'tags':  'Exploit'
+ 'Patch'
+ 'Third Party Advisory' 
+ 
+
+ 4:  'Version': 'Postfix smtpd '
+ 'id': 'CVE-2011-1431'
+ 'description':   'lang': 'en'
+ 'value': 'The STARTTLS implementation in qmail-smtpd.c in qmail-smtpd in the netqmail-1.06-tls patch for netqmail 1.06 does not properly restrict I/O buffering
+ which allows man-in-the-middle attackers to insert commands into encrypted SMTP sessions by sending a cleartext command that is processed after TLS is in place
+ related to a "plaintext command injection" attack
+ a similar issue to CVE-2011-0411.'
+
+  'lang': 'es'
+ 'value': 'La implementación qmail-smtpd.c en qmail-smtpd en el parche netqmail-1.06-tls para netqmail v1.06 no restringe el búfer I/O de forma adecuada
+ lo que permite a los atacantes "man-in-the-middle insertar comandos en las sesiones SMTP cifrado mediante el envío de un comando de texto plano que se procesa después de que TLS está en su lugar
+ relacionado con un ataque "inyección de de comando en texto claro"
+ un problema similar a CVE -2011- 0411.\r\n'
+ 
+ 'references':   'url': 'http://inoa.net/qmail-tls/vu555316.patch'
+ 'source': 'cve@mitre.org'
+ 'tags':  'Patch' 
+
+  'url': 'http://securityreason.com/securityalert/8144'
+ 'source': 'cve@mitre.org'
+
+  'url': 'http://www.kb.cert.org/vuls/id/555316'
+ 'source': 'cve@mitre.org'
+ 'tags':  'US Government Resource' 
+
+  'url': 'http://www.kb.cert.org/vuls/id/MAPG-8D9M5Q'
+ 'source': 'cve@mitre.org'
+ 'tags':  'US Government Resource' 
+ 
+
+ 5:  'Version': 'ISC BIND 9.4.2'
+ 'id': 'CVE-2008-4163'
+ 'description':   'lang': 'en'
+ 'value': 'Unspecified vulnerability in ISC BIND 9.3.5-P2-W1
+ 9.4.2-P2-W1
+ and 9.5.0-P2-W1 on Windows allows remote attackers to cause a denial of service (UDP client handler termination) via unknown vectors.'
+
+  'lang': 'es'
+ 'value': 'Vulnerabilidad sin especificar en ISC BIND 9.3.5-P2-W1
+ 9.4.2-P2-W1
+ y 9.5.0-P2-W1 sobre Windows
+ permite a atacantes remotos provocar una denegación de servicio (caída del manejador cliente UDP) a través de vectores desconocidos.'
+ 
+ 'references':   'url': 'http://marc.info/?l=bind-announce&m=122180244228376&w=2'
+ 'source': 'cve@mitre.org'
+
+  'url': 'http://marc.info/?l=bind-announce&m=122180244228378&w=2'
+ 'source': 'cve@mitre.org'
+
+  'url': 'http://marc.info/?l=bind-announce&m=122180376630150&w=2'
+ 'source': 'cve@mitre.org'
+
+  'url': 'http://www.securityfocus.com/bid/31252'
+ 'source': 'cve@mitre.org'
+ 
+
