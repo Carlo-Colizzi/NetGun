@@ -2,6 +2,8 @@ from tkinter import *
 import tkinter as tk
 import customtkinter
 import screeninfo
+import webbrowser as web
+import speedtest
 
 # get the size of the first screen from screeninfo
 screens = screeninfo.get_monitors()
@@ -20,10 +22,12 @@ class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # configuration window
+        # configuration window main
         self.title("NetGun")
         # self.geometry(f"1300x700") to get a default geometry
         self.geometry("{}x{}".format(mon_width, mon_height))
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=4)
 
         # variables
         color_option_variable = customtkinter.StringVar(value="System")
@@ -33,6 +37,8 @@ class App(customtkinter.CTk):
         type_adv_var = customtkinter.StringVar(value="Advanced")
         scan_type_var = customtkinter.StringVar(value="Shallow")
         scan_aggro_var = customtkinter.StringVar(value="0")
+        chechbox_welcome_var = customtkinter.StringVar(value="on")
+
 
         # functions for button and other widgets
         def options_settings():
@@ -54,6 +60,116 @@ class App(customtkinter.CTk):
 
             appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable)
             appearence_mode.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+
+        def manual_command():
+            # welcome frame and window
+            manual_window = customtkinter.CTkToplevel()
+            manual_window.geometry(f"800x400")
+            manual_window.title("MANUAL")
+            manual_window.columnconfigure(0, weight=1)
+            manual_window.rowconfigure(0, weight=1)
+
+            manual_frame = customtkinter.CTkFrame(master=manual_window, fg_color="transparent")
+            manual_frame.grid(padx=30, pady=30, sticky="nsew")
+            manual_frame.place(relx=0.5, rely=0.5, anchor="center")
+            manual_frame.columnconfigure(0, weight=1)
+            manual_frame.rowconfigure(0, weight=1)
+
+            manual_label = customtkinter.CTkTextbox(master=manual_frame, wrap="word", width=750, height=350)
+            manual_label.grid(row=0, column=0, sticky="nsew")
+            manual_label.insert("end", "anche un testo preso da json o config")
+            manual_label.configure(state="disabled")
+
+        def speed_test_button():
+            speed_test_window = customtkinter.CTkToplevel()
+            speed_test_window.geometry(f"800x400")
+            speed_test_window.title("Speed Test")
+            speed_test_window.columnconfigure(0, weight=1)
+            speed_test_window.rowconfigure(0, weight=1)
+
+            speed_test_frame = customtkinter.CTkFrame(master=speed_test_window)
+            speed_test_frame.grid(row=0, padx=30, pady=30, sticky="n")
+
+            # funcion to speedtest
+            def start_speedtest():
+                progress_bar_speedtest.start()
+
+                speed_test = speedtest.SpeedTest()
+                download = speed_test.download()
+                upload = speed_test.upload()
+
+                download_speed = round(download / (10**6), 2)
+                upload_speed = round(upload / (10**6), 2)
+
+                down_label.configure(text=download_speed + "Mbps")
+                up_label.configure(text=upload_speed + "Mbps")
+
+                progress_bar_speedtest.stop()
+
+
+            # all labels with the default labels for download and other
+            download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:", font=customtkinter.CTkFont(size=25, weight="bold"))
+            download_label.grid(row=0, column=0, sticky="nw", padx=10)
+
+            down_label = customtkinter.CTkLabel(master=speed_test_frame, text="0")
+            down_label.grid(row=0, column=1, sticky="ne", padx=10)
+
+            upload_label = customtkinter.CTkLabel(master=speed_test_frame, text="Upload:", font=customtkinter.CTkFont(size=25, weight="bold"))
+            upload_label.grid(row=1, column=0, sticky="nw", padx=10)
+
+            up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0")
+            up_label.grid(row=1, column=1, sticky="ne", padx=10)
+
+            ping_label = customtkinter.CTkLabel(master=speed_test_frame, text="Ping:", font=customtkinter.CTkFont(size=25, weight="bold"))
+            ping_label.grid(row=2, column=0, sticky="nw", padx=10)
+
+            pg_label = customtkinter.CTkLabel(master=speed_test_frame, text="0")
+            pg_label.grid(row=2, column=1, sticky="ne", padx=10)
+
+            # add an other frame to handle start button and progress bar
+            start_frame = customtkinter.CTkFrame(master=speed_test_window)
+            start_frame.grid(row=1, padx=30, pady=30, sticky="n")
+
+            # button to start speedtest
+            start_button = customtkinter.CTkButton(master=start_frame, text="Start", command=start_speedtest)
+            start_button.grid(row=0, column=0, sticky="n", pady=10)
+
+            # progress bar
+            progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
+            progress_bar_speedtest.grid(row=1, column=0, sticky="nsew", pady=10)
+
+
+        def welcome_page_comm():
+            # welcome frame and window
+            welcome_window = customtkinter.CTkToplevel()
+            welcome_window.geometry(f"600x400")
+            welcome_window.title("Welcome to NetGun")
+
+            frame_welcome = customtkinter.CTkFrame(master=welcome_window, fg_color="transparent")
+            frame_welcome.grid(pady=30, padx=30, sticky="nsew")
+            frame_welcome.place(relx=0.5, rely=0.5, anchor="c")
+
+            # text box with label of welcome message
+            welcome_label = customtkinter.CTkTextbox(master=frame_welcome, width=350, height=70, wrap="word")
+            welcome_label.grid(row=0, sticky="w", pady=15)
+            welcome_label.insert("end", "Benvenuto, questo è NetGun, il programma perfetto per esperti e non, in ambito di ethical hacking. Buon hack a tutti!")
+            welcome_label.configure(state="disabled")
+
+            # button to open the manuale in a toplevel window
+            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", command=manual_command)
+            manual_button.grid(row=1, sticky="nsew", pady=15)
+
+            # button to open all links in the browser
+            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", command=lambda: web.open("https://github.com/", new=2))
+            github_button.grid(row=2, sticky="nsew", pady=15)
+
+            # button for speedtest internet connection
+            speedtest_button = customtkinter.CTkButton(master=frame_welcome, text="SpeedTest Ookla", command=speed_test_button)
+            speedtest_button.grid(row=3, sticky="nsew", pady=15)
+
+            # chech box if you want to open at startup
+            chechbox_welcome = customtkinter.CTkCheckBox(master=frame_welcome, text="Apri al prossimo avvio", variable=chechbox_welcome_var, onvalue="on", offvalue="off")
+            chechbox_welcome.grid(row=4, sticky="sw", pady=50)
 
 
         # main frame with options and label
@@ -105,7 +221,14 @@ class App(customtkinter.CTk):
         # frame with a tree view for the table
         self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=250)
         self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
-        
+
+        # report folder button
+
+        # welcome frame button on the bottom main frame
+        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="Wel", command=welcome_page_comm, width=30, height=30)
+        self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
+
+
 if __name__ == "__main__":
     app = App()
     app.mainloop()        
