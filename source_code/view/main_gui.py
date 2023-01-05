@@ -1,4 +1,5 @@
-import tkinter
+from tkinter import *
+import tkinter as tk
 import customtkinter
 
 customtkinter.set_appearance_mode("System")
@@ -57,10 +58,11 @@ class App(customtkinter.CTk):
         self.options_button.grid(row=0, column=1, sticky="e")
 
         # buttons and text in main
-        # set the frame first
+        # set the frame first in the center of main_frame
         self.center_frame = customtkinter.CTkFrame(self.main_frame)
         self.center_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
 
+        '''Step through every column from the first column to the last column'''
         # placeholders entry
         self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address", textvariable=ip_var)
         self.ip_entry.grid(row=0, column=0, sticky="w", padx=10)
@@ -72,9 +74,11 @@ class App(customtkinter.CTk):
         self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"], variable=tcp_udp_var, width=100)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
+        # TODO: change advanced settings to top level with all check box
         self.type_adv_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Base", "Advanced"], variable=type_adv_var, width=100)
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
+        # other options menu
         self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Shallow", "Deep"], variable=scan_type_var, width=100)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
@@ -84,7 +88,10 @@ class App(customtkinter.CTk):
         # button scan
         self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan", width=70, height=25)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
-
+        
+        # TODO: create a custom treeview for customtk
+        # frame with a tree view for the table
+        
 if __name__ == "__main__":
     app = App()
     app.mainloop()        
