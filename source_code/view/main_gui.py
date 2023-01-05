@@ -1,6 +1,17 @@
 from tkinter import *
 import tkinter as tk
 import customtkinter
+import screeninfo
+
+# get the size of the first screen from screeninfo
+screens = screeninfo.get_monitors()
+first_monitor = screens[0]
+print(first_monitor)
+
+global mon_width
+global mon_height
+mon_width = first_monitor.width
+mon_height = first_monitor.height
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
@@ -11,7 +22,8 @@ class App(customtkinter.CTk):
 
         # configuration window
         self.title("NetGun")
-        self.geometry(f"1300x700")
+        # self.geometry(f"1300x700") to get a default geometry
+        self.geometry("{}x{}".format(mon_width, mon_height))
 
         # variables
         color_option_variable = customtkinter.StringVar(value="System")
@@ -22,8 +34,8 @@ class App(customtkinter.CTk):
         scan_type_var = customtkinter.StringVar(value="Shallow")
         scan_aggro_var = customtkinter.StringVar(value="0")
 
+        # functions for button and other widgets
         def options_settings():
-            
             window_options = customtkinter.CTkToplevel()
             window_options.geometry(f"400x200")
             window_options.title("Options")
@@ -59,7 +71,7 @@ class App(customtkinter.CTk):
 
         # buttons and text in main
         # set the frame first in the center of main_frame
-        self.center_frame = customtkinter.CTkFrame(self.main_frame)
+        self.center_frame = customtkinter.CTkFrame(self.main_frame, fg_color="transparent")
         self.center_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
 
         '''Step through every column from the first column to the last column'''
@@ -91,6 +103,8 @@ class App(customtkinter.CTk):
         
         # TODO: create a custom treeview for customtk
         # frame with a tree view for the table
+        self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=250)
+        self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
         
 if __name__ == "__main__":
     app = App()
