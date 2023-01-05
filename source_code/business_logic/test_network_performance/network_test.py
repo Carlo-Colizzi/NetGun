@@ -7,17 +7,20 @@ class Network_test:
         self.network = speedtest.Speedtest()
 
     def test_download(self):
+        """Test the upload speed of the connection"""
         bytes = self.network.download()
         mbps = Network_test.bytes_to_mbps(bytes)
         return mbps
 
     def test_upload(self):
+        """Test the download speed of the connection"""
         bytes = self.network.upload()
         mbps = Network_test.bytes_to_mbps(bytes)
         return mbps
 
     @classmethod
     def bytes_to_mbps(cls,bytes):
+        """Convert from bytes to Mbps"""
         i = int(math.floor(math.log(bytes, 1024)))
         power = math.pow(1024, i)
         mbps = round(bytes / power, 2)
