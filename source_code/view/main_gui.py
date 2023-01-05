@@ -3,7 +3,6 @@ import tkinter as tk
 import customtkinter
 import screeninfo
 import webbrowser as web
-import speedtest
 
 # get the size of the first screen from screeninfo
 screens = screeninfo.get_monitors()
@@ -92,20 +91,21 @@ class App(customtkinter.CTk):
 
             # funcion to speedtest
             def start_speedtest():
+
+                # progress bar starting
                 progress_bar_speedtest.start()
 
-                speed_test = speedtest.SpeedTest()
-                download = speed_test.download()
-                upload = speed_test.upload()
-
-                download_speed = round(download / (10**6), 2)
-                upload_speed = round(upload / (10**6), 2)
-
-                down_label.configure(text=download_speed + "Mbps")
-                up_label.configure(text=upload_speed + "Mbps")
+                # all the codes should be there
+                # just for debugging progress bar
+                for i in range(0, 1000):
+                    progress_bar_speedtest.update(i)
+                    
+                # sample code for speedtest and change in the label text
+                # down_label.configure(text=download_speed + "Mbps")
+                # up_label.configure(text=upload_speed + "Mbps")
+                # pg_label.configure(text=ping_speed + "ms")
 
                 progress_bar_speedtest.stop()
-
 
             # all labels with the default labels for download and other
             download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:", font=customtkinter.CTkFont(size=25, weight="bold"))
@@ -132,11 +132,11 @@ class App(customtkinter.CTk):
 
             # button to start speedtest
             start_button = customtkinter.CTkButton(master=start_frame, text="Start", command=start_speedtest)
-            start_button.grid(row=0, column=0, sticky="n", pady=10)
+            start_button.grid(row=1, column=0, sticky="n", pady=10)
 
             # progress bar
             progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
-            progress_bar_speedtest.grid(row=1, column=0, sticky="nsew", pady=10)
+            progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
 
 
         def welcome_page_comm():
