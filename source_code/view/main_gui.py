@@ -1,5 +1,17 @@
-import tkinter
+from tkinter import *
+import tkinter as tk
 import customtkinter
+import screeninfo
+
+# get the size of the first screen from screeninfo
+screens = screeninfo.get_monitors()
+first_monitor = screens[0]
+print(first_monitor)
+
+global mon_width
+global mon_height
+mon_width = first_monitor.width
+mon_height = first_monitor.height
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
@@ -10,7 +22,8 @@ class App(customtkinter.CTk):
 
         # configuration window
         self.title("NetGun")
-        self.geometry(f"1300x700")
+        # self.geometry(f"1300x700") to get a default geometry
+        self.geometry("{}x{}".format(mon_width, mon_height))
 
         # variables
         color_option_variable = customtkinter.StringVar(value="System")
@@ -21,8 +34,8 @@ class App(customtkinter.CTk):
         scan_type_var = customtkinter.StringVar(value="Shallow")
         scan_aggro_var = customtkinter.StringVar(value="0")
 
+        # functions for button and other widgets
         def options_settings():
-            
             window_options = customtkinter.CTkToplevel()
             window_options.geometry(f"400x200")
             window_options.title("Options")
@@ -57,10 +70,11 @@ class App(customtkinter.CTk):
         self.options_button.grid(row=0, column=1, sticky="e")
 
         # buttons and text in main
-        # set the frame first
-        self.center_frame = customtkinter.CTkFrame(self.main_frame)
+        # set the frame first in the center of main_frame
+        self.center_frame = customtkinter.CTkFrame(self.main_frame, fg_color="transparent")
         self.center_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
 
+        '''Step through every column from the first column to the last column'''
         # placeholders entry
         self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address", textvariable=ip_var)
         self.ip_entry.grid(row=0, column=0, sticky="w", padx=10)
@@ -72,9 +86,11 @@ class App(customtkinter.CTk):
         self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"], variable=tcp_udp_var, width=100)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
+        # TODO: change advanced settings to top level with all check box
         self.type_adv_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Base", "Advanced"], variable=type_adv_var, width=100)
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
+        # other options menu
         self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Shallow", "Deep"], variable=scan_type_var, width=100)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
@@ -84,7 +100,12 @@ class App(customtkinter.CTk):
         # button scan
         self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan", width=70, height=25)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
-
+        
+        # TODO: create a custom treeview for customtk
+        # frame with a tree view for the table
+        self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=250)
+        self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
+        
 if __name__ == "__main__":
     app = App()
     app.mainloop()        
