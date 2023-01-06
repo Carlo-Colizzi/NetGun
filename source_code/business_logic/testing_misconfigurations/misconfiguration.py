@@ -17,7 +17,7 @@ class Misconfiguration:
         time.sleep(0.05)
         pyautogui.typewrite(self.command)
 
-
-m = Misconfiguration()
-m.command = "ftp 127.0.0.1"
-m.test_misconfiguration()
+if __name__ == "__main__":
+    m = Misconfiguration()
+    m.command = "ftp 127.0.0.1"
+    m.test_misconfiguration()
