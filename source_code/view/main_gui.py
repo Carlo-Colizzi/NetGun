@@ -1,5 +1,7 @@
 from tkinter import *
 import tkinter as tk
+from tkinter import filedialog
+from tkinter.filedialog import asksaveasfile
 import customtkinter
 import screeninfo
 import webbrowser as web
@@ -231,6 +233,13 @@ class App(customtkinter.CTk):
             print("Aggro: {}".format(scan_aggro))
             print("Advanced: {} {} {}".format(option_var_1, option_var_2, option_var_3))
 
+        def export_file():
+            file=filedialog.asksaveasfilename(filetypes=[("text file","*.txt")],
+                                        defaultextension='.txt',
+                                        title='Export Report')
+            fob = open(file, 'w')
+            fob.write("Hello, world!")
+            fob.close()
 
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")
@@ -283,9 +292,11 @@ class App(customtkinter.CTk):
         self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
 
         # report folder button
+        self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report", command=export_file)
+        self.report_button_folder.grid(row=4, column=0, padx=10, pady=50, sticky="se")
 
         # welcome frame button on the bottom main frame
-        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="Wel", command=welcome_page_comm, width=30, height=30)
+        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="Wel", command=welcome_page_comm, width=30)
         self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
 
 
