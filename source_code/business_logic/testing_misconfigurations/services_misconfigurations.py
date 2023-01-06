@@ -8,6 +8,7 @@ class Services_misconfigurations:
 
     @classmethod
     def parse_misconfigurations_from_file(self, path):
+        """Parse the misconfigurations contained in the specified file, returning a dictionary"""
         tree = ET.parse(path)
         root = tree.getroot()
 
@@ -24,5 +25,6 @@ class Services_misconfigurations:
 
     @classmethod
     def inizialize_object_from_file_xml(cls, path):
+        """Uses the parse_misconfigurations_from_file(self, path) method, for create a new Services_misconfigurations object"""
         dictionary = Services_misconfigurations.parse_misconfigurations_from_file(path)
         return Services_misconfigurations(dictionary)

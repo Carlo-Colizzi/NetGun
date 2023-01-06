@@ -6,12 +6,13 @@ class Misconfiguration:
         pass
 
     def print_toString(self):
-        print(self.tool_installation)
-        print(self.testType)
-        print(self.description)
-        print(self.command)
+        print("tool_installation: ",self.tool_installation)
+        print("testType: ", self.testType)
+        print("description: ",self.description)
+        print("command: ",self.command)
 
     def test_misconfiguration(self):
+        """Opens a new terminal and write in the command for execute the test"""
         pyautogui.hotkey('ctrl', 'alt', 't')
         time.sleep(0.05)
         pyautogui.typewrite(self.command)
