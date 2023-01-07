@@ -133,7 +133,7 @@ class App(customtkinter.CTk):
         def welcome_page_comm():
             # welcome frame and window
             welcome_window = customtkinter.CTkToplevel()
-            welcome_window.geometry(f"600x400")
+            welcome_window.geometry(f"600x500")
             welcome_window.title("Welcome to NetGun")
 
             frame_welcome = customtkinter.CTkFrame(master=welcome_window, fg_color="transparent")
