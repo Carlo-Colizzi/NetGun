@@ -237,7 +237,7 @@ class App(customtkinter.CTk):
         self.main_frame.place(relx=0.5, rely=0.5, anchor="c")
 
         # label
-        self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text="NetGun", font=customtkinter.CTkFont(size=25, weight="bold"))
+        self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text="NetGun", font=customtkinter.CTkFont(size=40, weight="bold"))
         self.main_frame_label.grid(row=0, column=0, sticky="nw")
 
         # options button
