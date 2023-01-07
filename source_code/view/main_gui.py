@@ -6,19 +6,6 @@ import customtkinter
 import screeninfo
 import webbrowser as web
 
-# get the size of the first screen from screeninfo
-screens = screeninfo.get_monitors()
-first_monitor = screens[0]
-print(first_monitor)
-
-global mon_width
-global mon_height
-mon_width = first_monitor.width
-mon_height = first_monitor.height
-
-customtkinter.set_appearance_mode("System")
-customtkinter.set_default_color_theme("dark-blue")
-
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -29,6 +16,9 @@ class App(customtkinter.CTk):
         self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
+        # color scheme
+        customtkinter.set_appearance_mode("System")
+        customtkinter.set_default_color_theme("dark-blue")
 
         # variables
         color_option_variable = customtkinter.StringVar(value="System")
@@ -161,7 +151,7 @@ class App(customtkinter.CTk):
             manual_button.grid(row=1, sticky="nsew", pady=15)
 
             # button to open all links in the browser
-            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", command=lambda: web.open("https://github.com/", new=2))
+            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", command=lambda: web.open("https://github.com/MyCr4ck/NetGun_Classe03", new=2))
             github_button.grid(row=2, sticky="nsew", pady=15)
 
             # button for speedtest internet connection
@@ -301,5 +291,15 @@ class App(customtkinter.CTk):
 
 
 if __name__ == "__main__":
+    # get the size of the first screen from screeninfo
+    screens = screeninfo.get_monitors()
+    first_monitor = screens[0]
+    print(first_monitor)
+
+    global mon_width
+    global mon_height
+    mon_width = first_monitor.width
+    mon_height = first_monitor.height
+
     app = App()
     app.mainloop()        
