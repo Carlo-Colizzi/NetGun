@@ -53,10 +53,10 @@ class Scan:
                     for p in resoult["scan"][self.target.ip][self.filter.transport_protocol]:
                         p_tmp = str(p) + "/" + self.filter.transport_protocol
                         new_resoult["ports"][p_tmp] = {}
-                        if "name" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
-                            new_resoult["ports"][p_tmp]["service"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["name"]
                         if "state" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
                             new_resoult["ports"][p_tmp]["state"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["state"]
+                        if "name" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                            new_resoult["ports"][p_tmp]["service"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["name"]
 
                 if "osmatch" in resoult["scan"][self.target.ip]:
                     if len(resoult["scan"][self.target.ip]["osmatch"]) == 1:
@@ -82,14 +82,14 @@ class Scan:
                     for p in resoult["scan"][self.target.ip][self.filter.transport_protocol]:
                         p_tmp = str(p) + "/" + self.filter.transport_protocol
                         new_resoult["ports"][p_tmp] = {}
+                        if "state" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
+                            new_resoult["ports"][p_tmp]["state"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["state"]
                         if "name" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
                             new_resoult["ports"][p_tmp]["service"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["name"]
                         if "product" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
                             new_resoult["ports"][p_tmp]["version"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["product"]
                         if "version" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
                             new_resoult["ports"][p_tmp]["version"] += " " + resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["version"]
-                        if "state" in resoult["scan"][self.target.ip][self.filter.transport_protocol][p]:
-                            new_resoult["ports"][p_tmp]["state"] = resoult["scan"][self.target.ip][self.filter.transport_protocol][p]["state"]
 
                 if "osmatch" in resoult["scan"][self.target.ip]:
                     if len(resoult["scan"][self.target.ip]["osmatch"]) == 1:
