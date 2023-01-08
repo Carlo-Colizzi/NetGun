@@ -23,7 +23,6 @@ class Context:
 
         self.__dict__['_Singleton__instance'] = Context.__istance
 
-
 if __name__ == "__main__":
     context = Context()
     context.start()

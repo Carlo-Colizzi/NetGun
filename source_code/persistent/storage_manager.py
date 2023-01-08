@@ -48,7 +48,6 @@ class Storage_manager:
     def load_tutorials(cls):
         return Storage_manager.load_resource(Storage_manager.TUTORIALS_XML_PATH, Storage_manager.TUTORIALS_PKL_PATH, Tutorial_collection.inizialize_object_from_file_xml)
 
-
 if __name__ == "__main__":
     for i in Storage_manager.load_tutorials().tutorials_dict:
         Storage_manager.load_tutorials().tutorials_dict[i].print_toString()

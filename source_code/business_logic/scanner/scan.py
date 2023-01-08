@@ -100,15 +100,16 @@ class Scan:
 
         return new_resoult
 
-t = Target("192.168.1.1","1-1024")
-f = Filter("tcp",["O"],4)
+if __name__ == "__main__":
+    t = Target("192.168.1.1","1-1024")
+    f = Filter("tcp",["O"],4)
 
-s = Scan(t,f,"DEEP")
+    s = Scan(t,f,"DEEP")
 
-resoult = s.start_scan()
+    resoult = s.start_scan()
 
 
-pprint(resoult)
+    pprint(resoult)
 
 
 
