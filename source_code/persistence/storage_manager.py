@@ -5,14 +5,14 @@ from source_code.business_logic.tips.tip import Tip
 from source_code.business_logic.tutorial.tutorial_collection import Tutorial_collection
 
 class Storage_manager:
-    MISCONFIGURATIONS_XML_PATH = "../../persistent/storage/misconfiguration.xml"
-    MISCONFIGURATIONS_PKL_PATH = "../../persistent/storage/misconfigurations.pkl"
+    MISCONFIGURATIONS_XML_PATH = "../../persistence/storage/misconfiguration.xml"
+    MISCONFIGURATIONS_PKL_PATH = "../../persistence/storage/misconfigurations.pkl"
 
-    TIPS_XML_PATH = "../../persistent/storage/tip.xml"
-    TIPS_PKL_PATH = "../../persistent/storage/tip.pkl"
+    TIPS_XML_PATH = "../../persistence/storage/tip.xml"
+    TIPS_PKL_PATH = "../../persistence/storage/tip.pkl"
 
-    TUTORIALS_XML_PATH = "../../persistent/storage/tutorial.xml"
-    TUTORIALS_PKL_PATH = "../../persistent/storage/tutorial.pkl"
+    TUTORIALS_XML_PATH = "../../persistence/storage/tutorial.xml"
+    TUTORIALS_PKL_PATH = "../../persistence/storage/tutorial.pkl"
 
     @classmethod
     def load_resource(cls, xml_path, pkl_path, create_object_from_file):

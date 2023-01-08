@@ -9,7 +9,7 @@ import webbrowser as web
 import os
 
 # storage path
-storage_path = os.path.join("../persistent/storage") 
+storage_path = os.path.join("../persistence/storage")
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):

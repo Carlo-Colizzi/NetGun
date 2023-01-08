@@ -1,4 +1,4 @@
-from source_code.persistent.storage_manager import Storage_manager
+from source_code.persistence.storage_manager import Storage_manager
 
 class Context:
     __istance = None
@@ -7,7 +7,7 @@ class Context:
         """Singleton of Context class"""
 
         def start(self):
-            """This method is executed in the starting point of the application, here are loaded all the persistent data in RAM"""
+            """This method is executed in the starting point of the application, here are loaded all the persistence data in RAM"""
             self.tutorial = Storage_manager.load_tutorials()
             self.misconfiguration = Storage_manager.load_misconfigurations()
             self.tip = Storage_manager.load_tips()
