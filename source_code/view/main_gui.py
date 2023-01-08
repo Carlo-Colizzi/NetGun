@@ -12,8 +12,8 @@ class App(customtkinter.CTk):
 
         # configuration window main
         self.title("NetGun")
-        # self.geometry(f"1300x700") to get a default geometry
-        self.geometry("{}x{}".format(mon_width, mon_height))
+        self.geometry(f"1300x700") #default geometry
+        # self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
         # color scheme
