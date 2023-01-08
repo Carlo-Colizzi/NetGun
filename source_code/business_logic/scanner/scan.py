@@ -2,18 +2,20 @@ import nmap
 from pprint import pprint
 from target import Target
 from filter import Filter
+from observer_progress import Observer_progress
 
 class Scan:
     __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV"}
     def __init__(self, target : Target = None, filter : filter = None, scan_mode : str = "SHALLOW"):
-        self.progress_pecent = 10
-        self.progress_phrase = "Scanner Setupping..."
-
+        self.observer = Observer_progress()
+        self.observer.update(10)
         assert scan_mode in Scan.__MODES_SUPPORTED, "Invalid Mode Selected. Use SHALLOW or DEEP"
         assert target is not None, "Target is not selected"
         assert filter is not None, "Filter is not selected"
         self.target = target
         self.filter = filter
+
+        self.observer.update(20)
         self.scan_mode = scan_mode
         self.filter.advanced_options = Scan.__MODES_SUPPORTED[scan_mode] + self.filter.advanced_options
 
@@ -23,21 +25,18 @@ class Scan:
         """Start the scanner on the specified Target and using the specified Filters, with the selected mode"""
         nm = nmap.PortScanner()
 
-        self.progress_pecent = 30
-        self.progress_phrase = f"Scanner on {self.target.ip} started..."
+        self.observer.update(30)
 
         resoults = nm.scan(self.target.ip,self.target.ports_range,self.filter.advanced_options)
 
-        self.progress_pecent = 70
-        self.progress_phrase = f"Scanner completed, parsing result..."
-
+        self.observer.update(70)
+        self.observer.update(90)
         if self.scan_mode == "SHALLOW":
             parsed_result = self.parse_resoult_shallow(resoults)
         elif self.scan_mode == "DEEP":
             parsed_result = self.parse_resoult_deep(resoults)
 
-        self.progress_pecent = 100
-        self.progress_phrase = f"Completed"
+        self.observer.update(100)
         return parsed_result
 
     def parse_resoult_shallow(self, resoult : """nmap dict"""):
