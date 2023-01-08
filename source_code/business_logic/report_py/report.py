@@ -4,46 +4,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from reportlab.lib.units import cm
 from fpdf import FPDF, XPos, YPos
+from pprint import pprint
 
-
-def create_table_horizontal(elements:dict, index_table: str ) -> list:
-        table = []
-        for key, values in elements.items():
-            if len(table) == 0:
-                list_key = [index_table]
-                for inner_key in values.keys():
-                    list_key.append(inner_key)
-                table.append(list_key)
-            else:
-                list_value = [key]
-                for inner_values in values.values():
-                    list_value.append(inner_values)
-                table.append(list_value)
-        return table
-
-
-def create_table_vertical(elements:dict, index_table: str) -> list:
-        table = []
-        for key, values in elements.items():
-            table.append([key])
-            for inner_key, inner_values in values.items():
-                table.append([inner_key, inner_values])
-
-        return table   
-
-
-
-def get_col_width(table_data, pdf):
-    col_widths = []
-    for col in range(len(table_data[0])): # for every row
-        longest = 0 
-        for row in range(len(table_data)):                
-            cell_value = str(table_data[row][col])
-            value_length = pdf.get_string_width(cell_value)
-            if value_length > longest:
-                longest = value_length
-                col_widths.append(longest + 4) # add 4 for padding
-    return pdf.epw / len(table_data[0]) 
 
 def add_headers_table_horizontal(headers: list, pdf: FPDF(), col_width, line_height: float, align_header, emphasize_headers: list, emphaize_header_color, emphaize_header_style):
     for i in range(len(headers)):
@@ -62,9 +24,6 @@ def add_headers_table_horizontal(headers: list, pdf: FPDF(), col_width, line_hei
     return pdf
 
 
-
-def add_headers_table_vertical(header:list):
-    pass
 
 
 def add_data_table_horizontal(data:list, pdf:FPDF(), col_width, line_height, align_data, emphasize_data: list, emphasize_data_color, emphasize_data_style):
@@ -87,43 +46,80 @@ def add_data_table_horizontal(data:list, pdf:FPDF(), col_width, line_height, ali
     return pdf
 
 
+def get_max_height(row: list()):
+    max = 0
+    for element in row:
+        element_lenght = len(element)
+        if element_lenght> max:
+            max = element_lenght
+    return max
+
+
+def add_data_table_vertical(data:list, pdf:FPDF(), col_width, line_height, align_data, emphasize_data, emphaize_data_color, emphaize_data_style):
+    for row in data:
+        max_lenght = get_max_height(row)
+        for element in row:
+            if len(emphasize_data) > 0:
+                if element in emphasize_data or emphasize_data[0] == "*":
+                    pdf.set_text_color(*emphasize_data_color)
+                    pdf.set_font(emphasize_data_style)
+                    pdf.multi_cell(col_width, line_height, element, border=0, align=align_data,  new_x=XPos.RIGHT, new_y=YPos.LAST, max_line_height=max_lenght)
+                    pdf.set_text_color(0,0,0)
+                    pdf.set_font("Times")
+                else:
+                    pdf.multi_cell(col_width, line_height, element, border=0, align=align_data,  new_x=XPos.RIGHT, new_y=YPos.LAST, max_line_height= max_lenght)
+            else:
+                pdf.multi_cell(col_width, line_height, element, border=0, align=align_data,  new_x=XPos.RIGHT, new_y=YPos.LAST, max_line_height=max_lenght)
+        pdf.ln(line_height)
+    return pdf
+
+
+
+
+
 def draw_table_pdf(table_data: list, title="", title_size = 14, data_size = 10, align_data = 'L', align_header = 'L', emphasize_data=['*'], emphasize_headers=['*'], emphaize_header_color = (0,0,0), emphaize_data_color = (0, 0, 0), emphaize_header_style = "Times", emphaize_data_style = "Times", type_table = "horizontal", pdf  = None ):
     if pdf is None:
         pdf = FPDF()
-        pdf.set_font("Times")
+    
+     
+    pdf.set_font("Times", size=title_size)
       
     default_style = pdf.font_style
-    
-    col_width = get_col_width(table_data, pdf)
 
-    headers = table_data[0]
-    data = table_data[1:]
+    
+    col_width = pdf.epw / len(table_data[0]) 
 
     line_height = pdf.font_size * 2.5
 
     pdf.set_x(pdf.l_margin)
 
     if title != "":
-        pdf.multi_cell(0, line_height, title, border = 0, align='j', max_line_height = title_size)
+        pdf.multi_cell(0, line_height, title, border = 0, align='j', max_line_height = title_size, markdown=True)
         pdf.ln(line_height - 5)
     
+
     pdf.set_font(size=data_size)
+
 
     y1 = pdf.get_y()
     x_left = pdf.get_x()
     x_right = x_left + pdf.epw
 
     if type_table == "horizontal":
-       pdf = add_headers_table_horizontal(headers, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style)
-       x_right =pdf.get_x()
-       pdf.ln(line_height)
-       y2 = pdf.get_y()
-       pdf.line(x_left, y1, x_right, y1)
-       pdf.line(x_left, y2, x_right, y2)
-       #adjusted_col_width = col_width[0]
-       pdf = add_data_table_horizontal(data, pdf, col_width, line_height, align_data, emphasize_data,emphaize_data_color, emphaize_data_style)
+        headers = table_data[0]
+        data = table_data[1:]
+        pdf = add_headers_table_horizontal(headers, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style)
+        x_right =pdf.get_x()
+        pdf.ln(line_height)
+        y2 = pdf.get_y()
+        pdf.line(x_left, y1, x_right, y1)
+        pdf.line(x_left, y2, x_right, y2)
+        pdf = add_data_table_horizontal(data, pdf, col_width, line_height, align_data, emphasize_data,emphaize_data_color, emphaize_data_style)
+
     elif type_table == "vertical":
-        pass
+        pdf = add_data_table_vertical(table_data, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style )
+        pdf.ln(line_height)
+
 
     y3 = pdf.get_y()
     pdf.line(x_left, y3, x_right, y3)
@@ -156,10 +152,16 @@ def create_table_horizontal(elements:dict, index_table: str ) -> list:
 
 def create_table_vertical(elements:dict, index_table: str) -> list:
         table = []
-        for key, values in elements.items():
-            table.append([key])
-            for inner_key, inner_values in values.items():
-                table.append([inner_key, inner_values])
+        for keys, values in elements.items():
+            table.append([index_table, keys])
+            if isinstance(values, dict):
+                for value in values.values():
+                    for i in range(len(value)):
+                        for key, val in value[i].items():
+                            table.append([key, val])
+            else:
+                for inner_key, inner_values in values.items():
+                    table.append([inner_key, inner_values])
 
     
         return table   
@@ -167,8 +169,8 @@ def create_table_vertical(elements:dict, index_table: str) -> list:
 class Report:
     file = "report.pdf"
     # Lists used to decide which table to create
-    __VERTICAL_TABLE = []   
-    __HORIZONTAL_TABLE = ["ports", "services"]
+    __VERTICAL_TABLE = ["service"]   
+    __HORIZONTAL_TABLE = ["ports" ]
 
         
     def create_report(self, result_scan: dict, result_cve) :
@@ -178,12 +180,12 @@ class Report:
 
         table_scan = Report.create_table(result_scan)
         table_cve = Report.create_table(result_cve)
-        draw_table_pdf(table_data = table_scan, title="Scan Result", title_size = 14, data_size = 10, align_data = 'L', align_header = 'L', emphasize_data=['open'], emphasize_headers=[], emphaize_header_color = (0,0,0), emphaize_data_color = (0,255,0), emphaize_header_style = "Times", emphaize_data_style = "Times", type_table = "horizontal", pdf = pdf)
+        draw_table_pdf(table_data = table_scan, title="Scan Result", title_size = 16, data_size = 10, align_data = 'L', align_header = 'L', emphasize_data=['open'], emphasize_headers=[], emphaize_header_color = (0,0,0), emphaize_data_color = (0,255,0), emphaize_header_style = "Times", emphaize_data_style = "Times", type_table = "horizontal", pdf = pdf)
         pdf.ln()
         #
         #for cve in table_cve:
-        #draw_table_pdf(table_data = table_cve,  data_size = 4, title = "Research CVE Results", cell_width='uneven', pdf=pdf)
-        #pdf.ln()
+        draw_table_pdf(table_data = table_cve,  title=" Research Cve Result", title_size=16, data_size = 10,  align_data="L", align_header="L", emphasize_data=[], emphasize_headers=[], emphaize_data_color=(0,0,0), emphaize_header_style="Times", emphaize_data_style="Times", type_table="vertical", pdf=pdf)
+        pdf.ln()
     
 
         pdf.output("report_prova.pdf")
@@ -228,72 +230,96 @@ versions = {
     'status': 'up',
     'os': {'name': 'Linux 2.6.9 - 2.6.33', 'accuracy': '100'}
 }
-result = {'services': {'ISC BIND 9.4.2': {'description': 'Unspecified vulnerability in '
-                                                'ISC BIND 9.3.5-P2-W1, '
-                                                '9.4.2-P2-W1, and 9.5.0-P2-W1 '
-                                                'on Windows allows remote '
-                                                'attackers to cause a denial '
-                                                'of service (UDP client '
-                                                'handler termination) via '
-                                                'unknown vectors.',
-                                 'id': 'CVE-2008-4163',
-                                 'reference': 'http://marc.info/?l=bind-announce&m=122180244228376&w=2'},
-              'Linux telnetd ': {'description': 'telnetd in GNU Inetutils '
-                                                'through 2.3, MIT krb5-appl '
-                                                'through 1.0.3, and derivative '
-                                                'works has a NULL pointer '
-                                                'dereference via 0xff 0xf7 or '
-                                                '0xff 0xf8. In a typical '
-                                                'installation, the telnetd '
-                                                'application would crash but '
-                                                'the telnet service would '
-                                                'remain available through '
-                                                'inetd. However, if the '
-                                                'telnetd application has many '
-                                                'crashes within a short time '
-                                                'interval, the telnet service '
-                                                'would become unavailable '
-                                                'after inetd logs a '
-                                                '"telnet/tcp server failing '
-                                                '(looping), service '
-                                                'terminated" error. NOTE: MIT '
-                                                'krb5-appl is not supported '
-                                                'upstream but is shipped by a '
-                                                'few Linux distributions. The '
-                                                'affected code was removed '
-                                                'from the supported MIT '
-                                                'Kerberos 5 (aka krb5) product '
-                                                'many years ago, at version '
-                                                '1.8.',
-                                 'id': 'CVE-2022-39028',
-                                 'reference': 'https://git.hadrons.org/cgit/debian/pkgs/inetutils.git/commit/?id=113da8021710d871c7dd72d2a4d5615d42d64289'},
-              'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': '',
-                                                'id': '',
-                                                'reference': ''},
-              'Postfix smtpd ': {'description': 'The STARTTLS implementation '
-                                                'in qmail-smtpd.c in '
-                                                'qmail-smtpd in the '
-                                                'netqmail-1.06-tls patch for '
-                                                'netqmail 1.06 does not '
-                                                'properly restrict I/O '
-                                                'buffering, which allows '
-                                                'man-in-the-middle attackers '
-                                                'to insert commands into '
-                                                'encrypted SMTP sessions by '
-                                                'sending a cleartext command '
-                                                'that is processed after TLS '
-                                                'is in place, related to a '
-                                                '"plaintext command injection" '
-                                                'attack, a similar issue to '
-                                                'CVE-2011-0411.',
-                                 'id': 'CVE-2011-1431',
-                                 'reference': 'http://inoa.net/qmail-tls/vu555316.patch'},
-              'vsftpd 2.3.4': {'description': 'vsftpd 2.3.4 downloaded between '
-                                              '20110630 and 20110703 contains '
-                                              'a backdoor which opens a shell '
-                                              'on port 6200/tcp.',
-                               'id': 'CVE-2011-2523',
-                               'reference': 'http://packetstormsecurity.com/files/162145/vsftpd-2.3.4-Backdoor-Command-Execution.html'}}}
+result ={'service': {'ISC BIND 9.4.2': {'vulnerabilities': [{'description': 'Off-by-one error in '
+                                                        'the inet_network '
+                                                        'function in libbind '
+                                                        'in ISC BIND 9.4.2 and '
+                                                        'earlier, as used in '
+                                                        'libc in FreeBSD 6.2 '
+                                                        'through '
+                                                        '7.0-PRERELEASE, '
+                                                        'allows '
+                                                        'context-dependent '
+                                                        'attackers to cause a '
+                                                        'denial of service '
+                                                        '(crash) and possibly '
+                                                        'execute arbitrary '
+                                                        'code via crafted '
+                                                        'input that triggers '
+                                                        'memory corruption.',
+                                         'id': 'CVE-2008-0122',
+                                         'resource': 'http://lists.opensuse.org/opensuse-security-announce/2008-03/msg00004.html'},
+                                        {'description': 'The DNS protocol, as '
+                                                        'implemented in (1) '
+                                                        'BIND 8 and 9 before '
+                                                        '9.5.0-P1, 9.4.2-P1, '
+                                                        'and 9.3.5-P1; (2) '
+                                                        'Microsoft DNS in '
+                                                        'Windows 2000 SP4, XP '
+                                                        'SP2 and SP3, and '
+                                                        'Server 2003 SP1 and '
+                                                        'SP2; and other '
+                                                        'implementations allow '
+                                                        'remote attackers to '
+                                                        'spoof DNS traffic via '
+                                                        'a birthday attack '
+                                                        'that uses '
+                                                        'in-bailiwick '
+                                                        'referrals to conduct '
+                                                        'cache poisoning '
+                                                        'against recursive '
+                                                        'resolvers, related to '
+                                                        'insufficient '
+                                                        'randomness of DNS '
+                                                        'transaction IDs and '
+                                                        'source ports, aka '
+                                                        '"DNS Insufficient '
+                                                        'Socket Entropy '
+                                                        'Vulnerability" or '
+                                                        '"the Kaminsky bug."',
+                                         'id': 'CVE-2008-1447',
+                                         'resource': 'ftp://ftp.netbsd.org/pub/NetBSD/security/advisories/NetBSD-SA2008-009.txt.asc'},
+                                        {'description': 'Unspecified '
+                                                        'vulnerability in ISC '
+                                                        'BIND 9.3.5-P2-W1, '
+                                                        '9.4.2-P2-W1, and '
+                                                        '9.5.0-P2-W1 on '
+                                                        'Windows allows remote '
+                                                        'attackers to cause a '
+                                                        'denial of service '
+                                                        '(UDP client handler '
+                                                        'termination) via '
+                                                        'unknown vectors.',
+                                         'id': 'CVE-2008-4163',
+                                         'resource': 'http://marc.info/?l=bind-announce&m=122180244228376&w=2'}]},
+'vsftpd 2.3.4': {'vulnerabilities': [{'description': 'The '
+                                                      'vsf_filename_passes_filter '
+                                                      'function in ls.c in '
+                                                      'vsftpd before 2.3.3 '
+                                                      'allows remote '
+                                                      'authenticated users to '
+                                                      'cause a denial of '
+                                                      'service (CPU '
+                                                      'consumption and process '
+                                                      'slot exhaustion) via '
+                                                      'crafted glob '
+                                                      'expressions in STAT '
+                                                      'commands in multiple '
+                                                      'FTP sessions, a '
+                                                      'different vulnerability '
+                                                      'than CVE-2010-2632.',
+                                       'id': 'CVE-2011-0762',
+                                       'resource': 'ftp://vsftpd.beasts.org/users/cevans/untar/vsftpd-2.3.4/Changelog'},
+                                      {'description': 'vsftpd 2.3.4 downloaded '
+                                                      'between 20110630 and '
+                                                      '20110703 contains a '
+                                                      'backdoor which opens a '
+                                                      'shell on port 6200/tcp.',
+                                       'id': 'CVE-2011-2523',
+                                       'resource': 'http://packetstormsecurity.com/files/162145/vsftpd-2.3.4-Backdoor-Command-Execution.html'}]},
+                                       'OpenSSH 4.7p1 Debian 8ubuntu1': {'vulnerabilities': []}}}
+
+    
 report.create_report(versions, result)
 
 
