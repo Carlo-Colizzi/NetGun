@@ -1,10 +1,15 @@
 from tkinter import *
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
 from tkinter.filedialog import asksaveasfile
 import customtkinter
 import screeninfo
 import webbrowser as web
+import os
+
+# storage path
+storage_path = os.path.join("../persistent/storage") 
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -223,6 +228,108 @@ class App(customtkinter.CTk):
             print("Aggro: {}".format(scan_aggro))
             print("Advanced: {} {} {}".format(option_var_1, option_var_2, option_var_3))
 
+            # initialize tree structure
+            scan_tree = ttk.Treeview(self.tree_frame, height=10)
+            
+            # see if the tree was here before
+            treeview_exists = False
+            for widget in scan_tree.winfo_children():
+                if isinstance(widget,ttk.Treeview):
+                    treeview_exists = True
+                    break
+
+            if treeview_exists == True:
+                for widget in scan_tree.winfo_children():
+                    if isinstance(widget, ttk.Treeview):
+                        widget.destroy()
+
+            # set number columns
+            scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
+
+            scan_tree.heading("#0", text="PORT")
+            scan_tree.heading("colonna1", text="Service")
+            scan_tree.heading("colonna2", text="Version")
+            scan_tree.heading("colonna3", text="State")
+
+            # date examples
+            data = {
+                '21/tcp': {'service': 'ftp', 'version': 'vsftpd 2.3.4', 'state': 'open'},
+                '22/tcp': {'service': 'ssh', 'version': 'OpenSSH 4.7p1 Debian 8ubuntu1', 'state': 'open'},
+                '23/tcp': {'service': 'telnet', 'version': 'Linux telnetd ', 'state': 'open'},
+                '25/tcp': {'service': 'smtp', 'version': 'Postfix smtpd ', 'state': 'open'},
+                '53/tcp': {'service': 'domain', 'version': 'ISC BIND 9.4.2', 'state': 'open'},
+                '80/tcp': {'service': 'http', 'version': 'Apache httpd 2.2.8', 'state': 'open'},
+                '111/tcp': {'service': 'rpcbind', 'version': ' ', 'state': 'open'},
+                '139/tcp': {'service': 'netbios-ssn', 'version': 'Samba smbd 3.X - 4.X', 'state': 'open'},
+                '445/tcp': {'service': 'netbios-ssn', 'version': 'Samba smbd 3.X - 4.X', 'state': 'open'},
+                '512/tcp': {'service': 'exec', 'version': ' ', 'state': 'open'},
+                '513/tcp': {'service': 'login', 'version': 'OpenBSD or Solaris rlogind ', 'state': 'open'},
+                '514/tcp': {'service': 'tcpwrapped', 'version': ' ', 'state': 'open'}
+            }
+            
+            # label scannning
+            self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
+
+            # let appear the progress bar and start
+            self.scan_progress.grid(row=3, column=0, sticky="nw", pady=10)
+            self.scan_progress.start()
+
+            # codes to find data should be here
+            # to update the verbose you need to change the label eveytime verbose change in the progress
+            # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
+
+            # adding elements to the treeview
+            for name, values in data.items():
+                # add single element to the treeview
+                scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
+
+            # stopping the process and destroying it
+            self.scan_progress.stop()
+            self.scan_progress.destroy()
+            self.scan_verbose.destroy()
+
+            print("Scan finished.")
+
+            # positioning the treeview when start scanning
+            scan_tree.grid(row=0, column=0, sticky="nsew", pady=10)
+
+            def cve_button_click():
+                # takes the element in the table
+                item_focus = scan_tree.focus()
+
+                # takes name and version
+                name_focus = scan_tree.item(item_focus, "text")
+                version_focus = data[name]['version']
+
+                # create a top level window
+                top_cve = customtkinter.CTkToplevel()
+                top_cve.geometry(f"900x700")
+                top_cve.title(name_focus)
+
+                frame_cve = customtkinter.CTkFrame(top_cve)
+                frame_cve.grid(row=0, pady=30, padx=30, sticky="nsew")
+                frame_cve.place(relx=0.5, rely=0.5, anchor="c")
+
+            def more_button_click():
+                item_focus = scan_tree.focus()
+
+                # takes name and service
+                name_focus = scan_tree.item(item_focus, "text")
+                service_focus = data[name]['service']
+
+                # create a top level window
+                top_more = customtkinter.CTkToplevel()
+                top_more.geometry(f"900x700")
+                top_more.title("More")
+
+            # more button
+            more_button = customtkinter.CTkButton(master=self.tree_frame, text="More", command=more_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            more_button.grid(row=2, column=0, sticky="sew", pady=10)
+
+            # button to open the cve file
+            cve_button = customtkinter.CTkButton(master=self.tree_frame,text="Open CVE", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cve_button.grid(row=1, column=0, sticky="sew")
+
         def export_file():
             file=filedialog.asksaveasfilename(filetypes=[("text file","*.txt")],
                                         defaultextension='.txt',
@@ -276,10 +383,14 @@ class App(customtkinter.CTk):
         self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan", width=70, height=25, command=start_scan)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
         
-        # TODO: create a custom treeview for customtk
         # frame with a tree view for the table
-        self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=250)
+        self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=300)
         self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
+
+        # progress bar, implemented but not started yet
+        self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
+        # the progress bar needs the label too
+        self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
 
         # report folder button
         self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report", command=export_file)
@@ -296,10 +407,16 @@ if __name__ == "__main__":
     first_monitor = screens[0]
     print(first_monitor)
 
+    # let the variable get the size of the monitor
     global mon_width
     global mon_height
     mon_width = first_monitor.width
     mon_height = first_monitor.height
+
+    # debug to see if the path exists
+    print(storage_path)
+    for item in os.listdir(storage_path):
+        print(item)
 
     app = App()
     app.mainloop()        
