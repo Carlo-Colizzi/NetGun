@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tips_collection>
+
+	<ftp>
+		<acronym>File Transfer Protocol</acronym>
+		<description>SSH or Secure Shell or Secure Socket Shell, is a network protocol that gives users a secure way to access a computer over an unsecured network.</description>
+		<default_port>22</default_port>
+	</ftp>
+	<smb>
+		<acronym>Server Message Block</acronym>
+		<description>Server Message Block (SMB) is a client-server protocol that regulates access to files and entire directories and other network resources such as printers, routers, or interfaces released for the network. The main application area of the protocol has been the Windows operating system series in particular, whose network services support SMB in a downward-compatible manner - which means that devices with newer editions can easily communicate with devices that have an older Microsoft operating system installed.
+With the free software project Samba, there is also a solution that enables the use of SMB in Linux and Unix distributions and thus cross-platform communication via SMB.
+An SMB server can provide arbitrary parts of its local file system as shares. Therefore the hierarchy visible to a client is partially independent of the structure on the server. Access rights are defined by Access Control Lists (ACL). They can be controlled in a fine-grained manner based on attributes such as execute, read, and full access for individual users or user groups. The ACLs are defined based on the shares and therefore do not correspond to the rights assigned locally on the server.</description>
+		<default_port>445</default_port>
+	</smb>
+</tips_collection>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services_misconfigurations>
+
+	<ftp>
+		<misconfiguration>
+			<tool_installation>
+				apt install ftp
+			</tool_installation>
+			<testType>
+				Login with anonymous user credential
+			</testType>
+			<description>
+				In order to perform this kind of attack:
+				- ftp *IP* *PORT*
+				- Try to login with username: anonymous
+			</description>
+			<command>ftp #IP# #PORT# </command>
+		</misconfiguration>
+		<misconfiguration>
+			<tool_installation>
+				apt install ftp
+			</tool_installation>
+			<testType>
+				Login with anonymous user credential
+			</testType>
+			<description>
+				In order to perform this kind of attack:
+				- ftp IP PORT
+				- Try to login with username: anonymous
+			</description>
+			<command>
+				ftp [IP] [PORT]
+			</command>
+		</misconfiguration>
+	</ftp>
+	<smb>
+		<misconfiguration>
+			<tool_installation>
+				apt install samba
+			</tool_installation>
+			<testType>
+				Questo è un esempio
+			</testType>
+			<description>
+				In order to perform this kind of attack:
+				- ftp [IP] [PORT]
+				- Try to login with username: anonymous
+			</description>
+			<command>
+				ftp [IP] [PORT]
+			</command>
+		</misconfiguration>
+	</smb>
+
+
+</services_misconfigurations>
