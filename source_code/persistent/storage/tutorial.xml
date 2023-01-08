@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tutorials>
+
+	<ip>
+		<description>In this section you can specify the IPv4 of the Target</description>
+	</ip>
+	<ports_range>
+		<description>In this section you can specify the ports_range to scan</description>
+	</ports_range>
+
+</tutorials>

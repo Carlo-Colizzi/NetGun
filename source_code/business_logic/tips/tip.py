@@ -7,6 +7,7 @@ class Tip:
         pass
 
     def print_toString(self):
+        """Print all the object's variable"""
         print("service: ",self.service)
         print("acronym: ", self.acronym)
         print("description: ",self.description)
@@ -14,7 +15,7 @@ class Tip:
 
     @classmethod
     def parse_tips_from_file(cls, path):
-        """Parse the misconfigurations contained in the specified file, returning a dictionary"""
+        """Parse the tips contained in the specified file, returning a dictionary"""
         tree = ET.parse(path)
         root = tree.getroot()
 

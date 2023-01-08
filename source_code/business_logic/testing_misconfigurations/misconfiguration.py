@@ -6,6 +6,7 @@ class Misconfiguration:
         pass
 
     def print_toString(self):
+        """Print all the object's variable"""
         print("tool_installation: ",self.tool_installation)
         print("testType: ", self.testType)
         print("description: ",self.description)
