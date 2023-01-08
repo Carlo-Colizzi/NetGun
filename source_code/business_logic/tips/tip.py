@@ -28,6 +28,7 @@ class Tip:
 
         return service_dict
 
+
 if __name__ == "__main__":
     path = "/home/ducky/Desktop/tip.xml"
     tipsDict = Tip.parse_tips_from_file(path)

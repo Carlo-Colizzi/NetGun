@@ -29,6 +29,7 @@ class Services_misconfigurations:
         dictionary = Services_misconfigurations.parse_misconfigurations_from_file(path)
         return Services_misconfigurations(dictionary)
 
+
 if __name__ == "__main__":
     sm = Services_misconfigurations.inizialize_object_from_file_xml("/home/ducky/Desktop/misconfiguration.xml")
     ftp1 = sm.misconfigurations_dict["ftp"][0]

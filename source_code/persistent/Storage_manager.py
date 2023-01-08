@@ -40,5 +40,6 @@ class Storage_manager:
     def load_tips(cls):
         return Storage_manager.load_resource(Storage_manager.TIPS_XML_PATH, Storage_manager.TIPS_PKL_PATH, Tip.parse_tips_from_file)
 
+
 if __name__ == "__main__":
     pprint.pprint(Storage_manager.load_tips()["ftp"].print_toString())
