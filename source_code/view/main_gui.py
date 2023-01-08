@@ -9,7 +9,7 @@ import webbrowser as web
 import os
 
 # storage path
-storage_path = os.path.join("../persistence/storage")
+storage_path = os.path.join("../persistent/storage") 
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -252,6 +252,7 @@ class App(customtkinter.CTk):
             scan_tree.heading("colonna3", text="State")
 
             # date examples
+            global data
             data = {
                 '21/tcp': {'service': 'ftp', 'version': 'vsftpd 2.3.4', 'state': 'open'},
                 '22/tcp': {'service': 'ssh', 'version': 'OpenSSH 4.7p1 Debian 8ubuntu1', 'state': 'open'},
@@ -299,16 +300,95 @@ class App(customtkinter.CTk):
 
                 # takes name and version
                 name_focus = scan_tree.item(item_focus, "text")
-                version_focus = data[name]['version']
+                version_focus = data[name_focus]['version']
 
                 # create a top level window
                 top_cve = customtkinter.CTkToplevel()
                 top_cve.geometry(f"900x700")
                 top_cve.title(name_focus)
 
-                frame_cve = customtkinter.CTkFrame(top_cve)
-                frame_cve.grid(row=0, pady=30, padx=30, sticky="nsew")
-                frame_cve.place(relx=0.5, rely=0.5, anchor="c")
+                main_frame_cve = customtkinter.CTkFrame(top_cve, fg_color="transparent")
+                main_frame_cve.grid(sticky="nsew")
+                main_frame_cve.place(relx=0.5, rely=0.5, anchor="c")
+
+                # adding all the frame i need (3)
+                frame_cve_1 = customtkinter.CTkFrame(main_frame_cve, width=800)
+                frame_cve_1.grid(row=0, column=0, pady=10, padx=10, sticky="new")
+
+                # adding a frame only to separate frames
+                sep = customtkinter.CTkFrame(frame_cve_1, fg_color="transparent", height=50)
+                sep.grid(row=0, column=1, padx= 10)
+
+                frame_cve_2 = customtkinter.CTkFrame(main_frame_cve, height=300)
+                frame_cve_2.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
+
+                frame_cve_3 = customtkinter.CTkFrame(main_frame_cve, height=50, fg_color="transparent")
+                frame_cve_3.grid(row=2, column=0, pady=10, padx=10, sticky="sew")
+
+                servicing = "Service:   {}".format(version_focus)
+                # services label in the right
+                label_services = customtkinter.CTkLabel(frame_cve_1, text=servicing, font=customtkinter.CTkFont(size=15, weight="bold"), text_color="white")
+                label_services.grid(row=0, column=2)
+
+                # progress bar for research cve
+                prog_bar = customtkinter.CTkProgressBar(frame_cve_3, mode="indeterminate")
+                prog_bar.grid(row=2, column=0, pady=10)
+                prog_bar.start()
+
+
+                # find all the cve here and codes after start the tree
+                global data_cve
+                data_cve = {
+                    'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': 'a good cve','id': 'CVE-2022-39028', 'reference': 'www.github.com'
+                    }}
+
+                tree_cve = ttk.Treeview(frame_cve_2, height=10)
+
+                tree_cve["columns"] = ("colonna1", "colonna2")
+
+                tree_cve.heading("#0", text="Nome")
+                tree_cve.heading("colonna1", text="Description")
+                tree_cve.heading("colonna2", text="Reference")
+
+                for name, values in data_cve.items():
+                    tree_cve.insert("", "end", text=name, values=(values['description'], values['reference']))
+
+                tree_cve.column("#0", width=150)
+                tree_cve.column("colonna1", width=500)
+                tree_cve.column("colonna2", width=150)
+
+                # debugging varaible for the numbers of cve on a single service
+                number_cve = 6
+                # add 2 text boxes on the top left and right
+                text_cve = customtkinter.CTkLabel(master=frame_cve_1, height=70, font=customtkinter.CTkFont(size=15, weight="bold"), text_color="white")
+                # need for the color change
+                if number_cve <= 15:
+                    text_cve.configure(fg_color="green")
+                if  16 < number_cve <= 30:
+                    text_cve.configure(fg_color="yellow")
+                else:
+                    text_cve.configure(fg_color="red")
+                
+                # stopping prog bar
+                prog_bar.stop()
+                prog_bar.destroy()
+
+                texting = "Numbers of CVE:  {}".format(number_cve)
+                text_cve.configure(text=texting, corner_radius=6)
+                text_cve.grid(row=0, column=0, sticky="w")
+
+                tree_cve.grid(row=0, column=0, sticky="nsew") # positioning the tree
+                
+                def open_link():
+                    item_link = tree_cve.focus()
+
+                    name_link = tree_cve.item(item_link, "text")
+                    url_link = data_cve[name_link]['reference']
+
+                    web.open(url_link, new=2)
+
+                link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", command=open_link, font=customtkinter.CTkFont(size=20, weight="bold"))
+                link_button.grid(row=1, column=0, sticky="sew", pady=10)
 
             def more_button_click():
                 item_focus = scan_tree.focus()
