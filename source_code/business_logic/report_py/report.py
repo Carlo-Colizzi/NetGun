@@ -265,6 +265,7 @@ class Report:
     
     @classmethod
     def create_table(cls, results: dict, key: str) -> list:
+        "create horizontal or vertical table"
         table_tmp = []
         if key in Report.__VERTICAL_TABLE:
             table_tmp = (create_table_vertical(results, key))
