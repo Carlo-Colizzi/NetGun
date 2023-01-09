@@ -486,6 +486,11 @@ class App(customtkinter.CTk):
                 top_tips.geometry(f"900x700")
                 top_tips.title("Tips")
 
+                tips_frame_main = customtkinter.CTkFrame(top_tips)
+                tips_frame_main.grid(sticky="nsew")
+                tips_frame_main.place(relx=0.5, rely=0.5, anchor="c")
+
+
             def misconf_button_click():
                 item_focus = scan_tree.focus()
 
