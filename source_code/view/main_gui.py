@@ -1,3 +1,4 @@
+import threading
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
@@ -10,11 +11,16 @@ import os
 import configparser
 from PIL import Image
 from source_code.business_logic.test_network_performance.network_test import Network_test
-
+from source_code.business_logic.application_context.context import Context
 
 class App(customtkinter.CTk):
+    context = None
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        App.context = Context()
+        App.context.network_test = Network_test()
+
 
         # configuration window main
         self.title("NetGun")
@@ -132,7 +138,7 @@ class App(customtkinter.CTk):
 
         def speed_test_button():
             speed_test_window = customtkinter.CTkToplevel()
-            speed_test_window.geometry(f"600x400")
+            speed_test_window.geometry(f"600x300")
             speed_test_window.title("Speed Test")
             speed_test_window.columnconfigure(0, weight=1)
             speed_test_window.rowconfigure(0, weight=1)
@@ -140,20 +146,50 @@ class App(customtkinter.CTk):
             speed_test_frame = customtkinter.CTkFrame(master=speed_test_window)
             speed_test_frame.grid(row=0, padx=30, pady=30, sticky="n")
 
+            tmp_variable = 0
             # funcion to speedtest
             def start_speedtest():
-
-                # progress bar starting
+                down_label.configure(text=str(0) + "Mbps")
+                up_label.configure(text=str(0) + "Mbps")
+                # progress bar create and starting
+                progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
+                progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
                 progress_bar_speedtest.start()
 
-                network_test = Network_test()
-                download_speed = network_test.test_download()
-                upload_speed = network_test.test_upload()
+                def thread_factory(type):
+                    nonlocal tmp_variable
+                    if type == "download":
+                        tmp_variable = App.context.network_test.test_download()
+                    elif type == "upload":
+                        tmp_variable = App.context.network_test.test_upload()
 
-                down_label.configure(text=str(download_speed) + "Mbps")
-                up_label.configure(text=str(upload_speed) + "Mbps")
+                def thread_waiter_async(thread_to_wait,event, label, type):
+                    thread_to_wait.join()
+                    nonlocal tmp_variable
+                    label.configure(text=str(tmp_variable) + "Mbps")
+                    if type == "upload":
+                        event.stop()
+                        event.destroy()
 
-                progress_bar_speedtest.stop()
+
+                def thread_waiter_async_cascade(thread_event, thread_handler, thread_handler2):
+                    thread_event.join()
+                    thread_handler.start()
+                    thread_handler2.start()
+
+
+                thread_download = threading.Thread(target=thread_factory, args = ("download",))
+                thread_download.start()
+                thread_waiter = threading.Thread(target=thread_waiter_async, args=(thread_download, progress_bar_speedtest, down_label, "download"))
+                thread_waiter.start()
+
+                thread_upload = threading.Thread(target=thread_factory, args=("upload",))
+                thread_waiter2 = threading.Thread(target=thread_waiter_async,
+                                                 args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
+
+                thread_waiter_cascade = threading.Thread(target=thread_waiter_async_cascade,
+                                                 args=(thread_waiter,thread_upload, thread_waiter2))
+                thread_waiter_cascade.start()
 
 
             # all labels with the default labels for download and other
@@ -178,8 +214,8 @@ class App(customtkinter.CTk):
             start_button.grid(row=1, column=0, sticky="n", pady=10)
 
             # progress bar
-            progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
-            progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
+            #progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
+            #progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
 
 
         def welcome_page_comm():
