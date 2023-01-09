@@ -139,7 +139,7 @@ class App(customtkinter.CTk):
 
         def speed_test_button():
             speed_test_window = customtkinter.CTkToplevel()
-            speed_test_window.geometry(f"600x300")
+            speed_test_window.geometry(f"600x400")
             speed_test_window.title("Speed Test")
             speed_test_window.columnconfigure(0, weight=1)
             speed_test_window.rowconfigure(0, weight=1)
