@@ -1,5 +1,6 @@
+import sys
+sys.path.insert(0,"../../../NetGun_Classe03")
 import os, pickle
-import pprint
 from source_code.business_logic.testing_misconfigurations.services_misconfigurations import Services_misconfigurations
 from source_code.business_logic.tips.tip import Tip
 from source_code.business_logic.tutorial.tutorial_collection import Tutorial_collection

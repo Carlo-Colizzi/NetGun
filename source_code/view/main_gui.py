@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0,"../../../NetGun_Classe03")
 import threading
 from tkinter import *
 import tkinter as tk
@@ -28,7 +30,7 @@ class App(customtkinter.CTk):
         # self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
-        
+
         # storage path
         storage_path = os.path.join("../persistence/storage")
         conf_path = os.path.join("../persistence/storage/config.ini")
@@ -100,7 +102,7 @@ class App(customtkinter.CTk):
 
                 with open(conf_path, 'w') as configfile:
                     config.write(configfile)
-                
+
                 window_options.destroy()
 
             # frame options
@@ -148,49 +150,55 @@ class App(customtkinter.CTk):
             speed_test_frame.grid(row=0, padx=30, pady=30, sticky="n")
 
             tmp_variable = 0
+            lock = False
             # funcion to speedtest
             def start_speedtest():
-                down_label.configure(text=str(0) + "Mbps")
-                up_label.configure(text=str(0) + "Mbps")
-                # progress bar create and starting
-                progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
-                progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
-                progress_bar_speedtest.start()
+                nonlocal lock
+                if lock == False:
+                    lock = True
+                    down_label.configure(text=str(0) + "Mbps")
+                    up_label.configure(text=str(0) + "Mbps")
+                    # progress bar create and starting
+                    progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
+                    progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
+                    progress_bar_speedtest.start()
 
-                def thread_factory(type):
-                    nonlocal tmp_variable
-                    if type == "download":
-                        tmp_variable = App.context.network_test.test_download()
-                    elif type == "upload":
-                        tmp_variable = App.context.network_test.test_upload()
+                    def thread_factory(type):
+                        nonlocal tmp_variable
+                        if type == "download":
+                            tmp_variable = App.context.network_test.test_download()
+                        elif type == "upload":
+                            tmp_variable = App.context.network_test.test_upload()
 
-                def thread_waiter_async(thread_to_wait,event, label, type):
-                    thread_to_wait.join()
-                    nonlocal tmp_variable
-                    label.configure(text=str(tmp_variable) + "Mbps")
-                    if type == "upload":
-                        event.stop()
-                        event.destroy()
-
-
-                def thread_waiter_async_cascade(thread_event, thread_handler, thread_handler2):
-                    thread_event.join()
-                    thread_handler.start()
-                    thread_handler2.start()
+                    def thread_waiter_async(thread_to_wait,event, label, type):
+                        thread_to_wait.join()
+                        nonlocal tmp_variable
+                        nonlocal lock
+                        label.configure(text=str(tmp_variable) + "Mbps")
+                        if type == "upload":
+                            event.stop()
+                            event.destroy()
+                            lock = False
 
 
-                thread_download = threading.Thread(target=thread_factory, args = ("download",))
-                thread_download.start()
-                thread_waiter = threading.Thread(target=thread_waiter_async, args=(thread_download, progress_bar_speedtest, down_label, "download"))
-                thread_waiter.start()
+                    def thread_waiter_async_cascade(thread_event, thread_handler, thread_handler2):
+                        thread_event.join()
+                        thread_handler.start()
+                        thread_handler2.start()
 
-                thread_upload = threading.Thread(target=thread_factory, args=("upload",))
-                thread_waiter2 = threading.Thread(target=thread_waiter_async,
-                                                 args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
 
-                thread_waiter_cascade = threading.Thread(target=thread_waiter_async_cascade,
-                                                 args=(thread_waiter,thread_upload, thread_waiter2))
-                thread_waiter_cascade.start()
+                    thread_download = threading.Thread(target=thread_factory, args = ("download",))
+                    thread_download.start()
+                    thread_waiter = threading.Thread(target=thread_waiter_async, args=(thread_download, progress_bar_speedtest, down_label, "download"))
+                    thread_waiter.start()
+
+                    thread_upload = threading.Thread(target=thread_factory, args=("upload",))
+                    thread_waiter2 = threading.Thread(target=thread_waiter_async,
+                                                     args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
+
+                    thread_waiter_cascade = threading.Thread(target=thread_waiter_async_cascade,
+                                                     args=(thread_waiter,thread_upload, thread_waiter2))
+                    thread_waiter_cascade.start()
 
 
             # all labels with the default labels for download and other
@@ -268,9 +276,9 @@ class App(customtkinter.CTk):
 
                 with open(conf_path, 'w') as configfile:
                     config.write(configfile)
-                
+
                 welcome_window.destroy()
-                
+
             # chech box save button
             chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", image=self.save_icon, font=customtkinter.CTkFont(size=18),compound="right", command=chechbox_save_button)
             chechbox_save.grid(row=5, column=0, sticky="e", pady=10)
@@ -284,8 +292,8 @@ class App(customtkinter.CTk):
             adv_frame = customtkinter.CTkFrame(master=adv_window, fg_color="transparent")
             adv_frame.grid(row=0, pady=30, padx=30, sticky="nsew")
             adv_frame.place(relx=0.5, rely=0.5, anchor="c")
-            
-            
+
+
             opt1_var = customtkinter.StringVar()
             opt2_var = customtkinter.StringVar()
             opt3_var = customtkinter.StringVar()
@@ -300,17 +308,17 @@ class App(customtkinter.CTk):
 
             option3_check = customtkinter.CTkCheckBox(master=adv_frame, text="SYN scan", variable=opt3_var, onvalue="SYN scan")
             option3_check.grid(row=2, column=0, sticky="n", pady=10)
-            
+
             option4_check = customtkinter.CTkCheckBox(master=adv_frame, text="ACK scan", variable=opt4_var, onvalue="ACK scan")
             option4_check.grid(row=3, column=0, sticky="n", pady=10)
 
             # button to kill the window and store the variables
             kill_button = customtkinter.CTkButton(master=adv_frame, text="OK", command=lambda: kill_window(adv_window))
             kill_button.grid(row=4, sticky="se", padx=30, pady=30)
-            
+
             def kill_window(top):
                 # storing variables and printing for debugging
-                global option_var_1 
+                global option_var_1
                 global option_var_2
                 global option_var_3
                 global option_var_4
@@ -345,7 +353,7 @@ class App(customtkinter.CTk):
 
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
-            
+
             # see if the tree was here before
             treeview_exists = False
             for widget in scan_tree.winfo_children():
@@ -382,7 +390,7 @@ class App(customtkinter.CTk):
                 '513/tcp': {'service': 'login', 'version': 'OpenBSD or Solaris rlogind ', 'state': 'open'},
                 '514/tcp': {'service': 'tcpwrapped', 'version': ' ', 'state': 'open'}
             }
-            
+
             # label scannning
             self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
 
@@ -488,7 +496,7 @@ class App(customtkinter.CTk):
                     text_cve.configure(fg_color="yellow")
                 else:
                     text_cve.configure(fg_color="red")
-                
+
                 # stopping prog bar
                 prog_bar.stop()
                 prog_bar.destroy()
@@ -502,7 +510,7 @@ class App(customtkinter.CTk):
                 tree_cve_scroll = customtkinter.CTkScrollbar(frame_cve_2, command=scan_tree.yview)
                 tree_cve_scroll.grid(row=0, column=1, sticky="nsw")
                 tree_cve.configure(yscrollcommand=scan_tree_scroll.set)
-                
+
                 def open_link():
                     item_link = tree_cve.focus()
 
@@ -554,7 +562,7 @@ class App(customtkinter.CTk):
                 top_misconf = customtkinter.CTkToplevel()
                 top_misconf.geometry(f"900x700")
                 top_misconf.title("Misconfiguration")
-            
+
             #frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
             more_frame.grid(row=1, column=0, sticky="nsew")
@@ -622,7 +630,7 @@ class App(customtkinter.CTk):
         # button scan
         self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan ", image=self.search_logo, compound="right", font=customtkinter.CTkFont(size=18), width=70, height=25, command=start_scan)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
-        
+
         # frame with a tree view for the table
         self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=300)
         self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
@@ -639,7 +647,7 @@ class App(customtkinter.CTk):
         # welcome frame button on the bottom main frame
         self.welcome_button = customtkinter.CTkButton(self.main_frame, text="", image=self.profile_icon, command=welcome_page_comm, width=30)
         self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
-        
+
         # start the welcome message at login
         if welcom_conf == "on":
             welcome_page_comm()
@@ -657,4 +665,4 @@ if __name__ == "__main__":
     mon_height = first_monitor.height
 
     app = App()
-    app.mainloop()        
+    app.mainloop()
