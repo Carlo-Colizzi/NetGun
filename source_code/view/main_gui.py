@@ -7,9 +7,12 @@ import customtkinter
 import screeninfo
 import webbrowser as web
 import os
+import configparser
 
 # storage path
-storage_path = os.path.join("../persistent/storage") 
+storage_path = os.path.join("../persistence/storage")
+conf_path = os.path.join("../persistence/storage/config.ini")
+icon_path = os.path.join("../persistence/storage/icons/")
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -21,18 +24,32 @@ class App(customtkinter.CTk):
         # self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
+
+        # take the settings from configuration
+        config = configparser.ConfigParser()
+        config.read(conf_path)
+        # set the default if the configuration file doesn't exist
+        if os.path.exists(conf_path) == False:
+            config.add_section('color_appearance')
+            config["color_appearance"]["color_mode"] = "System"
+            config.add_section('welcome')
+            config["welcome"]["open_login"] = "on"
+
+        system_color = config.get('color_appearance', 'color_mode')
+        welcom_conf = config.get('welcome', 'open_login')
+
         # color scheme
-        customtkinter.set_appearance_mode("System")
+        customtkinter.set_appearance_mode(system_color)
         customtkinter.set_default_color_theme("dark-blue")
 
         # variables
-        color_option_variable = customtkinter.StringVar(value="System")
+        color_option_variable = customtkinter.StringVar(value=system_color)
         ip_var = customtkinter.StringVar(value="IP address")
         port_var = customtkinter.StringVar(value="Port")
         tcp_udp_var = customtkinter.StringVar(value="TCP-UDP")
         scan_type_var = customtkinter.StringVar(value="Shallow")
         scan_aggro_var = customtkinter.StringVar(value="0")
-        chechbox_welcome_var = customtkinter.StringVar(value="on")
+        chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
 
         # functions for button and other widgets
@@ -43,6 +60,22 @@ class App(customtkinter.CTk):
 
             def change_mode_appearence(new_mode):
                 customtkinter.set_appearance_mode(new_mode)
+
+            def save_app_conf():
+                app_var = color_option_variable.get()
+                config = configparser.ConfigParser()
+
+                config.read(conf_path)
+                if config.has_section('color_appearance'):
+                    config["color_appearance"]["color_mode"] = str(app_var)
+                else:
+                    config.add_section('color_appearance')
+                    config["color_appearance"]["color_mode"] = str(app_var)
+
+                with open(conf_path, 'w') as configfile:
+                    config.write(configfile)
+                
+                window_options.destroy()
 
             # frame options
             frame_options = customtkinter.CTkFrame(window_options, fg_color="transparent")
@@ -55,6 +88,9 @@ class App(customtkinter.CTk):
 
             appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable)
             appearence_mode.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+
+            save_app_button = customtkinter.CTkButton(master=frame_options, text="Save",command=save_app_conf)
+            save_app_button.grid(row=1, column=0, sticky="se")
 
         def manual_command():
             # welcome frame and window
@@ -166,6 +202,25 @@ class App(customtkinter.CTk):
             # chech box if you want to open at startup
             chechbox_welcome = customtkinter.CTkCheckBox(master=frame_welcome, text="Apri al prossimo avvio", variable=chechbox_welcome_var, onvalue="on", offvalue="off")
             chechbox_welcome.grid(row=4, sticky="sw", pady=50)
+
+            def chechbox_save_button():
+                chechbox_welcome_value = chechbox_welcome_var.get()
+
+                config.read(conf_path)
+                if config.has_section('welcome'):
+                    config["welcome"]["open_login"] = str(chechbox_welcome_value)
+                else:
+                    config.add_section('welcome')
+                    config["welcome"]["open_login"] = str(chechbox_welcome_value)
+
+                with open(conf_path, 'w') as configfile:
+                    config.write(configfile)
+                
+                welcome_window.destroy()
+                
+            # chech box save button
+            chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", command=chechbox_save_button)
+            chechbox_save.grid(row=5, sticky="e", pady=10)
 
         def open_top_adv():
             # started window and frame
@@ -292,7 +347,7 @@ class App(customtkinter.CTk):
             print("Scan finished.")
 
             # positioning the treeview when start scanning
-            scan_tree.grid(row=0, column=0, sticky="nsew", pady=10)
+            scan_tree.grid(row=0, column=0, sticky="nsew")
 
             def cve_button_click():
                 # takes the element in the table
@@ -339,8 +394,9 @@ class App(customtkinter.CTk):
                 # find all the cve here and codes after start the tree
                 global data_cve
                 data_cve = {
-                    'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': 'a good cve','id': 'CVE-2022-39028', 'reference': 'www.github.com'
-                    }}
+                    'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': 'a good cve','id': 'CVE-2022-39028', 'reference': 'www.github.com'},
+                    'OpenSSH' : {'description': 'a good cve per 2 guys like carlo','id': 'CVE-2022-39899', 'reference': 'www.github.com'}
+                    }
 
                 tree_cve = ttk.Treeview(frame_cve_2, height=10)
 
@@ -390,7 +446,7 @@ class App(customtkinter.CTk):
                 link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", command=open_link, font=customtkinter.CTkFont(size=20, weight="bold"))
                 link_button.grid(row=1, column=0, sticky="sew", pady=10)
 
-            def more_button_click():
+            def tips_button_click():
                 item_focus = scan_tree.focus()
 
                 # takes name and service
@@ -398,17 +454,36 @@ class App(customtkinter.CTk):
                 service_focus = data[name]['service']
 
                 # create a top level window
-                top_more = customtkinter.CTkToplevel()
-                top_more.geometry(f"900x700")
-                top_more.title("More")
+                top_tips = customtkinter.CTkToplevel()
+                top_tips.geometry(f"900x700")
+                top_tips.title("Tips")
 
-            # more button
-            more_button = customtkinter.CTkButton(master=self.tree_frame, text="More", command=more_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
-            more_button.grid(row=2, column=0, sticky="sew", pady=10)
+            def misconf_button_click():
+                item_focus = scan_tree.focus()
+
+                # takes name and service
+                name_focus = scan_tree.item(item_focus, "text")
+                service_focus = data[name]['service']
+
+                # create a top level window
+                top_misconf = customtkinter.CTkToplevel()
+                top_misconf.geometry(f"900x700")
+                top_misconf.title("Misconfiguration")
+            
+            #frame for more buttons
+            more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
+            more_frame.grid(row=1, column=0, sticky="nsew")
+
+            # more buttons
+            tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", command=tips_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=20)
+
+            misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration", command=misconf_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=20)
 
             # button to open the cve file
-            cve_button = customtkinter.CTkButton(master=self.tree_frame,text="Open CVE", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
-            cve_button.grid(row=1, column=0, sticky="sew")
+            cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
 
         def export_file():
             file=filedialog.asksaveasfilename(filetypes=[("text file","*.txt")],
@@ -479,7 +554,9 @@ class App(customtkinter.CTk):
         # welcome frame button on the bottom main frame
         self.welcome_button = customtkinter.CTkButton(self.main_frame, text="Wel", command=welcome_page_comm, width=30)
         self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
-
+        
+        if welcom_conf == "on":
+            welcome_page_comm()
 
 if __name__ == "__main__":
     # get the size of the first screen from screeninfo
