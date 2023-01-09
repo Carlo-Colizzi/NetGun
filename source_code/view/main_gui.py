@@ -8,11 +8,8 @@ import screeninfo
 import webbrowser as web
 import os
 import configparser
+from PIL import Image
 
-# storage path
-storage_path = os.path.join("../persistence/storage")
-conf_path = os.path.join("../persistence/storage/config.ini")
-icon_path = os.path.join("../persistence/storage/icons/")
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -24,6 +21,24 @@ class App(customtkinter.CTk):
         # self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
+        
+        # storage path
+        storage_path = os.path.join("../persistence/storage")
+        conf_path = os.path.join("../persistence/storage/config.ini")
+        icon_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),("../persistence/storage/icons"))
+
+        # debug to see if the path exists
+        print(storage_path)
+        for item in os.listdir(storage_path):
+            print(item)
+
+        # load images
+        self.folder_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "folder_light.png")), size=(25,25))
+        self.link_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "link_light.png")), size=(25,25))
+        self.option_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "option_light.png")), size=(25,25))
+        self.profile_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "profile_light.png")), size=(25,25))
+        self.save_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "save_light.png")), size=(25,25))
+        self.shortcut_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "shortcut_light.png")), size=(25,25))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
@@ -188,15 +203,15 @@ class App(customtkinter.CTk):
             welcome_label.configure(state="disabled")
 
             # button to open the manuale in a toplevel window
-            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", command=manual_command)
+            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", command=manual_command, font=customtkinter.CTkFont(size=18))
             manual_button.grid(row=1, sticky="nsew", pady=15)
 
             # button to open all links in the browser
-            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", command=lambda: web.open("https://github.com/MyCr4ck/NetGun_Classe03", new=2))
+            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", image=self.link_icon, font=customtkinter.CTkFont(size=18), compound="right", command=lambda: web.open("https://github.com/MyCr4ck/NetGun_Classe03", new=2))
             github_button.grid(row=2, sticky="nsew", pady=15)
 
             # button for speedtest internet connection
-            speedtest_button = customtkinter.CTkButton(master=frame_welcome, text="SpeedTest Ookla", command=speed_test_button)
+            speedtest_button = customtkinter.CTkButton(master=frame_welcome, text="SpeedTest Ookla", image=self.shortcut_icon, compound="right", font=customtkinter.CTkFont(size=18),command=speed_test_button)
             speedtest_button.grid(row=3, sticky="nsew", pady=15)
 
             # chech box if you want to open at startup
@@ -503,7 +518,7 @@ class App(customtkinter.CTk):
         self.main_frame_label.grid(row=0, column=0, sticky="nw")
 
         # options button
-        self.options_button = customtkinter.CTkButton(self.main_frame, text="Opt", command=options_settings, width=30, height=30)
+        self.options_button = customtkinter.CTkButton(self.main_frame, text="", image=self.option_icon, compound="top",command=options_settings, width=25)
         self.options_button.grid(row=0, column=1, sticky="e")
 
         # buttons and text in main
@@ -548,13 +563,14 @@ class App(customtkinter.CTk):
         self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
 
         # report folder button
-        self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report", command=export_file)
+        self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ", image=self.folder_icon, compound="right", anchor="e", command=export_file)
         self.report_button_folder.grid(row=4, column=0, padx=10, pady=50, sticky="se")
 
         # welcome frame button on the bottom main frame
-        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="Wel", command=welcome_page_comm, width=30)
+        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="", image=self.profile_icon, command=welcome_page_comm, width=30)
         self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
         
+        # start the welcome message at login
         if welcom_conf == "on":
             welcome_page_comm()
 
@@ -569,11 +585,6 @@ if __name__ == "__main__":
     global mon_height
     mon_width = first_monitor.width
     mon_height = first_monitor.height
-
-    # debug to see if the path exists
-    print(storage_path)
-    for item in os.listdir(storage_path):
-        print(item)
 
     app = App()
     app.mainloop()        
