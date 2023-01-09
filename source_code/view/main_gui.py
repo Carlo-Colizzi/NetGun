@@ -9,7 +9,7 @@ import webbrowser as web
 import os
 import configparser
 from PIL import Image
-#from source_code.business_logic.test_network_performance.network_test import Network_test
+from source_code.business_logic.test_network_performance.network_test import Network_test
 
 
 class App(customtkinter.CTk):
