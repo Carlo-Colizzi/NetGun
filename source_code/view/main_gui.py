@@ -33,12 +33,15 @@ class App(customtkinter.CTk):
             print(item)
 
         # load images
+        self.logo_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "netgun_logo.png")), size=(100,110))
         self.folder_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "folder_light.png")), size=(25,25))
         self.link_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "link_light.png")), size=(25,25))
         self.option_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "option_light.png")), size=(25,25))
         self.profile_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "profile_light.png")), size=(25,25))
         self.save_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "save_light.png")), size=(25,25))
         self.shortcut_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "shortcut_light.png")), size=(25,25))
+        self.document_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "doc_light.png")), size=(25,25))
+        self.search_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "search_light.png")), size=(25,25))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
@@ -98,14 +101,14 @@ class App(customtkinter.CTk):
             frame_options.place(relx=0.5, rely=0.5, anchor="c")
 
             # color mode set
-            color_mode_label = customtkinter.CTkLabel(master=frame_options, text="Color Mode:")
+            color_mode_label = customtkinter.CTkLabel(master=frame_options, text="Color Mode:", font=customtkinter.CTkFont(size=18),)
             color_mode_label.grid(row=0, column=0, sticky="w")
 
-            appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable)
+            appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable, font=customtkinter.CTkFont(size=18))
             appearence_mode.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
-            save_app_button = customtkinter.CTkButton(master=frame_options, text="Save",command=save_app_conf)
-            save_app_button.grid(row=1, column=0, sticky="se")
+            save_app_button = customtkinter.CTkButton(master=frame_options, text="Salva ", image=self.save_icon, font=customtkinter.CTkFont(size=18), compound="right", command=save_app_conf)
+            save_app_button.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 
         def manual_command():
             # welcome frame and window
@@ -189,34 +192,36 @@ class App(customtkinter.CTk):
         def welcome_page_comm():
             # welcome frame and window
             welcome_window = customtkinter.CTkToplevel()
-            welcome_window.geometry(f"600x500")
+            welcome_window.geometry(f"600x650")
             welcome_window.title("Welcome to NetGun")
 
             frame_welcome = customtkinter.CTkFrame(master=welcome_window, fg_color="transparent")
             frame_welcome.grid(pady=30, padx=30, sticky="nsew")
             frame_welcome.place(relx=0.5, rely=0.5, anchor="c")
 
+            image_label = customtkinter.CTkLabel(master=frame_welcome, text="", image=self.logo_icon, compound="top")
+            image_label.grid(row=0,sticky="n", pady=15)
             # text box with label of welcome message
             welcome_label = customtkinter.CTkTextbox(master=frame_welcome, width=350, height=70, wrap="word")
-            welcome_label.grid(row=0, sticky="w", pady=15)
+            welcome_label.grid(row=1, sticky="w", pady=15)
             welcome_label.insert("end", "Benvenuto, questo è NetGun, il programma perfetto per esperti e non, in ambito di ethical hacking. Buon hack a tutti!")
             welcome_label.configure(state="disabled")
 
             # button to open the manuale in a toplevel window
-            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", command=manual_command, font=customtkinter.CTkFont(size=18))
-            manual_button.grid(row=1, sticky="nsew", pady=15)
+            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", image=self.document_logo, compound="right", command=manual_command, font=customtkinter.CTkFont(size=18))
+            manual_button.grid(row=2, sticky="nsew", pady=15)
 
             # button to open all links in the browser
             github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", image=self.link_icon, font=customtkinter.CTkFont(size=18), compound="right", command=lambda: web.open("https://github.com/MyCr4ck/NetGun_Classe03", new=2))
-            github_button.grid(row=2, sticky="nsew", pady=15)
+            github_button.grid(row=3, sticky="nsew", pady=15)
 
             # button for speedtest internet connection
             speedtest_button = customtkinter.CTkButton(master=frame_welcome, text="SpeedTest Ookla", image=self.shortcut_icon, compound="right", font=customtkinter.CTkFont(size=18),command=speed_test_button)
-            speedtest_button.grid(row=3, sticky="nsew", pady=15)
+            speedtest_button.grid(row=4, sticky="nsew", pady=15)
 
             # chech box if you want to open at startup
             chechbox_welcome = customtkinter.CTkCheckBox(master=frame_welcome, text="Apri al prossimo avvio", variable=chechbox_welcome_var, onvalue="on", offvalue="off")
-            chechbox_welcome.grid(row=4, sticky="sw", pady=50)
+            chechbox_welcome.grid(row=5, sticky="sw", pady=50)
 
             def chechbox_save_button():
                 chechbox_welcome_value = chechbox_welcome_var.get()
@@ -234,8 +239,8 @@ class App(customtkinter.CTk):
                 welcome_window.destroy()
                 
             # chech box save button
-            chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", command=chechbox_save_button)
-            chechbox_save.grid(row=5, sticky="e", pady=10)
+            chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", image=self.save_icon, font=customtkinter.CTkFont(size=18),compound="right", command=chechbox_save_button)
+            chechbox_save.grid(row=6, sticky="e", pady=10)
 
         def open_top_adv():
             # started window and frame
@@ -363,6 +368,10 @@ class App(customtkinter.CTk):
 
             # positioning the treeview when start scanning
             scan_tree.grid(row=0, column=0, sticky="nsew")
+            # add the scrollbar
+            scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
+            scan_tree_scroll.grid(row=0, column=1, sticky="nsw")
+            scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
 
             def cve_button_click():
                 # takes the element in the table
@@ -449,6 +458,10 @@ class App(customtkinter.CTk):
                 text_cve.grid(row=0, column=0, sticky="w")
 
                 tree_cve.grid(row=0, column=0, sticky="nsew") # positioning the tree
+                # set the scrollbar
+                tree_cve_scroll = customtkinter.CTkScrollbar(frame_cve_2, command=scan_tree.yview)
+                tree_cve_scroll.grid(row=0, column=1, sticky="nsw")
+                tree_cve.configure(yscrollcommand=scan_tree_scroll.set)
                 
                 def open_link():
                     item_link = tree_cve.focus()
@@ -458,7 +471,7 @@ class App(customtkinter.CTk):
 
                     web.open(url_link, new=2)
 
-                link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", command=open_link, font=customtkinter.CTkFont(size=20, weight="bold"))
+                link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon, compound="right", command=open_link, font=customtkinter.CTkFont(size=20, weight="bold"))
                 link_button.grid(row=1, column=0, sticky="sew", pady=10)
 
             def tips_button_click():
@@ -490,14 +503,14 @@ class App(customtkinter.CTk):
             more_frame.grid(row=1, column=0, sticky="nsew")
 
             # more buttons
-            tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", command=tips_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", image=self.shortcut_icon, compound="right", command=tips_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
             tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=20)
 
-            misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration", command=misconf_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration", image=self.shortcut_icon, compound="right", command=misconf_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
             misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=20)
 
             # button to open the cve file
-            cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon, compound="right", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
             cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
 
         def export_file():
@@ -514,7 +527,7 @@ class App(customtkinter.CTk):
         self.main_frame.place(relx=0.5, rely=0.5, anchor="c")
 
         # label
-        self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text="NetGun", font=customtkinter.CTkFont(size=40, weight="bold"))
+        self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text=" NetGun", image=self.logo_icon, compound="left", font=customtkinter.CTkFont(size=40, weight="bold"))
         self.main_frame_label.grid(row=0, column=0, sticky="nw")
 
         # options button
@@ -539,7 +552,7 @@ class App(customtkinter.CTk):
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
         # advanced settings to top level with all check box
-        self.type_adv_option = customtkinter.CTkButton(master=self.center_frame, text="Advanced", command=open_top_adv, width=100)
+        self.type_adv_option = customtkinter.CTkButton(master=self.center_frame, text="Advanced", image=self.shortcut_icon, compound="right", command=open_top_adv, width=100)
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
         # other options menu
@@ -550,7 +563,7 @@ class App(customtkinter.CTk):
         self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
 
         # button scan
-        self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan", width=70, height=25, command=start_scan)
+        self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan ", image=self.search_logo, compound="right", font=customtkinter.CTkFont(size=18), width=70, height=25, command=start_scan)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
         
         # frame with a tree view for the table
