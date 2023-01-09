@@ -2,15 +2,18 @@ import os
 
 class Filter:
     __TRANSPORT_PROTOCOLS_SUPPORTED = {"tcp":"","udp":"-sU"}
+    __ADVANCED_OPTIONS_SUPPORTED ={"OS detection" : "O","Disable PING" : "Pn", "SYN scan" : "PS", "ACK scan" : "PA"}
 
     def __init__(self, transport_protocol: str = "tcp", advanced_options : list[str] = None, aggressivity : int = 2):
         assert transport_protocol in Filter.__TRANSPORT_PROTOCOLS_SUPPORTED, "Invalid Transport Protocol Selected. Use TCP or UDP"
         self.transport_protocol = transport_protocol
+
         assert Filter.check_aggressivity(aggressivity) == True, "Invalid Threads Number check_threads(threads) failed"
         self.aggressivity = aggressivity
         self.advanced_options = ""
 
         if advanced_options is not None:
+            advanced_options = Filter.advanced_option_convert(advanced_options)
             self.advanced_options += Filter.advanced_options_to_string(advanced_options)
 
         self.advanced_options += " " + Filter.__TRANSPORT_PROTOCOLS_SUPPORTED[transport_protocol] + " -" + str(aggressivity)
@@ -25,6 +28,13 @@ class Filter:
             output += " -" + option
 
         return output
+    @classmethod
+    def advanced_option_convert(self, advanced_options : list[str]):
+        for i in range(len(advanced_options)):
+            advanced_options[i] = Filter.__ADVANCED_OPTIONS_SUPPORTED[advanced_options[i]]
+
+        return advanced_options
+
 
     @classmethod
     def check_aggressivity(cls, aggressivity : int):

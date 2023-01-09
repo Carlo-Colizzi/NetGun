@@ -6,6 +6,7 @@ from observer_progress import Observer_progress
 
 class Scan:
     __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV"}
+
     def __init__(self, target : Target = None, filter : filter = None, scan_mode : str = "SHALLOW"):
         self.observer = Observer_progress()
         self.observer.update(10)
@@ -18,8 +19,6 @@ class Scan:
         self.observer.update(20)
         self.scan_mode = scan_mode
         self.filter.advanced_options = Scan.__MODES_SUPPORTED[scan_mode] + self.filter.advanced_options
-
-
 
     def start_scan(self) -> dict :
         """Start the scanner on the specified Target and using the specified Filters, with the selected mode"""
@@ -102,7 +101,7 @@ class Scan:
 
 if __name__ == "__main__":
     t = Target("192.168.1.1","1-1024")
-    f = Filter("tcp",["O"],4)
+    f = Filter("tcp",["OS detection"],4,)
 
     s = Scan(t,f,"DEEP")
 
