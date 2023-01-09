@@ -240,7 +240,7 @@ class App(customtkinter.CTk):
                 
             # chech box save button
             chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", image=self.save_icon, font=customtkinter.CTkFont(size=18),compound="right", command=chechbox_save_button)
-            chechbox_save.grid(row=6, sticky="e", pady=10)
+            chechbox_save.grid(row=5, column=0, sticky="e", pady=10)
 
         def open_top_adv():
             # started window and frame
