@@ -49,6 +49,7 @@ class App(customtkinter.CTk):
         self.shortcut_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "shortcut_light.png")), size=(25,25))
         self.document_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "doc_light.png")), size=(25,25))
         self.search_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "search_light.png")), size=(25,25))
+        self.speedtest_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150,150))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
@@ -204,6 +205,9 @@ class App(customtkinter.CTk):
 
             up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             up_label.grid(row=1, column=1, sticky="ne", padx=10)
+
+            speedtest_icon = customtkinter.CTkLabel(master=speed_test_frame, text="", image=self.speedtest_logo)
+            speedtest_icon.grid(row=2, column=0, sticky="nse")
 
             # add an other frame to handle start button and progress bar
             start_frame = customtkinter.CTkFrame(master=speed_test_window)
