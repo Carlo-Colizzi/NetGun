@@ -161,19 +161,19 @@ class App(customtkinter.CTk):
             download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:", font=customtkinter.CTkFont(size=25, weight="bold"))
             download_label.grid(row=0, column=0, sticky="nw", padx=10)
 
-            down_label = customtkinter.CTkLabel(master=speed_test_frame, text="0")
+            down_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             down_label.grid(row=0, column=1, sticky="ne", padx=10)
 
             upload_label = customtkinter.CTkLabel(master=speed_test_frame, text="Upload:", font=customtkinter.CTkFont(size=25, weight="bold"))
             upload_label.grid(row=1, column=0, sticky="nw", padx=10)
 
-            up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0")
+            up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             up_label.grid(row=1, column=1, sticky="ne", padx=10)
 
             ping_label = customtkinter.CTkLabel(master=speed_test_frame, text="Ping:", font=customtkinter.CTkFont(size=25, weight="bold"))
             ping_label.grid(row=2, column=0, sticky="nw", padx=10)
 
-            pg_label = customtkinter.CTkLabel(master=speed_test_frame, text="0")
+            pg_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             pg_label.grid(row=2, column=1, sticky="ne", padx=10)
 
             # add an other frame to handle start button and progress bar
