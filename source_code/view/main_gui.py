@@ -9,7 +9,7 @@ import webbrowser as web
 import os
 
 # storage path
-storage_path = os.path.join("../persistent/storage") 
+storage_path = os.path.join("../persistence/storage") 
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -292,7 +292,7 @@ class App(customtkinter.CTk):
             print("Scan finished.")
 
             # positioning the treeview when start scanning
-            scan_tree.grid(row=0, column=0, sticky="nsew", pady=10)
+            scan_tree.grid(row=0, column=0, sticky="nsew")
 
             def cve_button_click():
                 # takes the element in the table
@@ -339,8 +339,9 @@ class App(customtkinter.CTk):
                 # find all the cve here and codes after start the tree
                 global data_cve
                 data_cve = {
-                    'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': 'a good cve','id': 'CVE-2022-39028', 'reference': 'www.github.com'
-                    }}
+                    'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': 'a good cve','id': 'CVE-2022-39028', 'reference': 'www.github.com'},
+                    'OpenSSH' : {'description': 'a good cve per 2 guys like carlo','id': 'CVE-2022-39899', 'reference': 'www.github.com'}
+                    }
 
                 tree_cve = ttk.Treeview(frame_cve_2, height=10)
 
@@ -390,7 +391,7 @@ class App(customtkinter.CTk):
                 link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", command=open_link, font=customtkinter.CTkFont(size=20, weight="bold"))
                 link_button.grid(row=1, column=0, sticky="sew", pady=10)
 
-            def more_button_click():
+            def tips_button_click():
                 item_focus = scan_tree.focus()
 
                 # takes name and service
@@ -398,17 +399,36 @@ class App(customtkinter.CTk):
                 service_focus = data[name]['service']
 
                 # create a top level window
-                top_more = customtkinter.CTkToplevel()
-                top_more.geometry(f"900x700")
-                top_more.title("More")
+                top_tips = customtkinter.CTkToplevel()
+                top_tips.geometry(f"900x700")
+                top_tips.title("Tips")
 
-            # more button
-            more_button = customtkinter.CTkButton(master=self.tree_frame, text="More", command=more_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
-            more_button.grid(row=2, column=0, sticky="sew", pady=10)
+            def misconf_button_click():
+                item_focus = scan_tree.focus()
+
+                # takes name and service
+                name_focus = scan_tree.item(item_focus, "text")
+                service_focus = data[name]['service']
+
+                # create a top level window
+                top_misconf = customtkinter.CTkToplevel()
+                top_misconf.geometry(f"900x700")
+                top_misconf.title("Misconfiguration")
+            
+            #frame for more buttons
+            more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
+            more_frame.grid(row=1, column=0, sticky="nsew")
+
+            # more buttons
+            tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", command=tips_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=20)
+
+            misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration", command=misconf_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=20)
 
             # button to open the cve file
-            cve_button = customtkinter.CTkButton(master=self.tree_frame,text="Open CVE", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
-            cve_button.grid(row=1, column=0, sticky="sew")
+            cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
 
         def export_file():
             file=filedialog.asksaveasfilename(filetypes=[("text file","*.txt")],
