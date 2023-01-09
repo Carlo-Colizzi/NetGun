@@ -7,9 +7,12 @@ import customtkinter
 import screeninfo
 import webbrowser as web
 import os
+import configparser
 
 # storage path
-storage_path = os.path.join("../persistence/storage") 
+storage_path = os.path.join("../persistence/storage")
+conf_path = os.path.join("../persistence/storage/config.ini")
+icon_path = os.path.join("../persistence/storage/icons/")
 
 class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
@@ -21,18 +24,32 @@ class App(customtkinter.CTk):
         # self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
+
+        # take the settings from configuration
+        config = configparser.ConfigParser()
+        config.read(conf_path)
+        # set the default if the configuration file doesn't exist
+        if os.path.exists(conf_path) == False:
+            config.add_section('color_appearance')
+            config["color_appearance"]["color_mode"] = "System"
+            config.add_section('welcome')
+            config["welcome"]["open_login"] = "on"
+
+        system_color = config.get('color_appearance', 'color_mode')
+        welcom_conf = config.get('welcome', 'open_login')
+
         # color scheme
-        customtkinter.set_appearance_mode("System")
+        customtkinter.set_appearance_mode(system_color)
         customtkinter.set_default_color_theme("dark-blue")
 
         # variables
-        color_option_variable = customtkinter.StringVar(value="System")
+        color_option_variable = customtkinter.StringVar(value=system_color)
         ip_var = customtkinter.StringVar(value="IP address")
         port_var = customtkinter.StringVar(value="Port")
         tcp_udp_var = customtkinter.StringVar(value="TCP-UDP")
         scan_type_var = customtkinter.StringVar(value="Shallow")
         scan_aggro_var = customtkinter.StringVar(value="0")
-        chechbox_welcome_var = customtkinter.StringVar(value="on")
+        chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
 
         # functions for button and other widgets
@@ -43,6 +60,22 @@ class App(customtkinter.CTk):
 
             def change_mode_appearence(new_mode):
                 customtkinter.set_appearance_mode(new_mode)
+
+            def save_app_conf():
+                app_var = color_option_variable.get()
+                config = configparser.ConfigParser()
+
+                config.read(conf_path)
+                if config.has_section('color_appearance'):
+                    config["color_appearance"]["color_mode"] = str(app_var)
+                else:
+                    config.add_section('color_appearance')
+                    config["color_appearance"]["color_mode"] = str(app_var)
+
+                with open(conf_path, 'w') as configfile:
+                    config.write(configfile)
+                
+                window_options.destroy()
 
             # frame options
             frame_options = customtkinter.CTkFrame(window_options, fg_color="transparent")
@@ -55,6 +88,9 @@ class App(customtkinter.CTk):
 
             appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable)
             appearence_mode.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+
+            save_app_button = customtkinter.CTkButton(master=frame_options, text="Save",command=save_app_conf)
+            save_app_button.grid(row=1, column=0, sticky="se")
 
         def manual_command():
             # welcome frame and window
@@ -166,6 +202,25 @@ class App(customtkinter.CTk):
             # chech box if you want to open at startup
             chechbox_welcome = customtkinter.CTkCheckBox(master=frame_welcome, text="Apri al prossimo avvio", variable=chechbox_welcome_var, onvalue="on", offvalue="off")
             chechbox_welcome.grid(row=4, sticky="sw", pady=50)
+
+            def chechbox_save_button():
+                chechbox_welcome_value = chechbox_welcome_var.get()
+
+                config.read(conf_path)
+                if config.has_section('welcome'):
+                    config["welcome"]["open_login"] = str(chechbox_welcome_value)
+                else:
+                    config.add_section('welcome')
+                    config["welcome"]["open_login"] = str(chechbox_welcome_value)
+
+                with open(conf_path, 'w') as configfile:
+                    config.write(configfile)
+                
+                welcome_window.destroy()
+                
+            # chech box save button
+            chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", command=chechbox_save_button)
+            chechbox_save.grid(row=5, sticky="e", pady=10)
 
         def open_top_adv():
             # started window and frame
@@ -499,7 +554,9 @@ class App(customtkinter.CTk):
         # welcome frame button on the bottom main frame
         self.welcome_button = customtkinter.CTkButton(self.main_frame, text="Wel", command=welcome_page_comm, width=30)
         self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
-
+        
+        if welcom_conf == "on":
+            welcome_page_comm()
 
 if __name__ == "__main__":
     # get the size of the first screen from screeninfo
