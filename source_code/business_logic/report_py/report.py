@@ -5,19 +5,18 @@ from reportlab.lib import colors
 from reportlab.lib.units import cm
 from fpdf import FPDF, XPos, YPos
 from pprint import pprint
-from urllib.parse import urlparse
 
 
-def add_headers_table_horizontal(headers: list, pdf: FPDF(), col_width, line_height: float, align_header, emphasize_headers: list, emphaize_header_color, emphaize_header_style):
+def add_horizontal_table_headers(headers: list, pdf: FPDF(), col_width, line_height: float, align_header, emphasize_headers: list, emphasize_header_color, emphasize_header_style):
     for i in range(len(headers)):
         datum = headers[i]
         if len(emphasize_headers) > 0: 
             if datum in emphasize_headers or emphasize_headers[0] == "*":
-                pdf.set_text_color(emphaize_header_color)
-                pdf.set_font(style=emphaize_header_style)
+                pdf.set_text_color(*emphasize_header_color)
+                pdf.set_font(emphasize_header_style, size=15)
                 pdf.multi_cell(col_width, line_height, datum.capitalize(), border=0, align=align_header,  new_x=XPos.RIGHT, new_y=YPos.TOP, max_line_height=pdf.font_size)
                 pdf.set_text_color(0,0,0)
-                pdf.set_font(style='Times')
+                pdf.set_font('Times', size=12)
             else:
                 pdf.multi_cell(col_width, line_height, datum.capitalize(), border=0, align=align_header,  new_x=XPos.RIGHT, new_y=YPos.TOP, max_line_height=pdf.font_size)
         else:
@@ -27,7 +26,7 @@ def add_headers_table_horizontal(headers: list, pdf: FPDF(), col_width, line_hei
 
 
 
-def add_data_table_horizontal(data:list, pdf:FPDF(), col_width, line_height, align_data, emphasize_data: list, emphasize_data_color, emphasize_data_style):
+def add_horizontal_table_data(data:list, pdf:FPDF(), col_width, line_height, align_data, emphasize_data: list, emphasize_data_color, emphasize_data_style):
     for row in data:
         for element in row:
             if len(emphasize_data) > 0:
@@ -59,7 +58,7 @@ def get_max_height(row: list()):
     return max
 
 
-def add_data_table_vertical(data:list, pdf:FPDF(), col_width, line_height, align_data, emphasize_data, emphaize_data_color, emphaize_data_style, separator: list()):
+def add_vertical_table_data(data:list, pdf:FPDF(), col_width, line_height, align_data, emphasize_data, emphaize_data_color, emphaize_data_style, separator: list()):
     for row in data:
         max_lenght = get_max_height(row)
         for element in row:
@@ -159,19 +158,19 @@ def draw_table_pdf(table_data: list, title="", title_size = 14, data_size = 10, 
     if type_table == "horizontal":
         headers = table_data[0]
         data = table_data[1:]
-        pdf = add_headers_table_horizontal(headers, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style)
+        pdf = add_horizontal_table_headers(headers, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style)
         x_right =pdf.get_x()
         pdf.ln(line_height)
         y2 = pdf.get_y()
         pdf.line(x_left, y1, x_right, y1)
         pdf.line(x_left, y2, x_right, y2)
-        pdf = add_data_table_horizontal(data, pdf, col_width, line_height, align_data, emphasize_data,emphaize_data_color, emphaize_data_style)
+        pdf = add_horizontal_table_data(data, pdf, col_width, line_height, align_data, emphasize_data,emphaize_data_color, emphaize_data_style)
 
     elif type_table == "vertical":
         pdf.line(x_left, y1, x_right, y1)
         separator = get_indexes("service", table_data)
         
-        pdf = add_data_table_vertical(table_data, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style, separator=separator)
+        pdf = add_vertical_table_data(table_data, pdf, col_width, line_height, align_header, emphasize_headers, emphaize_header_color, emphaize_header_style, separator=separator)
         pdf.ln(line_height)
 
 
@@ -181,7 +180,7 @@ def draw_table_pdf(table_data: list, title="", title_size = 14, data_size = 10, 
 
 
 
-def create_table_horizontal(elements:dict, index_table: str ) -> list:
+def create_horizontal_table(elements:dict, index_table: str ) -> list:
         table = []
         for key, values in elements.items():
             list_key = [index_table]
@@ -204,7 +203,10 @@ def create_table_horizontal(elements:dict, index_table: str ) -> list:
         return table
 
 
-def create_table_vertical(elements:dict, index_table: str) -> list:
+def create_vertical_table(elements:dict, index_table: str) -> list:
+        """
+        create a 
+        """
         table = []
         for keys, values in elements.items():
             table.append([index_table, keys])
@@ -223,18 +225,27 @@ def create_table_vertical(elements:dict, index_table: str) -> list:
         return table   
 
 class Report:
-    file = "report.pdf"
     # Lists used to decide which table to create
     __VERTICAL_TABLE = ["service"]   
     __HORIZONTAL_TABLE = ["ports", "os"]
 
+
+    def __init__(self, path = ""):
+        if path == "" or path == " ":
+            self.path = "report.pdf"
+        else:
+            self.path = path
+
         
     def create_report(self, result_scan: dict, result_cve: dict()) :
+        """
+        create a report of scan results, cve search and os detection
+        """
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Times", size=30)
 
-        #pdf.image("images/NetgunLogo13.jpeg")
+        pdf.image("source_code/persistence/storage/icons/netgun_logo.png", x =90, w=50, h=50)
 
         pdf.set_title("Report")
         pdf.set_author("NetGun")
@@ -246,7 +257,7 @@ class Report:
         for key, values in result_scan.items():
             table_scan = Report.create_table(values, key)
             if table_scan != []:
-                pdf = draw_table_pdf(table_data = table_scan, title=titles[i], title_size = 16, data_size = 12, align_data = 'L', align_header = 'L', emphasize_data=['open'], emphasize_headers=[], emphaize_header_color = (0,0,0), emphaize_data_color = (0,100,0), emphaize_header_style = "Times", emphaize_data_style = "Times", type_table = "horizontal", pdf = pdf)
+                pdf = draw_table_pdf(table_data = table_scan, title=titles[i], title_size = 16, data_size = 12, align_data = 'L', align_header = 'L', emphasize_data=['open'], emphasize_headers=['ports', 'service', 'version', 'state', 'accuracy', 'name'], emphaize_header_color = (3, 0, 138), emphaize_data_color = (0,100,0), emphaize_header_style = "Times", emphaize_data_style = "Times", type_table = "horizontal", pdf = pdf)
                 pdf.ln()
                 i += 1
 
@@ -258,19 +269,21 @@ class Report:
             
     
 
-        pdf.output("report_prova.pdf")
+        pdf.output(self.path)
 
     
 
     
     @classmethod
     def create_table(cls, results: dict, key: str) -> list:
-        "create horizontal or vertical table"
+        """
+        create horizontal or vertical table
+        """
         table_tmp = []
         if key in Report.__VERTICAL_TABLE:
-            table_tmp = (create_table_vertical(results, key))
+            table_tmp = (create_vertical_table(results, key))
         if key in Report.__HORIZONTAL_TABLE:
-            table_tmp = (create_table_horizontal(results, key))
+            table_tmp = (create_horizontal_table(results, key))
     
         return table_tmp
 
