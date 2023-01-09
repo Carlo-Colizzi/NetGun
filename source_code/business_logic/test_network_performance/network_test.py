@@ -26,6 +26,7 @@ class Network_test:
         mbps = round(bytes / power, 2)
         return mbps
 
+
 if __name__ == "__main__":
     print("Starting Test")
     n = Network_test()

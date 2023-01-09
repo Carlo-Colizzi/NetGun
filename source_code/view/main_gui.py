@@ -9,6 +9,7 @@ import webbrowser as web
 import os
 import configparser
 from PIL import Image
+from source_code.business_logic.test_network_performance.network_test import Network_test
 
 
 class App(customtkinter.CTk):
@@ -42,6 +43,7 @@ class App(customtkinter.CTk):
         self.shortcut_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "shortcut_light.png")), size=(25,25))
         self.document_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "doc_light.png")), size=(25,25))
         self.search_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "search_light.png")), size=(25,25))
+        self.speedtest_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150,150))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
@@ -145,17 +147,15 @@ class App(customtkinter.CTk):
                 # progress bar starting
                 progress_bar_speedtest.start()
 
-                # all the codes should be there
-                # just for debugging progress bar
-                for i in range(0, 1000):
-                    progress_bar_speedtest.update(i)
-                    
-                # sample code for speedtest and change in the label text
-                # down_label.configure(text=download_speed + "Mbps")
-                # up_label.configure(text=upload_speed + "Mbps")
-                # pg_label.configure(text=ping_speed + "ms")
+                network_test = Network_test()
+                download_speed = network_test.test_download()
+                upload_speed = network_test.test_upload()
+
+                down_label.configure(text=str(download_speed) + "Mbps")
+                up_label.configure(text=str(upload_speed) + "Mbps")
 
                 progress_bar_speedtest.stop()
+
 
             # all labels with the default labels for download and other
             download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:", font=customtkinter.CTkFont(size=25, weight="bold"))
@@ -170,11 +170,8 @@ class App(customtkinter.CTk):
             up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             up_label.grid(row=1, column=1, sticky="ne", padx=10)
 
-            ping_label = customtkinter.CTkLabel(master=speed_test_frame, text="Ping:", font=customtkinter.CTkFont(size=25, weight="bold"))
-            ping_label.grid(row=2, column=0, sticky="nw", padx=10)
-
-            pg_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
-            pg_label.grid(row=2, column=1, sticky="ne", padx=10)
+            speedtest_icon = customtkinter.CTkLabel(master=speed_test_frame, text="", image=self.speedtest_logo)
+            speedtest_icon.grid(row=2, column=0, sticky="nse")
 
             # add an other frame to handle start button and progress bar
             start_frame = customtkinter.CTkFrame(master=speed_test_window)
@@ -269,11 +266,11 @@ class App(customtkinter.CTk):
             option3_check.grid(row=2, column=0, sticky="n", pady=10)
             
             option4_check = customtkinter.CTkCheckBox(master=adv_frame, text="ACK scan", variable=opt4_var, onvalue="ACK scan")
-            option4_check.grid(row=2, column=0, sticky="n", pady=10)
+            option4_check.grid(row=3, column=0, sticky="n", pady=10)
 
             # button to kill the window and store the variables
             kill_button = customtkinter.CTkButton(master=adv_frame, text="OK", command=lambda: kill_window(adv_window))
-            kill_button.grid(row=3, sticky="se", padx=30, pady=30)
+            kill_button.grid(row=4, sticky="se", padx=30, pady=30)
             
             def kill_window(top):
                 # storing variables and printing for debugging
