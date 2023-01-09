@@ -66,7 +66,7 @@ class App(customtkinter.CTk):
         port_var = customtkinter.StringVar(value="Port")
         tcp_udp_var = customtkinter.StringVar(value="TCP-UDP")
         scan_type_var = customtkinter.StringVar(value="Shallow")
-        scan_aggro_var = customtkinter.StringVar(value="0")
+        scan_aggro_var = customtkinter.StringVar(value="t0")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
 
@@ -256,16 +256,20 @@ class App(customtkinter.CTk):
             opt1_var = customtkinter.StringVar()
             opt2_var = customtkinter.StringVar()
             opt3_var = customtkinter.StringVar()
+            opt4_var = customtkinter.StringVar()
 
             # all the options in examples for debugging purposes
-            option1_check = customtkinter.CTkCheckBox(master=adv_frame, text="Example 1", variable=opt1_var, onvalue="Example 1")
+            option1_check = customtkinter.CTkCheckBox(master=adv_frame, text="OS detection", variable=opt1_var, onvalue="OS detection")
             option1_check.grid(row=0, column=0, sticky="n", pady=10)
 
-            option2_check = customtkinter.CTkCheckBox(master=adv_frame, text="Example 2", variable=opt2_var, onvalue="Example 2")
+            option2_check = customtkinter.CTkCheckBox(master=adv_frame, text="Disable PING", variable=opt2_var, onvalue="Disable PING")
             option2_check.grid(row=1, column=0, sticky="n", pady=10)
 
-            option3_check = customtkinter.CTkCheckBox(master=adv_frame, text="Example 3", variable=opt3_var, onvalue="Example 3")
+            option3_check = customtkinter.CTkCheckBox(master=adv_frame, text="SYN scan", variable=opt3_var, onvalue="SYN scan")
             option3_check.grid(row=2, column=0, sticky="n", pady=10)
+            
+            option4_check = customtkinter.CTkCheckBox(master=adv_frame, text="ACK scan", variable=opt4_var, onvalue="ACK scan")
+            option4_check.grid(row=2, column=0, sticky="n", pady=10)
 
             # button to kill the window and store the variables
             kill_button = customtkinter.CTkButton(master=adv_frame, text="OK", command=lambda: kill_window(adv_window))
@@ -276,13 +280,16 @@ class App(customtkinter.CTk):
                 global option_var_1 
                 global option_var_2
                 global option_var_3
+                global option_var_4
                 option_var_1 = opt1_var.get()
                 option_var_2 = opt2_var.get()
                 option_var_3 = opt3_var.get()
+                option_var_4 = opt4_var.get()
 
                 print(option_var_1)
                 print(option_var_2)
                 print(option_var_3)
+                print(option_var_4)
 
                 top.destroy()
 
@@ -301,7 +308,7 @@ class App(customtkinter.CTk):
             print("TCP/UDP: {}".format(tcp_udp))
             print("Type: {}".format(scan_type))
             print("Aggro: {}".format(scan_aggro))
-            print("Advanced: {} {} {}".format(option_var_1, option_var_2, option_var_3))
+            print("Advanced: {} {} {} {}".format(option_var_1, option_var_2, option_var_3, option_var_4))
 
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
@@ -490,6 +497,18 @@ class App(customtkinter.CTk):
                 tips_frame_main.grid(sticky="nsew")
                 tips_frame_main.place(relx=0.5, rely=0.5, anchor="c")
 
+                # acronym of the service
+                acronym_text = "Acronym:" + service_focus
+
+                acronym_label = customtkinter.CTkLabel(master= tips_frame_main, text=acronym_text, font=customtkinter.CTkFont(size=18))
+                acronym_label.grid(row=0, column=0, sticky="nw")
+
+                def_port = customtkinter.CTkLabel(master= tips_frame_main, text=name_focus, font=customtkinter.CTkFont(size=18))
+                def_port.grid(row=0, column=1, sticky="ne")
+
+                description_serv = customtkinter.CTkLabel(master= tips_frame_main, text="Description should be there")
+                description_serv.grid(row=1, column=0, sticky="nsew")
+
 
             def misconf_button_click():
                 item_focus = scan_tree.focus()
@@ -564,7 +583,7 @@ class App(customtkinter.CTk):
         self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Shallow", "Deep"], variable=scan_type_var, width=100)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
-        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0","1","2","3","4"], variable=scan_aggro_var, width=10)
+        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["t0","t1","t2","t3","t4"], variable=scan_aggro_var, width=10)
         self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
 
         # button scan
