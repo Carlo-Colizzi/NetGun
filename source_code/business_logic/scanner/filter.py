@@ -16,7 +16,7 @@ class Filter:
             advanced_options = Filter.advanced_option_convert(advanced_options)
             self.advanced_options += Filter.advanced_options_to_string(advanced_options)
 
-        self.advanced_options += " " + Filter.__TRANSPORT_PROTOCOLS_SUPPORTED[transport_protocol] + " -" + str(aggressivity)
+        self.advanced_options += " " + Filter.__TRANSPORT_PROTOCOLS_SUPPORTED[transport_protocol] + " -T" + str(aggressivity)
 
 
 

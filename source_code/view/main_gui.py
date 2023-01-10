@@ -1,6 +1,13 @@
 import sys
+
+from source_code.business_logic.scanner.filter import Filter
+from source_code.business_logic.scanner.scan import Scan
+from source_code.business_logic.scanner.target import Target
+
+from pprint import pprint
 sys.path.insert(0,"../../../NetGun_Classe03")
 import threading
+import asyncio
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
@@ -14,7 +21,9 @@ import configparser
 from PIL import Image
 from source_code.business_logic.test_network_performance.network_test import Network_test
 from source_code.business_logic.application_context.context import Context
+from source_code.business_logic.scanner import scan, scan_result
 
+print(vars())
 class App(customtkinter.CTk):
     context = None
 
@@ -72,11 +81,11 @@ class App(customtkinter.CTk):
 
         # variables
         color_option_variable = customtkinter.StringVar(value=system_color)
-        ip_var = customtkinter.StringVar(value="IP address")
-        port_var = customtkinter.StringVar(value="Port")
-        tcp_udp_var = customtkinter.StringVar(value="TCP-UDP")
-        scan_type_var = customtkinter.StringVar(value="Shallow")
-        scan_aggro_var = customtkinter.StringVar(value="t0")
+        ip_var = customtkinter.StringVar(value="127.0.0.1")
+        port_var = customtkinter.StringVar(value="1-1024")
+        tcp_udp_var = customtkinter.StringVar(value="TCP")
+        scan_type_var = customtkinter.StringVar(value="DEEP")
+        scan_aggro_var = customtkinter.StringVar(value="2")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
 
@@ -327,6 +336,9 @@ class App(customtkinter.CTk):
                 option_var_3 = opt3_var.get()
                 option_var_4 = opt4_var.get()
 
+                global advanced_option_list
+                advanced_option_list = [x for x in list((option_var_1,option_var_2,option_var_3,option_var_4)) if x != ""]
+
                 print(option_var_1)
                 print(option_var_2)
                 print(option_var_3)
@@ -342,7 +354,9 @@ class App(customtkinter.CTk):
             port = port_var.get()
             tcp_udp = tcp_udp_var.get()
             scan_type = scan_type_var.get()
-            scan_aggro = scan_aggro_var.get()
+            scan_aggro = int(scan_aggro_var.get())
+
+
 
             print("Ip: {}".format(ip))
             print("Port: {}".format(port))
@@ -375,21 +389,13 @@ class App(customtkinter.CTk):
             scan_tree.heading("colonna3", text="State")
 
             # date examples
-            global data
-            data = {
-                '21/tcp': {'service': 'ftp', 'version': 'vsftpd 2.3.4', 'state': 'open'},
-                '22/tcp': {'service': 'ssh', 'version': 'OpenSSH 4.7p1 Debian 8ubuntu1', 'state': 'open'},
-                '23/tcp': {'service': 'telnet', 'version': 'Linux telnetd ', 'state': 'open'},
-                '25/tcp': {'service': 'smtp', 'version': 'Postfix smtpd ', 'state': 'open'},
-                '53/tcp': {'service': 'domain', 'version': 'ISC BIND 9.4.2', 'state': 'open'},
-                '80/tcp': {'service': 'http', 'version': 'Apache httpd 2.2.8', 'state': 'open'},
-                '111/tcp': {'service': 'rpcbind', 'version': ' ', 'state': 'open'},
-                '139/tcp': {'service': 'netbios-ssn', 'version': 'Samba smbd 3.X - 4.X', 'state': 'open'},
-                '445/tcp': {'service': 'netbios-ssn', 'version': 'Samba smbd 3.X - 4.X', 'state': 'open'},
-                '512/tcp': {'service': 'exec', 'version': ' ', 'state': 'open'},
-                '513/tcp': {'service': 'login', 'version': 'OpenBSD or Solaris rlogind ', 'state': 'open'},
-                '514/tcp': {'service': 'tcpwrapped', 'version': ' ', 'state': 'open'}
-            }
+            App.context.target = Target(ip, port)
+            App.context.filter = Filter(tcp_udp.lower(), advanced_option_list, scan_aggro)
+
+            scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
+            result = scan_tmp.start_scan()
+            App.context.scan_result = scan_result.Scan_result(result)
+            pprint(result)
 
             # label scannning
             self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
@@ -403,9 +409,14 @@ class App(customtkinter.CTk):
             # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
 
             # adding elements to the treeview
-            for name, values in data.items():
+            for name, values in App.context.scan_result.result["ports"].items():
                 # add single element to the treeview
                 scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
+
+            os_detected = App.context.scan_result["os"]["name"]
+            print(os_detected)
+            accuracy = App.context.scan_result["os"]["accuracy"]
+            print(accuracy)
 
             # stopping the process and destroying it
             self.scan_progress.stop()
@@ -427,7 +438,7 @@ class App(customtkinter.CTk):
 
                 # takes name and version
                 name_focus = scan_tree.item(item_focus, "text")
-                version_focus = data[name_focus]['version']
+                version_focus = App.context.scan_result.result[name_focus]['version']
 
                 # create a top level window
                 top_cve = customtkinter.CTkToplevel()
@@ -527,7 +538,7 @@ class App(customtkinter.CTk):
 
                 # takes name and service
                 name_focus = scan_tree.item(item_focus, "text")
-                service_focus = data[name]['service']
+                service_focus = App.context.scan_result.result[name]['service']
 
                 # create a top level window
                 top_tips = customtkinter.CTkToplevel()
@@ -556,7 +567,7 @@ class App(customtkinter.CTk):
 
                 # takes name and service
                 name_focus = scan_tree.item(item_focus, "text")
-                service_focus = data[name]['service']
+                service_focus = App.context.scan_result.result[name]['service']
 
                 # create a top level window
                 top_misconf = customtkinter.CTkToplevel()
@@ -621,10 +632,10 @@ class App(customtkinter.CTk):
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
         # other options menu
-        self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["Shallow", "Deep"], variable=scan_type_var, width=100)
+        self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["SHALLOW", "DEEP"], variable=scan_type_var, width=100)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
-        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["t0","t1","t2","t3","t4"], variable=scan_aggro_var, width=10)
+        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0","1","2","3","4"], variable=scan_aggro_var, width=10)
         self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
 
         # button scan

@@ -1,8 +1,8 @@
 import nmap
 from pprint import pprint
-from target import Target
-from filter import Filter
-from observer_progress import Observer_progress
+from source_code.business_logic.scanner.target import Target
+from source_code.business_logic.scanner.filter import Filter
+from source_code.business_logic.scanner.observer_progress import Observer_progress
 
 class Scan:
     __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV"}
