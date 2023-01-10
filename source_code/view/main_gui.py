@@ -1,11 +1,10 @@
 import sys
-
+from pprint import pprint
+sys.path.insert(0,"../../../NetGun_Classe03")
+from source_code.business_logic.cve_exploit.cve import Cve
 from source_code.business_logic.scanner.filter import Filter
 from source_code.business_logic.scanner.scan import Scan
 from source_code.business_logic.scanner.target import Target
-
-from pprint import pprint
-sys.path.insert(0,"../../../NetGun_Classe03")
 import threading
 import asyncio
 from tkinter import *
@@ -476,10 +475,7 @@ class App(customtkinter.CTk):
 
                 # find all the cve here and codes after start the tree
                 global data_cve
-                data_cve = {
-                    'OpenSSH 4.7p1 Debian 8ubuntu1': {'description': 'a good cve','id': 'CVE-2022-39028', 'reference': 'www.github.com'},
-                    'OpenSSH' : {'description': 'a good cve per 2 guys like carlo','id': 'CVE-2022-39899', 'reference': 'www.github.com'}
-                    }
+                data_cve = Cve(version_focus).search_cve()
 
                 tree_cve = ttk.Treeview(frame_cve_2, height=10)
 
@@ -490,7 +486,7 @@ class App(customtkinter.CTk):
                 tree_cve.heading("colonna2", text="Reference")
 
                 for name, values in data_cve.items():
-                    tree_cve.insert("", "end", text=name, values=(values['description'], values['reference']))
+                    tree_cve.insert("", "end", text=name, values=(values['vulnerabilities']['description'], values['vulnerabilities']['reference']))
 
                 tree_cve.column("#0", width=150)
                 tree_cve.column("colonna1", width=500)
