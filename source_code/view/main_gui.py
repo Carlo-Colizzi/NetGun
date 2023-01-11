@@ -398,6 +398,7 @@ class App(customtkinter.CTk):
             # codes to find data should be here
             # to update the verbose you need to change the label eveytime verbose change in the progress
             # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
+            #prova
 
             for name, values in scan_tree.get_children():
                 scan_tree.delete(name, values)
