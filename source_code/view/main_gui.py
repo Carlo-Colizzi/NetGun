@@ -364,12 +364,10 @@ class App(customtkinter.CTk):
             print("Aggro: {}".format(scan_aggro))
             print("Advanced: {} {} {} {}".format(option_var_1, option_var_2, option_var_3, option_var_4))
 
-            exists = scan_tree.winfo_exists()
-            if exists == 1:
-                scan_tree.destroy()
 
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
+
 
 
 
@@ -400,6 +398,9 @@ class App(customtkinter.CTk):
             # codes to find data should be here
             # to update the verbose you need to change the label eveytime verbose change in the progress
             # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
+
+            for name, values in scan_tree.get_children():
+                scan_tree.delete(name, values)
 
             # adding elements to the treeview
             for name, values in App.context.scan_result.result["ports"].items():
