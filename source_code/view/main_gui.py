@@ -394,9 +394,6 @@ class App(customtkinter.CTk):
             # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
             #prova
 
-            for name, values in scan_tree.get_children():
-                scan_tree.delete(name, values)
-
             # adding elements to the treeview
             for name, values in App.context.scan_result.result["ports"].items():
                 # add single element to the treeview
@@ -574,6 +571,17 @@ class App(customtkinter.CTk):
             # button to open the cve file
             cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon, compound="right", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
             cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
+
+            cancel_button = customtkinter.CTkButton(master=more_frame, text="Clear", command=delete_wid_frame, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cancel_button.grid(row=0, column=3, sticky="nsew", pady=10, padx=20)
+
+            def delete_wid_frame():
+                for widget in self.tree_frame.winfo_children():
+                    widget.destroy()
+
+                for widget in more_frame.winfo_children():
+                    widget.destroy()
+
 
         def export_file():
             file=filedialog.asksaveasfilename(filetypes=[("text file","*.txt")],
