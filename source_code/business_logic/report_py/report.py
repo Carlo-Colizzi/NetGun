@@ -41,7 +41,7 @@ class Report:
         pdf.add_page()
         pdf.set_font("Times", size=30)
 
-        pdf.image("source_code/persistence/storage/icons/netgun_logo.png", x=90, w=50, h=50)
+        pdf.image("../../persistence/storage/icons/netgun_logo.png", x=90, w=50, h=50)
 
         pdf.set_title("Report")
         pdf.set_author("NetGun")
@@ -54,7 +54,7 @@ class Report:
             table_scan = Report.create_table(values, key)
             if table_scan:
                 pdf = Report.draw_table_pdf(table_data=table_scan, title=titles[i], title_size=16, data_size=12,
-                                            align_data='L', align_header='L', emphasize_data=['open'],
+                                            align_data='C', align_header='C', emphasize_data=['open'],
                                             emphasize_headers=['ports', 'service', 'version', 'state', 'accuracy',
                                                                'name'],
                                             emphaize_header_color=(3, 0, 138), emphaize_data_color=(0, 100, 0),
@@ -104,11 +104,12 @@ class Report:
         table = []
         index = 0
         for keys, values in elements.items():
-            if element:
-                table.append([element, keys])
-            for key, value in values[index].items():
-                table.append([key, value])
-            index += 1
+            if len(values) > 0:
+                if element:
+                    table.append([element, keys])
+                for key, value in values[index].items():
+                    table.append([key, value])
+                index += 1
         return table
 
     @classmethod
@@ -215,7 +216,7 @@ class Report:
 
             pdf = Report.add_vertical_table_data(table_data, pdf, col_width, line_height, align_header,
                                                  emphasize_headers,
-                                                 emphaize_header_color, emphaize_header_style, separator=separator)
+                                                 emphaize_header_color, emphaize_header_style)
             pdf.ln(line_height)
 
         y3 = pdf.get_y()
@@ -404,6 +405,7 @@ result = {'service': {'ISC BIND 9.4.2': [{'description': 'Off-by-one error in th
                                                          'cause a denial of service (UDP client '
                                                          'handler termination) via unknown vectors.',
                                           'id': 'CVE-2008-4163',
-                                          'resource': 'http://marc.info/?l=bind-announce&m=122180244228376&w=2'}]}}
+                                          'resource': 'http://marc.info/?l=bind-announce&m=122180244228376&w=2'}],
+                      "Debian": []}}
 
 report.create_report(versions, result)
