@@ -1,6 +1,7 @@
 import sys
 from pprint import pprint
-sys.path.insert(0,"../../../NetGun_Classe03")
+
+sys.path.insert(0, "../../../NetGun_Classe03")
 from source_code.business_logic.cve_exploit.cve import Cve
 from source_code.business_logic.scanner.filter import Filter
 from source_code.business_logic.scanner.scan import Scan
@@ -23,6 +24,8 @@ from source_code.business_logic.application_context.context import Context
 from source_code.business_logic.scanner import scan, scan_result
 
 print(vars())
+
+
 class App(customtkinter.CTk):
     context = None
 
@@ -31,10 +34,15 @@ class App(customtkinter.CTk):
         App.context = Context()
         App.context.network_test = Network_test()
 
+        App.context.option_var1 = ''
+        App.context.option_var2 = ''
+        App.context.option_var3 = ''
+        App.context.option_var4 = ''
+
 
         # configuration window main
         self.title("NetGun")
-        self.geometry(f"1300x700") #default geometry
+        self.geometry(f"1300x700")  # default geometry
         # self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
@@ -42,7 +50,7 @@ class App(customtkinter.CTk):
         # storage path
         storage_path = os.path.join("../persistence/storage")
         conf_path = os.path.join("../persistence/storage/config.ini")
-        icon_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),("../persistence/storage/icons"))
+        icon_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), ("../persistence/storage/icons"))
 
         # debug to see if the path exists
         print(storage_path)
@@ -50,16 +58,22 @@ class App(customtkinter.CTk):
             print(item)
 
         # load images
-        self.logo_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "netgun_logo.png")), size=(100,110))
-        self.folder_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "folder_light.png")), size=(25,25))
-        self.link_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "link_light.png")), size=(25,25))
-        self.option_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "option_light.png")), size=(25,25))
-        self.profile_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "profile_light.png")), size=(25,25))
-        self.save_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "save_light.png")), size=(25,25))
-        self.shortcut_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "shortcut_light.png")), size=(25,25))
-        self.document_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "doc_light.png")), size=(25,25))
-        self.search_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "search_light.png")), size=(25,25))
-        self.speedtest_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150,150))
+        self.logo_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "netgun_logo.png")), size=(100, 110))
+        self.folder_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "folder_light.png")),
+                                                  size=(25, 25))
+        self.link_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "link_light.png")), size=(25, 25))
+        self.option_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "option_light.png")),
+                                                  size=(25, 25))
+        self.profile_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "profile_light.png")),
+                                                   size=(25, 25))
+        self.save_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "save_light.png")), size=(25, 25))
+        self.shortcut_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "shortcut_light.png")),
+                                                    size=(25, 25))
+        self.document_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "doc_light.png")), size=(25, 25))
+        self.search_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "search_light.png")),
+                                                  size=(25, 25))
+        self.speedtest_logo = customtkinter.CTkImage(
+            Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150, 150))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
@@ -79,6 +93,22 @@ class App(customtkinter.CTk):
         customtkinter.set_default_color_theme("dark-blue")
 
         # variables
+        global option_var_1
+        global option_var_2
+        global option_var_3
+        global option_var_4
+
+        option_var_1 = ''
+        option_var_2 = ''
+        option_var_3 = ''
+        option_var_4 = ''
+
+        print("Iniziato 1")
+        print(option_var_1)
+        print(option_var_2)
+        print(option_var_3)
+        print(option_var_4)
+
         color_option_variable = customtkinter.StringVar(value=system_color)
         ip_var = customtkinter.StringVar(value="127.0.0.1")
         port_var = customtkinter.StringVar(value="1-1024")
@@ -86,7 +116,6 @@ class App(customtkinter.CTk):
         scan_type_var = customtkinter.StringVar(value="DEEP")
         scan_aggro_var = customtkinter.StringVar(value="2")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
-
 
         # functions for button and other widgets
         def options_settings():
@@ -119,13 +148,20 @@ class App(customtkinter.CTk):
             frame_options.place(relx=0.5, rely=0.5, anchor="c")
 
             # color mode set
-            color_mode_label = customtkinter.CTkLabel(master=frame_options, text="Color Mode:", font=customtkinter.CTkFont(size=18),)
+            color_mode_label = customtkinter.CTkLabel(master=frame_options, text="Color Mode:",
+                                                      font=customtkinter.CTkFont(size=18), )
             color_mode_label.grid(row=0, column=0, sticky="w")
 
-            appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4, values=["System", "Dark", "Light"], command=change_mode_appearence, variable=color_option_variable, font=customtkinter.CTkFont(size=18))
+            appearence_mode = customtkinter.CTkOptionMenu(master=frame_options, corner_radius=4,
+                                                          values=["System", "Dark", "Light"],
+                                                          command=change_mode_appearence,
+                                                          variable=color_option_variable,
+                                                          font=customtkinter.CTkFont(size=18))
             appearence_mode.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
-            save_app_button = customtkinter.CTkButton(master=frame_options, text="Salva ", image=self.save_icon, font=customtkinter.CTkFont(size=18), compound="right", command=save_app_conf)
+            save_app_button = customtkinter.CTkButton(master=frame_options, text="Salva ", image=self.save_icon,
+                                                      font=customtkinter.CTkFont(size=18), compound="right",
+                                                      command=save_app_conf)
             save_app_button.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 
         def manual_command():
@@ -159,6 +195,7 @@ class App(customtkinter.CTk):
 
             tmp_variable = 0
             lock = False
+
             # funcion to speedtest
             def start_speedtest():
                 nonlocal lock
@@ -178,7 +215,7 @@ class App(customtkinter.CTk):
                         elif type == "upload":
                             tmp_variable = App.context.network_test.test_upload()
 
-                    def thread_waiter_async(thread_to_wait,event, label, type):
+                    def thread_waiter_async(thread_to_wait, event, label, type):
                         thread_to_wait.join()
                         nonlocal tmp_variable
                         nonlocal lock
@@ -188,35 +225,35 @@ class App(customtkinter.CTk):
                             event.destroy()
                             lock = False
 
-
                     def thread_waiter_async_cascade(thread_event, thread_handler, thread_handler2):
                         thread_event.join()
                         thread_handler.start()
                         thread_handler2.start()
 
-
-                    thread_download = threading.Thread(target=thread_factory, args = ("download",))
+                    thread_download = threading.Thread(target=thread_factory, args=("download",))
                     thread_download.start()
-                    thread_waiter = threading.Thread(target=thread_waiter_async, args=(thread_download, progress_bar_speedtest, down_label, "download"))
+                    thread_waiter = threading.Thread(target=thread_waiter_async, args=(
+                        thread_download, progress_bar_speedtest, down_label, "download"))
                     thread_waiter.start()
 
                     thread_upload = threading.Thread(target=thread_factory, args=("upload",))
                     thread_waiter2 = threading.Thread(target=thread_waiter_async,
-                                                     args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
+                                                      args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
 
                     thread_waiter_cascade = threading.Thread(target=thread_waiter_async_cascade,
-                                                     args=(thread_waiter,thread_upload, thread_waiter2))
+                                                             args=(thread_waiter, thread_upload, thread_waiter2))
                     thread_waiter_cascade.start()
 
-
             # all labels with the default labels for download and other
-            download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:", font=customtkinter.CTkFont(size=25, weight="bold"))
+            download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:",
+                                                    font=customtkinter.CTkFont(size=25, weight="bold"))
             download_label.grid(row=0, column=0, sticky="nw", padx=10)
 
             down_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             down_label.grid(row=0, column=1, sticky="ne", padx=10)
 
-            upload_label = customtkinter.CTkLabel(master=speed_test_frame, text="Upload:", font=customtkinter.CTkFont(size=25, weight="bold"))
+            upload_label = customtkinter.CTkLabel(master=speed_test_frame, text="Upload:",
+                                                  font=customtkinter.CTkFont(size=25, weight="bold"))
             upload_label.grid(row=1, column=0, sticky="nw", padx=10)
 
             up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
@@ -234,9 +271,8 @@ class App(customtkinter.CTk):
             start_button.grid(row=1, column=0, sticky="n", pady=10)
 
             # progress bar
-            #progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
-            #progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
-
+            # progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
+            # progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
 
         def welcome_page_comm():
             # welcome frame and window
@@ -249,27 +285,36 @@ class App(customtkinter.CTk):
             frame_welcome.place(relx=0.5, rely=0.5, anchor="c")
 
             image_label = customtkinter.CTkLabel(master=frame_welcome, text="", image=self.logo_icon, compound="top")
-            image_label.grid(row=0,sticky="n", pady=15)
+            image_label.grid(row=0, sticky="n", pady=15)
             # text box with label of welcome message
             welcome_label = customtkinter.CTkTextbox(master=frame_welcome, width=350, height=70, wrap="word")
             welcome_label.grid(row=1, sticky="w", pady=15)
-            welcome_label.insert("end", "Benvenuto, questo è NetGun, il programma perfetto per esperti e non, in ambito di ethical hacking. Buon hack a tutti!")
+            welcome_label.insert("end",
+                                 "Benvenuto, questo è NetGun, il programma perfetto per esperti e non, in ambito di ethical hacking. Buon hack a tutti!")
             welcome_label.configure(state="disabled")
 
             # button to open the manuale in a toplevel window
-            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", image=self.document_logo, compound="right", command=manual_command, font=customtkinter.CTkFont(size=18))
+            manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", image=self.document_logo,
+                                                    compound="right", command=manual_command,
+                                                    font=customtkinter.CTkFont(size=18))
             manual_button.grid(row=2, sticky="nsew", pady=15)
 
             # button to open all links in the browser
-            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", image=self.link_icon, font=customtkinter.CTkFont(size=18), compound="right", command=lambda: web.open("https://github.com/MyCr4ck/NetGun_Classe03", new=2))
+            github_button = customtkinter.CTkButton(master=frame_welcome, text="Github", image=self.link_icon,
+                                                    font=customtkinter.CTkFont(size=18), compound="right",
+                                                    command=lambda: web.open(
+                                                        "https://github.com/MyCr4ck/NetGun_Classe03", new=2))
             github_button.grid(row=3, sticky="nsew", pady=15)
 
             # button for speedtest internet connection
-            speedtest_button = customtkinter.CTkButton(master=frame_welcome, text="SpeedTest Ookla", image=self.shortcut_icon, compound="right", font=customtkinter.CTkFont(size=18),command=speed_test_button)
+            speedtest_button = customtkinter.CTkButton(master=frame_welcome, text="SpeedTest Ookla",
+                                                       image=self.shortcut_icon, compound="right",
+                                                       font=customtkinter.CTkFont(size=18), command=speed_test_button)
             speedtest_button.grid(row=4, sticky="nsew", pady=15)
 
             # chech box if you want to open at startup
-            chechbox_welcome = customtkinter.CTkCheckBox(master=frame_welcome, text="Apri al prossimo avvio", variable=chechbox_welcome_var, onvalue="on", offvalue="off")
+            chechbox_welcome = customtkinter.CTkCheckBox(master=frame_welcome, text="Apri al prossimo avvio",
+                                                         variable=chechbox_welcome_var, onvalue="on", offvalue="off")
             chechbox_welcome.grid(row=5, sticky="sw", pady=50)
 
             def chechbox_save_button():
@@ -288,10 +333,24 @@ class App(customtkinter.CTk):
                 welcome_window.destroy()
 
             # chech box save button
-            chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", image=self.save_icon, font=customtkinter.CTkFont(size=18),compound="right", command=chechbox_save_button)
+            chechbox_save = customtkinter.CTkButton(master=frame_welcome, text="Salva", image=self.save_icon,
+                                                    font=customtkinter.CTkFont(size=18), compound="right",
+                                                    command=chechbox_save_button)
             chechbox_save.grid(row=5, column=0, sticky="e", pady=10)
 
         def open_top_adv():
+
+            print("Prima parte top_adv")
+            print(option_var_1)
+            print(option_var_2)
+            print(option_var_3)
+            print(option_var_4)
+            print(vars(App.context._Singleton__instance))
+
+            print(App.context.option_var1)
+
+
+
             # started window and frame
             adv_window = customtkinter.CTkToplevel()
             adv_window.geometry(f"500x300")
@@ -301,42 +360,65 @@ class App(customtkinter.CTk):
             adv_frame.grid(row=0, pady=30, padx=30, sticky="nsew")
             adv_frame.place(relx=0.5, rely=0.5, anchor="c")
 
-
             opt1_var = customtkinter.StringVar()
             opt2_var = customtkinter.StringVar()
             opt3_var = customtkinter.StringVar()
             opt4_var = customtkinter.StringVar()
 
             # all the options in examples for debugging purposes
-            option1_check = customtkinter.CTkCheckBox(master=adv_frame, text="OS detection", variable=opt1_var, onvalue="OS detection")
+            option1_check = customtkinter.CTkCheckBox(master=adv_frame, text="OS detection", variable=opt1_var,
+                                                      onvalue="OS detection")
             option1_check.grid(row=0, column=0, sticky="n", pady=10)
 
-            option2_check = customtkinter.CTkCheckBox(master=adv_frame, text="Disable PING", variable=opt2_var, onvalue="Disable PING")
+            print("ciao" + option_var_1)
+
+
+            option2_check = customtkinter.CTkCheckBox(master=adv_frame, text="Disable PING", variable=opt2_var,
+                                                      onvalue="Disable PING")
             option2_check.grid(row=1, column=0, sticky="n", pady=10)
 
-            option3_check = customtkinter.CTkCheckBox(master=adv_frame, text="SYN scan", variable=opt3_var, onvalue="SYN scan")
+            option3_check = customtkinter.CTkCheckBox(master=adv_frame, text="SYN scan", variable=opt3_var,
+                                                      onvalue="SYN scan")
             option3_check.grid(row=2, column=0, sticky="n", pady=10)
 
-            option4_check = customtkinter.CTkCheckBox(master=adv_frame, text="ACK scan", variable=opt4_var, onvalue="ACK scan")
+            option4_check = customtkinter.CTkCheckBox(master=adv_frame, text="ACK scan", variable=opt4_var,
+                                                      onvalue="ACK scan")
             option4_check.grid(row=3, column=0, sticky="n", pady=10)
+
+            if App.context.option_var1 != '':
+                option1_check.select()
+            if App.context.option_var2 != '':
+                option2_check.select()
+            if App.context.option_var3 != '':
+                option3_check.select()
+            if App.context.option_var4 != '':
+                option4_check.select()
 
             # button to kill the window and store the variables
             kill_button = customtkinter.CTkButton(master=adv_frame, text="OK", command=lambda: kill_window(adv_window))
             kill_button.grid(row=4, sticky="se", padx=30, pady=30)
 
+            print("parte finale top_adv")
+            print(option_var_1)
+            print(option_var_2)
+            print(option_var_3)
+            print(option_var_4)
             def kill_window(top):
                 # storing variables and printing for debugging
-                global option_var_1
-                global option_var_2
-                global option_var_3
-                global option_var_4
                 option_var_1 = opt1_var.get()
                 option_var_2 = opt2_var.get()
                 option_var_3 = opt3_var.get()
                 option_var_4 = opt4_var.get()
 
+                App.context.option_var1 = option_var_1
+                App.context.option_var2 = option_var_2
+                App.context.option_var3 = option_var_3
+                App.context.option_var4 = option_var_4
+
                 global advanced_option_list
-                advanced_option_list = [x for x in list((option_var_1,option_var_2,option_var_3,option_var_4)) if x != ""]
+                advanced_option_list = [x for x in list((option_var_1, option_var_2, option_var_3, option_var_4)) if
+                                        x != ""]
+
 
                 print(option_var_1)
                 print(option_var_2)
@@ -365,6 +447,11 @@ class App(customtkinter.CTk):
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
 
+            # progress bar, implemented but not started yet
+            self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
+            # the progress bar needs the label too
+            self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
+
             # set number columns
             scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
 
@@ -392,17 +479,17 @@ class App(customtkinter.CTk):
             # codes to find data should be here
             # to update the verbose you need to change the label eveytime verbose change in the progress
             # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
-            #prova
+            # prova
 
             # adding elements to the treeview
             for name, values in App.context.scan_result.result["ports"].items():
                 # add single element to the treeview
                 scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
 
-            #os_detected = App.context.scan_result["os"]["name"]
-            #print(os_detected)
-            #accuracy = App.context.scan_result["os"]["accuracy"]
-            #print(accuracy)
+            # os_detected = App.context.scan_result["os"]["name"]
+            # print(os_detected)
+            # accuracy = App.context.scan_result["os"]["accuracy"]
+            # print(accuracy)
 
             # stopping the process and destroying it
             self.scan_progress.stop()
@@ -441,7 +528,7 @@ class App(customtkinter.CTk):
 
                 # adding a frame only to separate frames
                 sep = customtkinter.CTkFrame(frame_cve_1, fg_color="transparent", height=50)
-                sep.grid(row=0, column=1, padx= 10)
+                sep.grid(row=0, column=1, padx=10)
 
                 frame_cve_2 = customtkinter.CTkFrame(main_frame_cve, height=300)
                 frame_cve_2.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
@@ -451,14 +538,15 @@ class App(customtkinter.CTk):
 
                 servicing = "Service:   {}".format(version_focus)
                 # services label in the right
-                label_services = customtkinter.CTkLabel(frame_cve_1, text=servicing, font=customtkinter.CTkFont(size=15, weight="bold"), text_color="white")
+                label_services = customtkinter.CTkLabel(frame_cve_1, text=servicing,
+                                                        font=customtkinter.CTkFont(size=15, weight="bold"),
+                                                        text_color="white")
                 label_services.grid(row=0, column=2)
 
                 # progress bar for research cve
                 prog_bar = customtkinter.CTkProgressBar(frame_cve_3, mode="indeterminate")
                 prog_bar.grid(row=2, column=0, pady=10)
                 prog_bar.start()
-
 
                 # find all the cve here and codes after start the tree
                 global data_cve
@@ -472,21 +560,27 @@ class App(customtkinter.CTk):
                 tree_cve.heading("colonna1", text="Description")
                 tree_cve.heading("colonna2", text="Reference")
 
-                for name, values in data_cve.items():
-                    tree_cve.insert("", "end", text=name, values=(values[0]['description'], values[0]['resource']))
+                number_cve = 0
 
+                for name, values in data_cve.items():
+                    for i in range(len(values)):
+                        tree_cve.insert("", "end", text=name, values=(values[i]['description'], values[i]['resource']))
+                        number_cve + 1
+
+                i = 0
                 tree_cve.column("#0", width=150)
                 tree_cve.column("colonna1", width=500)
                 tree_cve.column("colonna2", width=150)
 
                 # debugging varaible for the numbers of cve on a single service
-                number_cve = 6
                 # add 2 text boxes on the top left and right
-                text_cve = customtkinter.CTkLabel(master=frame_cve_1, height=70, font=customtkinter.CTkFont(size=15, weight="bold"), text_color="white")
+                text_cve = customtkinter.CTkLabel(master=frame_cve_1, height=70,
+                                                  font=customtkinter.CTkFont(size=15, weight="bold"),
+                                                  text_color="white")
                 # need for the color change
                 if number_cve <= 15:
                     text_cve.configure(fg_color="green")
-                if  16 < number_cve <= 30:
+                elif 16 <= number_cve <= 30:
                     text_cve.configure(fg_color="yellow")
                 else:
                     text_cve.configure(fg_color="red")
@@ -499,7 +593,7 @@ class App(customtkinter.CTk):
                 text_cve.configure(text=texting, corner_radius=6)
                 text_cve.grid(row=0, column=0, sticky="w")
 
-                tree_cve.grid(row=0, column=0, sticky="nsew") # positioning the tree
+                tree_cve.grid(row=0, column=0, sticky="nsew")  # positioning the tree
                 # set the scrollbar
                 tree_cve_scroll = customtkinter.CTkScrollbar(frame_cve_2, command=scan_tree.yview)
                 tree_cve_scroll.grid(row=0, column=1, sticky="nsw")
@@ -513,7 +607,9 @@ class App(customtkinter.CTk):
 
                     web.open(url_link, new=2)
 
-                link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon, compound="right", command=open_link, font=customtkinter.CTkFont(size=20, weight="bold"))
+                link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon,
+                                                      compound="right", command=open_link,
+                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
                 link_button.grid(row=1, column=0, sticky="sew", pady=10)
 
             def tips_button_click():
@@ -535,15 +631,16 @@ class App(customtkinter.CTk):
                 # acronym of the service
                 acronym_text = "Acronym:" + service_focus
 
-                acronym_label = customtkinter.CTkLabel(master= tips_frame_main, text=acronym_text, font=customtkinter.CTkFont(size=18))
+                acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text=acronym_text,
+                                                       font=customtkinter.CTkFont(size=18))
                 acronym_label.grid(row=0, column=0, sticky="nw")
 
-                def_port = customtkinter.CTkLabel(master= tips_frame_main, text=name_focus, font=customtkinter.CTkFont(size=18))
+                def_port = customtkinter.CTkLabel(master=tips_frame_main, text=name_focus,
+                                                  font=customtkinter.CTkFont(size=18))
                 def_port.grid(row=0, column=1, sticky="ne")
 
-                description_serv = customtkinter.CTkLabel(master= tips_frame_main, text="Description should be there")
+                description_serv = customtkinter.CTkLabel(master=tips_frame_main, text="Description should be there")
                 description_serv.grid(row=1, column=0, sticky="nsew")
-
 
             def misconf_button_click():
                 item_focus = scan_tree.focus()
@@ -563,30 +660,37 @@ class App(customtkinter.CTk):
 
                 for widget in more_frame.winfo_children():
                     widget.destroy()
-                    
-            #frame for more buttons
+
+            # frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
             more_frame.grid(row=1, column=0, sticky="nsew")
 
             # more buttons
-            tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", image=self.shortcut_icon, compound="right", command=tips_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", image=self.shortcut_icon,
+                                                  compound="right", command=tips_button_click,
+                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
             tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=20)
 
-            misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration", image=self.shortcut_icon, compound="right", command=misconf_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration",
+                                                     image=self.shortcut_icon, compound="right",
+                                                     command=misconf_button_click,
+                                                     font=customtkinter.CTkFont(size=20, weight="bold"))
             misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=20)
 
             # button to open the cve file
-            cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon, compound="right", command=cve_button_click, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon,
+                                                 compound="right", command=cve_button_click,
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
             cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
 
-            cancel_button = customtkinter.CTkButton(master=more_frame, text="Clear", command=delete_wid_frame, font=customtkinter.CTkFont(size=20, weight="bold"))
+            cancel_button = customtkinter.CTkButton(master=more_frame, text="Clear", command=delete_wid_frame,
+                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
             cancel_button.grid(row=0, column=3, sticky="nsew", pady=10, padx=20)
 
-
         def export_file():
-            file=filedialog.asksaveasfilename(filetypes=[("text file","*.txt")],
-                                        defaultextension='.txt',
-                                        title='Export Report')
+            file = filedialog.asksaveasfilename(filetypes=[("text file", "*.txt")],
+                                                defaultextension='.txt',
+                                                title='Export Report')
             fob = open(file, 'w')
             fob.write("Hello, world!")
             fob.close()
@@ -597,11 +701,14 @@ class App(customtkinter.CTk):
         self.main_frame.place(relx=0.5, rely=0.5, anchor="c")
 
         # label
-        self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text=" NetGun", image=self.logo_icon, compound="left", font=customtkinter.CTkFont(size=40, weight="bold"))
+        self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text=" NetGun", image=self.logo_icon,
+                                                       compound="left",
+                                                       font=customtkinter.CTkFont(size=40, weight="bold"))
         self.main_frame_label.grid(row=0, column=0, sticky="nw")
 
         # options button
-        self.options_button = customtkinter.CTkButton(self.main_frame, text="", image=self.option_icon, compound="top",command=options_settings, width=25)
+        self.options_button = customtkinter.CTkButton(self.main_frame, text="", image=self.option_icon, compound="top",
+                                                      command=options_settings, width=25)
         self.options_button.grid(row=0, column=1, sticky="e")
 
         # buttons and text in main
@@ -611,51 +718,59 @@ class App(customtkinter.CTk):
 
         '''Step through every column from the first column to the last column'''
         # placeholders entry
-        self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address", textvariable=ip_var)
+        self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address",
+                                               textvariable=ip_var)
         self.ip_entry.grid(row=0, column=0, sticky="w", padx=10)
 
-        self.port_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="Port", textvariable=port_var, width=90)
+        self.port_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="Port",
+                                                 textvariable=port_var, width=90)
         self.port_entry.grid(row=0, column=1, sticky="w", padx=10)
 
         # option menus
-        self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"], variable=tcp_udp_var, width=100)
+        self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"],
+                                                          variable=tcp_udp_var, width=100)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
         # advanced settings to top level with all check box
-        self.type_adv_option = customtkinter.CTkButton(master=self.center_frame, text="Advanced", image=self.shortcut_icon, compound="right", command=open_top_adv, width=100)
+        self.type_adv_option = customtkinter.CTkButton(master=self.center_frame, text="Advanced",
+                                                       image=self.shortcut_icon, compound="right", command=open_top_adv,
+                                                       width=100)
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
         # other options menu
-        self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["SHALLOW", "DEEP"], variable=scan_type_var, width=100)
+        self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["SHALLOW", "DEEP"],
+                                                            variable=scan_type_var, width=100)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
-        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0","1","2","3","4"], variable=scan_aggro_var, width=10)
+        self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0", "1", "2", "3", "4"],
+                                                             variable=scan_aggro_var, width=10)
         self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
 
         # button scan
-        self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan ", image=self.search_logo, compound="right", font=customtkinter.CTkFont(size=18), width=70, height=25, command=start_scan)
+        self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan ", image=self.search_logo,
+                                                   compound="right", font=customtkinter.CTkFont(size=18), width=70,
+                                                   height=25, command=start_scan)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
 
         # frame with a tree view for the table
         self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=300)
         self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
 
-        # progress bar, implemented but not started yet
-        self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
-        # the progress bar needs the label too
-        self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
-
         # report folder button
-        self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ", image=self.folder_icon, compound="right", anchor="e", command=export_file)
+        self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ",
+                                                            image=self.folder_icon, compound="right", anchor="e",
+                                                            command=export_file)
         self.report_button_folder.grid(row=4, column=0, padx=10, pady=50, sticky="se")
 
         # welcome frame button on the bottom main frame
-        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="", image=self.profile_icon, command=welcome_page_comm, width=30)
+        self.welcome_button = customtkinter.CTkButton(self.main_frame, text="", image=self.profile_icon,
+                                                      command=welcome_page_comm, width=30)
         self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
 
         # start the welcome message at login
         if welcom_conf == "on":
             welcome_page_comm()
+
 
 if __name__ == "__main__":
     # get the size of the first screen from screeninfo
