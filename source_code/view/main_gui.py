@@ -557,6 +557,13 @@ class App(customtkinter.CTk):
                 top_misconf.geometry(f"900x700")
                 top_misconf.title("Misconfiguration")
 
+            def delete_wid_frame():
+                for widget in self.tree_frame.winfo_children():
+                    widget.destroy()
+
+                for widget in more_frame.winfo_children():
+                    widget.destroy()
+                    
             #frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
             more_frame.grid(row=1, column=0, sticky="nsew")
@@ -574,13 +581,6 @@ class App(customtkinter.CTk):
 
             cancel_button = customtkinter.CTkButton(master=more_frame, text="Clear", command=delete_wid_frame, font=customtkinter.CTkFont(size=20, weight="bold"))
             cancel_button.grid(row=0, column=3, sticky="nsew", pady=10, padx=20)
-
-            def delete_wid_frame():
-                for widget in self.tree_frame.winfo_children():
-                    widget.destroy()
-
-                for widget in more_frame.winfo_children():
-                    widget.destroy()
 
 
         def export_file():
