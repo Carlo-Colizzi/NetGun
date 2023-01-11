@@ -364,20 +364,14 @@ class App(customtkinter.CTk):
             print("Aggro: {}".format(scan_aggro))
             print("Advanced: {} {} {} {}".format(option_var_1, option_var_2, option_var_3, option_var_4))
 
+            exists = scan_tree.winfo_exists()
+            if exists == 1:
+                scan_tree.destroy()
+
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
 
-            # see if the tree was here before
-            treeview_exists = False
-            for widget in scan_tree.winfo_children():
-                if isinstance(widget,ttk.Treeview):
-                    treeview_exists = True
-                    break
 
-            if treeview_exists == True:
-                for widget in scan_tree.winfo_children():
-                    if isinstance(widget, ttk.Treeview):
-                        widget.destroy()
 
             # set number columns
             scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
@@ -437,7 +431,7 @@ class App(customtkinter.CTk):
 
                 # takes name and version
                 name_focus = scan_tree.item(item_focus, "text")
-                version_focus = App.context.scan_result.result[name_focus]['version']
+                version_focus = App.context.scan_result.result['ports'][name_focus]['version']
 
                 # create a top level window
                 top_cve = customtkinter.CTkToplevel()
@@ -486,7 +480,7 @@ class App(customtkinter.CTk):
                 tree_cve.heading("colonna2", text="Reference")
 
                 for name, values in data_cve.items():
-                    tree_cve.insert("", "end", text=name, values=(values['vulnerabilities']['description'], values['vulnerabilities']['reference']))
+                    tree_cve.insert("", "end", text=name, values=(values[0]['description'], values[0]['resource']))
 
                 tree_cve.column("#0", width=150)
                 tree_cve.column("colonna1", width=500)
@@ -522,7 +516,7 @@ class App(customtkinter.CTk):
                     item_link = tree_cve.focus()
 
                     name_link = tree_cve.item(item_link, "text")
-                    url_link = data_cve[name_link]['reference']
+                    url_link = data_cve[name_link][0]['resource']
 
                     web.open(url_link, new=2)
 

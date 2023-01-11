@@ -4,8 +4,10 @@ import speedtest
 class Network_test:
 
     def __init__(self):
-        self.network = speedtest.Speedtest()
-
+        try:
+            self.network = speedtest.Speedtest()
+        except:
+            print("Error!")
     def test_download(self):
         """Test the upload speed of the connection"""
         bytes = self.network.download()
