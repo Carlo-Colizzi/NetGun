@@ -412,10 +412,10 @@ class App(customtkinter.CTk):
                 # add single element to the treeview
                 scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
 
-            os_detected = App.context.scan_result["os"]["name"]
-            print(os_detected)
-            accuracy = App.context.scan_result["os"]["accuracy"]
-            print(accuracy)
+            #os_detected = App.context.scan_result["os"]["name"]
+            #print(os_detected)
+            #accuracy = App.context.scan_result["os"]["accuracy"]
+            #print(accuracy)
 
             # stopping the process and destroying it
             self.scan_progress.stop()
