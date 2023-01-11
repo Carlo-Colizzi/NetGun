@@ -355,8 +355,6 @@ class App(customtkinter.CTk):
             scan_type = scan_type_var.get()
             scan_aggro = int(scan_aggro_var.get())
 
-
-
             print("Ip: {}".format(ip))
             print("Port: {}".format(port))
             print("TCP/UDP: {}".format(tcp_udp))
@@ -364,12 +362,8 @@ class App(customtkinter.CTk):
             print("Aggro: {}".format(scan_aggro))
             print("Advanced: {} {} {} {}".format(option_var_1, option_var_2, option_var_3, option_var_4))
 
-
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
-
-
-
 
             # set number columns
             scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
