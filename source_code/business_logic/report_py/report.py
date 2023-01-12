@@ -3,8 +3,10 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from reportlab.lib.units import cm
+from PIL import Image
 from fpdf import FPDF, XPos, YPos
 from pprint import pprint
+import os
 
 
 def get_max_height(row: list()):
@@ -31,7 +33,7 @@ class Report:
         else:
             self.path = path
 
-    def create_report(self, result_scan: dict, result_cve: dict()):
+    def create_report(self, result_scan: dict):
         """
         create a report of scan results, cve search and os detection
         :param result_scan:  scan result which have to be written on a pdf
@@ -41,12 +43,18 @@ class Report:
         pdf.add_page()
         pdf.set_font("Times", size=30)
 
-        pdf.image("../../persistence/storage/icons/netgun_logo.png", x=90, w=50, h=50)
+        icon_path = os.path.join("../persistence/storage/icons/")
+
+        image_pdf = Image.open(os.path.join(icon_path, "netgun_logo.png"))
+
+        pdf.image(image_pdf, x=90, w=50, h=50)
 
         pdf.set_title("Report")
         pdf.set_author("NetGun")
         pdf.multi_cell(0, pdf.font_size * 2.5, "Report", border=0, align='C', max_line_height=50, markdown=True)
         pdf.set_font(size=10)
+
+        result_cve = result_scan["Vulnerabilities"]
 
         titles = ["Scan Result", "OS Detection"]
         i = 0
@@ -102,14 +110,13 @@ class Report:
         :return: a list as a table
         """
         table = []
-        index = 0
         for keys, values in elements.items():
             if len(values) > 0:
                 if element:
                     table.append([element, keys])
-                for key, value in values[index].items():
-                    table.append([key, value])
-                index += 1
+                for index in range(len(values)):
+                    for key, value in values[index].items():
+                        table.append([key, value])
         return table
 
     @classmethod
@@ -353,7 +360,7 @@ class Report:
 
         return indexes
 
-
+"""
 report = Report()
 versions = {
     'ports': {
@@ -408,4 +415,4 @@ result = {'service': {'ISC BIND 9.4.2': [{'description': 'Off-by-one error in th
                                           'resource': 'http://marc.info/?l=bind-announce&m=122180244228376&w=2'}],
                       "Debian": []}}
 
-report.create_report(versions, result)
+report.create_report(versions, result)"""

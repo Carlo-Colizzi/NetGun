@@ -6,6 +6,7 @@ from source_code.business_logic.cve_exploit.cve import Cve
 from source_code.business_logic.scanner.filter import Filter
 from source_code.business_logic.scanner.scan import Scan
 from source_code.business_logic.scanner.target import Target
+from source_code.business_logic.report_py.report import Report
 import threading
 import asyncio
 from tkinter import *
@@ -38,7 +39,6 @@ class App(customtkinter.CTk):
         App.context.option_var2 = ''
         App.context.option_var3 = ''
         App.context.option_var4 = ''
-
 
         # configuration window main
         self.title("NetGun")
@@ -103,11 +103,6 @@ class App(customtkinter.CTk):
         option_var_3 = ''
         option_var_4 = ''
 
-        print("Iniziato 1")
-        print(option_var_1)
-        print(option_var_2)
-        print(option_var_3)
-        print(option_var_4)
 
         color_option_variable = customtkinter.StringVar(value=system_color)
         ip_var = customtkinter.StringVar(value="127.0.0.1")
@@ -339,18 +334,6 @@ class App(customtkinter.CTk):
             chechbox_save.grid(row=5, column=0, sticky="e", pady=10)
 
         def open_top_adv():
-
-            print("Prima parte top_adv")
-            print(option_var_1)
-            print(option_var_2)
-            print(option_var_3)
-            print(option_var_4)
-            print(vars(App.context._Singleton__instance))
-
-            print(App.context.option_var1)
-
-
-
             # started window and frame
             adv_window = customtkinter.CTkToplevel()
             adv_window.geometry(f"500x300")
@@ -369,9 +352,6 @@ class App(customtkinter.CTk):
             option1_check = customtkinter.CTkCheckBox(master=adv_frame, text="OS detection", variable=opt1_var,
                                                       onvalue="OS detection")
             option1_check.grid(row=0, column=0, sticky="n", pady=10)
-
-            print("ciao" + option_var_1)
-
 
             option2_check = customtkinter.CTkCheckBox(master=adv_frame, text="Disable PING", variable=opt2_var,
                                                       onvalue="Disable PING")
@@ -398,11 +378,6 @@ class App(customtkinter.CTk):
             kill_button = customtkinter.CTkButton(master=adv_frame, text="OK", command=lambda: kill_window(adv_window))
             kill_button.grid(row=4, sticky="se", padx=30, pady=30)
 
-            print("parte finale top_adv")
-            print(option_var_1)
-            print(option_var_2)
-            print(option_var_3)
-            print(option_var_4)
             def kill_window(top):
                 # storing variables and printing for debugging
                 option_var_1 = opt1_var.get()
@@ -418,13 +393,6 @@ class App(customtkinter.CTk):
                 global advanced_option_list
                 advanced_option_list = [x for x in list((option_var_1, option_var_2, option_var_3, option_var_4)) if
                                         x != ""]
-
-
-                print(option_var_1)
-                print(option_var_2)
-                print(option_var_3)
-                print(option_var_4)
-
                 top.destroy()
 
         # a debugging function in terminal
@@ -467,6 +435,7 @@ class App(customtkinter.CTk):
             scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
             result = scan_tmp.start_scan()
             App.context.scan_result = scan_result.Scan_result(result)
+            App.context.scan_result.cve_tmp = {}
             pprint(result)
 
             # label scannning
@@ -556,18 +525,20 @@ class App(customtkinter.CTk):
 
                 tree_cve["columns"] = ("colonna1", "colonna2")
 
-                tree_cve.heading("#0", text="Nome")
+                tree_cve.heading("#0", text="ID")
                 tree_cve.heading("colonna1", text="Description")
                 tree_cve.heading("colonna2", text="Reference")
 
-                number_cve = 0
+                App.context.number_cve = 0
 
-                for name, values in data_cve.items():
-                    for i in range(len(values)):
-                        tree_cve.insert("", "end", text=name, values=(values[i]['description'], values[i]['resource']))
-                        number_cve + 1
+                # for name, values in data_cve.items():
+                for i in range(len(data_cve)):
+                    tree_cve.insert("", "end", text=data_cve[i]['id'],
+                                    values=(data_cve[i]['description'], data_cve[i]['resource']))
+                    App.context.number_cve += 1
 
-                i = 0
+                App.context.scan_result.cve_tmp[version_focus] = data_cve
+
                 tree_cve.column("#0", width=150)
                 tree_cve.column("colonna1", width=500)
                 tree_cve.column("colonna2", width=150)
@@ -578,10 +549,10 @@ class App(customtkinter.CTk):
                                                   font=customtkinter.CTkFont(size=15, weight="bold"),
                                                   text_color="white")
                 # need for the color change
-                if number_cve <= 15:
+                if App.context.number_cve <= 5:
                     text_cve.configure(fg_color="green")
-                elif 16 <= number_cve <= 30:
-                    text_cve.configure(fg_color="yellow")
+                elif 6 <= App.context.number_cve <= 15:
+                    text_cve.configure(fg_color="orange")
                 else:
                     text_cve.configure(fg_color="red")
 
@@ -589,7 +560,7 @@ class App(customtkinter.CTk):
                 prog_bar.stop()
                 prog_bar.destroy()
 
-                texting = "Numbers of CVE:  {}".format(number_cve)
+                texting = "Numbers of CVE:  {}".format(App.context.number_cve)
                 text_cve.configure(text=texting, corner_radius=6)
                 text_cve.grid(row=0, column=0, sticky="w")
 
@@ -688,12 +659,16 @@ class App(customtkinter.CTk):
             cancel_button.grid(row=0, column=3, sticky="nsew", pady=10, padx=20)
 
         def export_file():
-            file = filedialog.asksaveasfilename(filetypes=[("text file", "*.txt")],
-                                                defaultextension='.txt',
+            file = filedialog.asksaveasfilename(filetypes=[("PDF file", "*.pdf")],
+                                                defaultextension='.pdf',
                                                 title='Export Report')
-            fob = open(file, 'w')
-            fob.write("Hello, world!")
-            fob.close()
+            # fob = open(file, 'w')
+            # fob.write("Hello, world!")
+            # fob.close()
+            if hasattr(App.context, 'scan_result'):
+                App.context.scan_result.result['Vulnerabilities'] = {'service': App.context.scan_result.cve_tmp}
+                report = Report(file)
+                report.create_report(App.context.scan_result.result)
 
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")
