@@ -450,11 +450,13 @@ class App(customtkinter.CTk):
             # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
             # prova
 
-            # adding elements to the treeview
+                # adding elements to the treeview
             for name, values in App.context.scan_result.result["ports"].items():
-                # add single element to the treeview
-                scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
-
+                if scan_type == "DEEP":
+                    # add single element to the treeview
+                    scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
+                else:
+                    scan_tree.insert("", "end", text=name, values=(values['service'], '', values['state']))
             # os_detected = App.context.scan_result["os"]["name"]
             # print(os_detected)
             # accuracy = App.context.scan_result["os"]["accuracy"]
@@ -652,7 +654,12 @@ class App(customtkinter.CTk):
             cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon,
                                                  compound="right", command=cve_button_click,
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
+
             cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
+
+            if scan_type == "SHALLOW":
+                cve_button.destroy()
+
 
             cancel_button = customtkinter.CTkButton(master=more_frame, text="Clear", command=delete_wid_frame,
                                                     font=customtkinter.CTkFont(size=20, weight="bold"))
