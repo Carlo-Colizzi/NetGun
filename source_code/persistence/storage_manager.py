@@ -6,14 +6,11 @@ from source_code.business_logic.tips.tip import Tip
 from source_code.business_logic.tutorial.tutorial_collection import Tutorial_collection
 
 class Storage_manager:
-    MISCONFIGURATIONS_XML_PATH = "../../persistence/storage/misconfiguration.xml"
-    MISCONFIGURATIONS_PKL_PATH = "../../persistence/storage/misconfigurations.pkl"
+    MISCONFIGURATIONS_XML_PATH = "../persistence/storage/misconfiguration.xml"
+    MISCONFIGURATIONS_PKL_PATH = "../persistence/storage/misconfigurations.pkl"
 
-    TIPS_XML_PATH = "../../persistence/storage/tip.xml"
-    TIPS_PKL_PATH = "../../persistence/storage/tip.pkl"
-
-    TUTORIALS_XML_PATH = "../../persistence/storage/tutorial.xml"
-    TUTORIALS_PKL_PATH = "../../persistence/storage/tutorial.pkl"
+    TIPS_XML_PATH = "../persistence/storage/tip.xml"
+    TIPS_PKL_PATH = "../persistence/storage/tip.pkl"
 
     @classmethod
     def load_resource(cls, xml_path, pkl_path, create_object_from_file):
@@ -45,10 +42,7 @@ class Storage_manager:
     def load_tips(cls):
         return Storage_manager.load_resource(Storage_manager.TIPS_XML_PATH, Storage_manager.TIPS_PKL_PATH, Tip.parse_tips_from_file)
 
-    @classmethod
-    def load_tutorials(cls):
-        return Storage_manager.load_resource(Storage_manager.TUTORIALS_XML_PATH, Storage_manager.TUTORIALS_PKL_PATH, Tutorial_collection.inizialize_object_from_file_xml)
 
 if __name__ == "__main__":
-    for i in Storage_manager.load_tutorials().tutorials_dict:
-        Storage_manager.load_tutorials().tutorials_dict[i].print_toString()
+    for i in Storage_manager.load_misconfigurations().tutorials_dict:
+        Storage_manager.load_misconfigurations().tutorials_dict[i].print_toString()

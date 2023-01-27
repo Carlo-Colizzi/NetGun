@@ -33,6 +33,7 @@ class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         App.context = Context()
+        App.context.start()
         App.context.network_test = Network_test()
 
         App.context.option_var1 = ''

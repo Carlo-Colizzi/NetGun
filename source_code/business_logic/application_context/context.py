@@ -8,7 +8,6 @@ class Context:
 
         def start(self):
             """This method is executed in the starting point of the application, here are loaded all the persistence data in RAM"""
-            self.tutorial = Storage_manager.load_tutorials()
             self.misconfiguration = Storage_manager.load_misconfigurations()
             self.tip = Storage_manager.load_tips()
     def __getattr__(self, attr):
