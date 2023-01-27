@@ -22,20 +22,23 @@ class Scan:
 
     def start_scan(self) -> dict :
         """Start the scanner on the specified Target and using the specified Filters, with the selected mode"""
-        nm = nmap.PortScanner()
+        try:
+            nm = nmap.PortScanner()
 
-        self.observer.update(30)
+            self.observer.update(30)
 
-        resoults = nm.scan(self.target.ip,self.target.ports_range,self.filter.advanced_options)
+            resoults = nm.scan(self.target.ip,self.target.ports_range,self.filter.advanced_options)
 
-        self.observer.update(70)
-        self.observer.update(90)
-        if self.scan_mode == "SHALLOW":
-            parsed_result = self.parse_resoult_shallow(resoults)
-        elif self.scan_mode == "DEEP":
-            parsed_result = self.parse_resoult_deep(resoults)
+            self.observer.update(70)
+            self.observer.update(90)
+            if self.scan_mode == "SHALLOW":
+                parsed_result = self.parse_resoult_shallow(resoults)
+            elif self.scan_mode == "DEEP":
+                parsed_result = self.parse_resoult_deep(resoults)
 
-        self.observer.update(100)
+            self.observer.update(100)
+        except:
+            raise Exception("Something went wrong while scanning")
         return parsed_result
 
     def parse_resoult_shallow(self, resoult : """nmap dict"""):

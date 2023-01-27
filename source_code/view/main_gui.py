@@ -1,3 +1,4 @@
+import multiprocessing
 import sys
 from pprint import pprint
 
@@ -94,15 +95,10 @@ class App(customtkinter.CTk):
         customtkinter.set_default_color_theme("dark-blue")
 
         # variables
-        global option_var_1
-        global option_var_2
-        global option_var_3
-        global option_var_4
-
-        option_var_1 = ''
-        option_var_2 = ''
-        option_var_3 = ''
-        option_var_4 = ''
+        App.context.option_var1 = ''
+        App.context.option_var2 = ''
+        App.context.option_var3 = ''
+        App.context.option_var4 = ''
 
 
         color_option_variable = customtkinter.StringVar(value=system_color)
@@ -381,19 +377,26 @@ class App(customtkinter.CTk):
 
             def kill_window(top):
                 # storing variables and printing for debugging
-                option_var_1 = opt1_var.get()
-                option_var_2 = opt2_var.get()
-                option_var_3 = opt3_var.get()
-                option_var_4 = opt4_var.get()
+                App.context.option_var1 = opt1_var.get()
+                if App.context.option_var1 == "0":
+                    App.context.option_var1 = ""
 
-                App.context.option_var1 = option_var_1
-                App.context.option_var2 = option_var_2
-                App.context.option_var3 = option_var_3
-                App.context.option_var4 = option_var_4
+                App.context.option_var2 = opt2_var.get()
+                if App.context.option_var2 == "0":
+                    App.context.option_var2 = ""
 
-                global advanced_option_list
-                advanced_option_list = [x for x in list((option_var_1, option_var_2, option_var_3, option_var_4)) if
-                                        x != ""]
+                App.context.option_var3 = opt3_var.get()
+                if App.context.option_var3 == "0":
+                    App.context.option_var3 = ""
+
+                App.context.option_var4 = opt4_var.get()
+                if App.context.option_var4 == "0":
+                    App.context.option_var4 = ""
+
+
+
+                print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2,
+                                                     App.context.option_var3, App.context.option_var4))
                 top.destroy()
 
         # a debugging function in terminal
@@ -405,13 +408,17 @@ class App(customtkinter.CTk):
             tcp_udp = tcp_udp_var.get()
             scan_type = scan_type_var.get()
             scan_aggro = int(scan_aggro_var.get())
+            App.context.advanced_option_list = [x for x in list(
+                (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
+                                                x != ""]
 
             print("Ip: {}".format(ip))
             print("Port: {}".format(port))
             print("TCP/UDP: {}".format(tcp_udp))
             print("Type: {}".format(scan_type))
             print("Aggro: {}".format(scan_aggro))
-            print("Advanced: {} {} {} {}".format(option_var_1, option_var_2, option_var_3, option_var_4))
+            print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4))
+            print("Advanced_Option_List: ", App.context.advanced_option_list)
 
             # initialize tree structure
             scan_tree = ttk.Treeview(self.tree_frame, height=10)
@@ -431,10 +438,28 @@ class App(customtkinter.CTk):
 
             # date examples
             App.context.target = Target(ip, port)
-            App.context.filter = Filter(tcp_udp.lower(), advanced_option_list, scan_aggro)
+            App.context.filter = Filter(tcp_udp.lower(), App.context.advanced_option_list, scan_aggro)
 
             scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
-            result = scan_tmp.start_scan()
+
+            shared_queue_scan_result = multiprocessing.Queue()
+            shared_queue_observer = multiprocessing.Queue()
+
+            process_scan = multiprocessing.Process(target=App.start_scan_process, args=(App, scan_tmp, shared_queue_scan_result))
+            process_scan.daemon = True
+            process_scan_observer = multiprocessing.Process(target=App.scan_observer, args=(App, shared_queue_observer))
+            process_scan.daemon = True
+
+            shared_queue_observer.put((process_scan,progress_bar_scan))
+            process_scan.start()
+            process_scan_observer()
+
+            progress_bar_scan.start()
+
+            result = shared_queue_scan_result.get()
+            del shared_queue_scan_result
+            del shared_queue_observer
+
             App.context.scan_result = scan_result.Scan_result(result)
             App.context.scan_result.cve_tmp = {}
             pprint(result)
@@ -455,9 +480,9 @@ class App(customtkinter.CTk):
             for name, values in App.context.scan_result.result["ports"].items():
                 if scan_type == "DEEP":
                     # add single element to the treeview
-                    scan_tree.insert("", "end", text=name, values=(values['service'], values['version'], values['state']))
+                    scan_tree.insert("", "end", text=name, values=(values['state'], values['service'], values['version']))
                 else:
-                    scan_tree.insert("", "end", text=name, values=(values['service'], '', values['state']))
+                    scan_tree.insert("", "end", text=name, values=(values['state'], values['service'], ''))
             # os_detected = App.context.scan_result["os"]["name"]
             # print(os_detected)
             # accuracy = App.context.scan_result["os"]["accuracy"]
@@ -753,6 +778,17 @@ class App(customtkinter.CTk):
         # start the welcome message at login
         if welcom_conf == "on":
             welcome_page_comm()
+
+    @staticmethod
+    def scan_observer(cls, queue):
+        process_observed, progress_bar = queue.get()
+        process_observed.join()
+        progress_bar.stop()
+
+    @staticmethod
+    def start_scan_process(cls, scan_object, shared_queue):
+        result = scan_object.start_scan()
+        shared_queue.put(result)
 
 
 if __name__ == "__main__":
