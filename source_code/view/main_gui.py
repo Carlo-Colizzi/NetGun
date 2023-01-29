@@ -76,6 +76,7 @@ class App(customtkinter.CTk):
                                                   size=(25, 25))
         self.speedtest_logo = customtkinter.CTkImage(
             Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150, 150))
+        self.error_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "error_icon.png")), size=(50, 50))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
