@@ -8,7 +8,7 @@ class Filter:
         assert transport_protocol in Filter.__TRANSPORT_PROTOCOLS_SUPPORTED, "Invalid Transport Protocol Selected. Use TCP or UDP"
         self.transport_protocol = transport_protocol
 
-        assert Filter.check_aggressivity(aggressivity) == True, "Invalid Threads Number check_threads(threads) failed"
+        assert Filter.check_aggressivity(aggressivity) == True, "Invalid Aggressivity selected"
         self.aggressivity = aggressivity
         self.advanced_options = ""
 

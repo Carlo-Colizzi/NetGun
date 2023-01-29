@@ -35,24 +35,24 @@ class App(customtkinter.CTk):
         super().__init__(*args, **kwargs)
         App.context = Context()
         App.context.start()
-        App.context.network_test = Network_test()
-
         App.context.option_var1 = ''
         App.context.option_var2 = ''
         App.context.option_var3 = ''
         App.context.option_var4 = ''
 
-        # configuration window main
-        self.title("NetGun")
-        self.geometry(f"1300x700")  # default geometry
-        # self.geometry("{}x{}".format(mon_width, mon_height))
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=4)
 
-        # storage path
         storage_path = os.path.join("../persistence/storage")
         conf_path = os.path.join("../persistence/storage/config.ini")
         icon_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), ("../persistence/storage/icons"))
+
+        self.error_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "error_icon.png")), size=(20, 20))
+
+        # configuration window main
+        self.title("NetGun")
+        self.geometry(f"1920x1080")  # default geometry
+        # self.geometry("{}x{}".format(mon_width, mon_height))
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=4)
 
         # debug to see if the path exists
         print(storage_path)
@@ -76,7 +76,6 @@ class App(customtkinter.CTk):
                                                   size=(25, 25))
         self.speedtest_logo = customtkinter.CTkImage(
             Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150, 150))
-        self.error_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "error_icon.png")), size=(50, 50))
 
         # take the settings from configuration
         config = configparser.ConfigParser()
@@ -95,13 +94,6 @@ class App(customtkinter.CTk):
         customtkinter.set_appearance_mode(system_color)
         customtkinter.set_default_color_theme("dark-blue")
 
-        # variables
-        App.context.option_var1 = ''
-        App.context.option_var2 = ''
-        App.context.option_var3 = ''
-        App.context.option_var4 = ''
-
-
         color_option_variable = customtkinter.StringVar(value=system_color)
         ip_var = customtkinter.StringVar(value="127.0.0.1")
         port_var = customtkinter.StringVar(value="1-1024")
@@ -110,17 +102,20 @@ class App(customtkinter.CTk):
         scan_aggro_var = customtkinter.StringVar(value="2")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
-        def error_popup():
+        def error_popup(exception):
             top_error = customtkinter.CTkToplevel()
-            top_error.geometry(f"300x200")
+            top_error.geometry(f"800x100")
             top_error.title("Error")
-            
+
             error_frame_main = customtkinter.CTkFrame(top_error)
             error_frame_main.grid(sticky="nsew")
             error_frame_main.place(relx=0.5, rely=0.5, anchor="c")
-            
-            error_label = customtkinter.CTkLabel(master= error_frame_main, text=" Errore di scrittura o di input, controllare la documentazione",
-                                                 image= self.error_icon, compound="left", font=customtkinter.CTkFont(size=20, weight="bold"))
+
+            text = " ERROR: " + str(exception)
+            error_label = customtkinter.CTkLabel(master=error_frame_main, text=text,
+                                                 image=self.error_icon, compound="left",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"), bg_color="#1a1a1a",
+                                                 text_color="red")
             error_label.grid(sticky="nsew")
     
         # functions for button and other widgets
@@ -204,51 +199,67 @@ class App(customtkinter.CTk):
 
             # funcion to speedtest
             def start_speedtest():
-                nonlocal lock
-                if lock == False:
-                    lock = True
-                    down_label.configure(text=str(0) + "Mbps")
-                    up_label.configure(text=str(0) + "Mbps")
-                    # progress bar create and starting
-                    progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
-                    progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
-                    progress_bar_speedtest.start()
+                try:
+                    nonlocal lock
+                    if lock == False:
+                        lock = True
+                        if not hasattr(App.context, "network_test"):
+                            try:
+                                App.context.network_test = Network_test()
+                            except Exception as e:
+                                lock = False
+                                raise Exception("Impossible to reach the server used for Network Test")
 
-                    def thread_factory(type):
-                        nonlocal tmp_variable
-                        if type == "download":
-                            tmp_variable = App.context.network_test.test_download()
-                        elif type == "upload":
-                            tmp_variable = App.context.network_test.test_upload()
 
-                    def thread_waiter_async(thread_to_wait, event, label, type):
-                        thread_to_wait.join()
-                        nonlocal tmp_variable
-                        nonlocal lock
-                        label.configure(text=str(tmp_variable) + "Mbps")
-                        if type == "upload":
-                            event.stop()
-                            event.destroy()
-                            lock = False
+                        down_label.configure(text=str(0) + "Mbps")
+                        up_label.configure(text=str(0) + "Mbps")
+                        # progress bar create and starting
+                        progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
+                        progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
+                        progress_bar_speedtest.start()
 
-                    def thread_waiter_async_cascade(thread_event, thread_handler, thread_handler2):
-                        thread_event.join()
-                        thread_handler.start()
-                        thread_handler2.start()
+                        def thread_factory(type):
+                            nonlocal tmp_variable
+                            if type == "download":
+                                tmp_variable = App.context.network_test.test_download()
+                            elif type == "upload":
+                                tmp_variable = App.context.network_test.test_upload()
 
-                    thread_download = threading.Thread(target=thread_factory, args=("download",))
-                    thread_download.start()
-                    thread_waiter = threading.Thread(target=thread_waiter_async, args=(
-                        thread_download, progress_bar_speedtest, down_label, "download"))
-                    thread_waiter.start()
+                        def thread_waiter_async(thread_to_wait, event, label, type):
+                            thread_to_wait.join()
+                            nonlocal tmp_variable
+                            nonlocal lock
+                            label.configure(text=str(tmp_variable) + "Mbps")
+                            if type == "upload":
+                                event.stop()
+                                event.destroy()
+                                lock = False
 
-                    thread_upload = threading.Thread(target=thread_factory, args=("upload",))
-                    thread_waiter2 = threading.Thread(target=thread_waiter_async,
-                                                      args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
+                        def thread_waiter_async_cascade(thread_event, thread_handler, thread_handler2):
+                            thread_event.join()
+                            thread_handler.start()
+                            thread_handler2.start()
 
-                    thread_waiter_cascade = threading.Thread(target=thread_waiter_async_cascade,
-                                                             args=(thread_waiter, thread_upload, thread_waiter2))
-                    thread_waiter_cascade.start()
+                        thread_download = threading.Thread(target=thread_factory, args=("download",))
+                        thread_download.daemon = True
+                        thread_download.start()
+                        thread_waiter = threading.Thread(target=thread_waiter_async, args=(
+                            thread_download, progress_bar_speedtest, down_label, "download"))
+                        thread_waiter.daemon = True
+                        thread_waiter.start()
+
+                        thread_upload = threading.Thread(target=thread_factory, args=("upload",))
+                        thread_upload.daemon = True
+                        thread_waiter2 = threading.Thread(target=thread_waiter_async,
+                                                          args=(thread_upload, progress_bar_speedtest, up_label, "upload"))
+                        thread_waiter2.daemon = True
+
+                        thread_waiter_cascade = threading.Thread(target=thread_waiter_async_cascade,
+                                                                 args=(thread_waiter, thread_upload, thread_waiter2))
+                        thread_waiter_cascade.daemon = True
+                        thread_waiter_cascade.start()
+                except Exception as e:
+                    error_popup(e)
 
             # all labels with the default labels for download and other
             download_label = customtkinter.CTkLabel(master=speed_test_frame, text="Download:",
@@ -415,72 +426,77 @@ class App(customtkinter.CTk):
 
         # a debugging function in terminal
         def start_scan():
-            def scan_observer(progress_bar, scan_object, result,values):
+            try:
+                def scan_observer(progress_bar, scan_object, result,values):
 
-                thread = threading.Thread(target=start_scan_process, args=(scan_object, result))
-                thread.start()
+                    thread = threading.Thread(target=start_scan_process, args=(scan_object, result))
+                    thread.daemon = True
+                    thread.start()
 
-                thread.join()
-                progress_bar.stop()
-                scan_end(values)
+                    thread.join()
+                    progress_bar.stop()
+                    scan_end(values)
 
-            def start_scan_process(scan_object, result):
-                result.update(scan_object.start_scan())
+                def start_scan_process(scan_object, result):
+                    result.update(scan_object.start_scan())
 
-            print("Starting scan...")
+                print("Starting scan...")
 
-            ip = ip_var.get()
-            port = port_var.get()
-            tcp_udp = tcp_udp_var.get()
-            scan_type = scan_type_var.get()
-            scan_aggro = int(scan_aggro_var.get())
-            App.context.advanced_option_list = [x for x in list(
-                (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
-                                                x != ""]
+                ip = ip_var.get()
+                port = port_var.get()
+                tcp_udp = tcp_udp_var.get()
+                scan_type = scan_type_var.get()
+                scan_aggro = int(scan_aggro_var.get())
+                App.context.advanced_option_list = [x for x in list(
+                    (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
+                                                    x != ""]
 
 
-            print("Ip: {}".format(ip))
-            print("Port: {}".format(port))
-            print("TCP/UDP: {}".format(tcp_udp))
-            print("Type: {}".format(scan_type))
-            print("Aggro: {}".format(scan_aggro))
-            print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4))
-            print("Advanced_Option_List: ", App.context.advanced_option_list)
+                print("Ip: {}".format(ip))
+                print("Port: {}".format(port))
+                print("TCP/UDP: {}".format(tcp_udp))
+                print("Type: {}".format(scan_type))
+                print("Aggro: {}".format(scan_aggro))
+                print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4))
+                print("Advanced_Option_List: ", App.context.advanced_option_list)
 
-            # initialize tree structure
-            scan_tree = ttk.Treeview(self.tree_frame, height=10)
+                # initialize tree structure
+                scan_tree = ttk.Treeview(self.tree_frame, height=10)
 
-            # progress bar, implemented but not started yet
-            self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
-            # the progress bar needs the label too
-            self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
-            # label scannning
-            self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
+                # progress bar, implemented but not started yet
+                self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
+                # the progress bar needs the label too
+                self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
+                # label scannning
+                self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
 
-            # let appear the progress bar and start
-            self.scan_progress.grid(row=3, column=0, sticky="nw", pady=10)
+                # let appear the progress bar and start
+                self.scan_progress.grid(row=3, column=0, sticky="nw", pady=10)
 
-            # set number columns
-            scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
+                # set number columns
+                scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
 
-            scan_tree.heading("#0", text="PORT")
-            scan_tree.heading("colonna1", text="Service")
-            scan_tree.heading("colonna2", text="Version")
-            scan_tree.heading("colonna3", text="State")
+                scan_tree.heading("#0", text="PORT")
+                scan_tree.heading("colonna1", text="Service")
+                scan_tree.heading("colonna2", text="Version")
+                scan_tree.heading("colonna3", text="State")
 
-            # date examples
-            App.context.target = Target(ip, port)
-            App.context.filter = Filter(tcp_udp.lower(), App.context.advanced_option_list, scan_aggro)
+                # date examples
+                App.context.target = Target(ip, port)
+                App.context.filter = Filter(tcp_udp.lower(), App.context.advanced_option_list, scan_aggro)
 
-            scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
+                scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
 
-            result = {}
+                result = {}
 
-            shared_values = (result, scan_tree, scan_type)
-            thread_scan_observer = threading.Thread(target=scan_observer, args=(self.scan_progress, scan_tmp, result, shared_values))
+                shared_values = (result, scan_tree, scan_type)
+                thread_scan_observer = threading.Thread(target=scan_observer, args=(self.scan_progress, scan_tmp, result, shared_values))
+                thread_scan_observer.daemon = True
 
-            thread_scan_observer.start()
-            self.scan_progress.start()
+                thread_scan_observer.start()
+                self.scan_progress.start()
+            except Exception as e:
+                error_popup(e)
 
         def scan_end(values):
             result, scan_tree, scan_type = values

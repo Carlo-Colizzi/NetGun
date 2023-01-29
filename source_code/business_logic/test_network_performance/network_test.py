@@ -7,7 +7,7 @@ class Network_test:
         try:
             self.network = speedtest.Speedtest()
         except:
-            raise Exception("The internet connection seems to be down")
+            raise ConnectionError("The internet connection seems to be down")
     def test_download(self):
         """Test the upload speed of the connection"""
         bytes = self.network.download()
