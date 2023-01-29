@@ -438,6 +438,15 @@ class App(customtkinter.CTk):
                     result.update(scan_object.start_scan())
 
                 print("Starting scan...")
+                if hasattr(self, "scan_tree"):
+                    self.scan_tree.destroy()
+                if hasattr(self, "tips_button"):
+                    self.tips_button.destroy()
+                if hasattr(self, "cve_button"):
+                    self.cve_button.destroy()
+                if hasattr(self, "misconf_button"):
+                    self.misconf_button.destroy()
+
 
                 ip = ip_var.get()
                 port = port_var.get()
@@ -458,6 +467,7 @@ class App(customtkinter.CTk):
 
                 # initialize tree structure
                 scan_tree = ttk.Treeview(self.tree_frame, height=10)
+                self.scan_tree = scan_tree
 
                 # progress bar
                 self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
@@ -472,9 +482,10 @@ class App(customtkinter.CTk):
                 scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
 
                 scan_tree.heading("#0", text="PORT")
-                scan_tree.heading("colonna1", text="Service")
+                scan_tree.heading("colonna1", text="State")
                 scan_tree.heading("colonna2", text="Version")
-                scan_tree.heading("colonna3", text="State")
+                scan_tree.heading("colonna3", text="Service")
+                scan_tree.column("colonna3", stretch=NO, width=350)
 
                 # date examples
                 App.context.target = Target(ip, port)
@@ -513,15 +524,21 @@ class App(customtkinter.CTk):
 
             # positioning the treeview when start scanning
             scan_tree.grid(row=2, column=0, sticky="nsew")
+
             
-            os_name = "OS: " #+ App.context.scan_result.result["os"]
-            scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
-            scan_os.grid(row=0, column=0, pady=10)
-            
-            status_name = "Status: " #+ App.context.scan_result.result["status"]
+            status_name = "Status: " + App.context.scan_result.result["status"]
             status_label = customtkinter.CTkLabel(master=self.tree_frame, text=status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
-            status_label.grid(row=1, column=0, pady=10)
-            
+            status_label.grid(row=0, column=0, pady=10)
+
+            if "os" in App.context.scan_result.result:
+                if "name" in App.context.scan_result.result["os"]:
+                    os_name = "OS: " + App.context.scan_result.result["os"]["name"]
+            else:
+                os_name = "OS: Not Found"
+
+            scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
+            scan_os.grid(row=1, column=0, pady=10)
+
             # add the scrollbar
             scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
             scan_tree_scroll.grid(row=0, column=1, sticky="nsw")
@@ -686,18 +703,21 @@ class App(customtkinter.CTk):
             tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", image=self.shortcut_icon,
                                                   compound="right", command=tips_button_click,
                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+            self.tips_button = tips_button
             tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=30)
 
             misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration",
                                                      image=self.shortcut_icon, compound="right",
                                                      command=misconf_button_click,
                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
+            self.misconf_button = misconf_button
             misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=30)
 
             # button to open the cve file
             cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon,
                                                  compound="right", command=cve_button_click,
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
+            self.cve_button = cve_button
 
             cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=30)
 
@@ -777,6 +797,8 @@ class App(customtkinter.CTk):
         # frame with a tree view for the table
         self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=300)
         self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
+        #self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=400, width=1200)
+        #self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
 
         # report folder button
         self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ",
