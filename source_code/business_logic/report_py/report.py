@@ -1,11 +1,5 @@
-from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
-from reportlab.lib.units import cm
 from PIL import Image
 from fpdf import FPDF, XPos, YPos
-from pprint import pprint
 import os
 
 
