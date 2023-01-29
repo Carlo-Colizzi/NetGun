@@ -190,7 +190,7 @@ class App(customtkinter.CTk):
             speed_test_window.columnconfigure(0, weight=1)
             speed_test_window.rowconfigure(0, weight=1)
 
-            speed_test_frame = customtkinter.CTkFrame(master=speed_test_window)
+            speed_test_frame = customtkinter.CTkFrame(master=speed_test_window, fg_color="transparent")
             speed_test_frame.grid(row=0, padx=30, pady=30, sticky="n")
 
             tmp_variable = 0
@@ -214,7 +214,7 @@ class App(customtkinter.CTk):
                         up_label.configure(text=str(0) + "Mbps")
                         # progress bar create and starting
                         progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
-                        progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
+                        progress_bar_speedtest.grid(row=1, column=0, sticky="nsew", pady=10)
                         progress_bar_speedtest.start()
 
                         def thread_factory(type):
@@ -275,16 +275,16 @@ class App(customtkinter.CTk):
             up_label = customtkinter.CTkLabel(master=speed_test_frame, text="0", font=customtkinter.CTkFont(size=20))
             up_label.grid(row=1, column=1, sticky="ne", padx=10)
 
-            speedtest_icon = customtkinter.CTkLabel(master=speed_test_frame, text="", image=self.speedtest_logo)
-            speedtest_icon.grid(row=2, column=0, sticky="nse")
-
             # add an other frame to handle start button and progress bar
-            start_frame = customtkinter.CTkFrame(master=speed_test_window)
+            start_frame = customtkinter.CTkFrame(master=speed_test_window, fg_color="transparent")
             start_frame.grid(row=1, padx=30, pady=30, sticky="n")
 
             # button to start speedtest
             start_button = customtkinter.CTkButton(master=start_frame, text="Start", command=start_speedtest)
-            start_button.grid(row=1, column=0, sticky="n", pady=10)
+            start_button.grid(row=2, column=0, sticky="n", pady=10)
+
+            speedtest_icon = customtkinter.CTkLabel(master=start_frame, text="", image=self.speedtest_logo)
+            speedtest_icon.grid(row=0, column=0, sticky="nsew")
 
             # progress bar
             # progress_bar_speedtest = customtkinter.CTkProgressBar(master=start_frame, mode="indeterminate")
@@ -462,7 +462,7 @@ class App(customtkinter.CTk):
                 # progress bar
                 self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
                 # the progress bar needs the label too
-                self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
+                self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...", font=customtkinter.CTkFont(size=25, weight="bold"))
                 # label scannning
                 self.scan_verbose.grid(row=3, column=1, sticky="nsew", pady=10, padx=20)
                 # let appear the progress bar and start
@@ -514,11 +514,11 @@ class App(customtkinter.CTk):
             # positioning the treeview when start scanning
             scan_tree.grid(row=2, column=0, sticky="nsew")
             
-            os_name = "OS: " + App.context.scan_result.result["os"]
+            os_name = "OS: " #+ App.context.scan_result.result["os"]
             scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
             scan_os.grid(row=0, column=0, pady=10)
             
-            status_name = "Status: " + App.context.scan_result.result["status"]
+            status_name = "Status: " #+ App.context.scan_result.result["status"]
             status_label = customtkinter.CTkLabel(master=self.tree_frame, text=status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
             status_label.grid(row=1, column=0, pady=10)
             
