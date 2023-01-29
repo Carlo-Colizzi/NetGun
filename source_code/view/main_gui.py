@@ -401,6 +401,18 @@ class App(customtkinter.CTk):
 
         # a debugging function in terminal
         def start_scan():
+            def scan_observer(progress_bar, scan_object, result,values):
+
+                thread = threading.Thread(target=start_scan_process, args=(scan_object, result))
+                thread.start()
+
+                thread.join()
+                progress_bar.stop()
+                scan_end(values)
+
+            def start_scan_process(scan_object, result):
+                result.update(scan_object.start_scan())
+
             print("Starting scan...")
 
             ip = ip_var.get()
@@ -411,6 +423,7 @@ class App(customtkinter.CTk):
             App.context.advanced_option_list = [x for x in list(
                 (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
                                                 x != ""]
+
 
             print("Ip: {}".format(ip))
             print("Port: {}".format(port))
@@ -427,6 +440,11 @@ class App(customtkinter.CTk):
             self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
             # the progress bar needs the label too
             self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
+            # label scannning
+            self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
+
+            # let appear the progress bar and start
+            self.scan_progress.grid(row=3, column=0, sticky="nw", pady=10)
 
             # set number columns
             scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
@@ -442,54 +460,28 @@ class App(customtkinter.CTk):
 
             scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
 
-            shared_queue_scan_result = multiprocessing.Queue()
-            shared_queue_observer = multiprocessing.Queue()
+            result = {}
 
-            process_scan = multiprocessing.Process(target=App.start_scan_process, args=(App, scan_tmp, shared_queue_scan_result))
-            process_scan.daemon = True
-            process_scan_observer = multiprocessing.Process(target=App.scan_observer, args=(App, shared_queue_observer))
-            process_scan.daemon = True
+            shared_values = (result, scan_tree, scan_type)
+            thread_scan_observer = threading.Thread(target=scan_observer, args=(self.scan_progress, scan_tmp, result, shared_values))
 
-            shared_queue_observer.put((process_scan,progress_bar_scan))
-            process_scan.start()
-            process_scan_observer()
+            thread_scan_observer.start()
+            self.scan_progress.start()
 
-            progress_bar_scan.start()
-
-            result = shared_queue_scan_result.get()
-            del shared_queue_scan_result
-            del shared_queue_observer
-
+        def scan_end(values):
+            result, scan_tree, scan_type = values
             App.context.scan_result = scan_result.Scan_result(result)
             App.context.scan_result.cve_tmp = {}
             pprint(result)
 
-            # label scannning
-            self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
 
-            # let appear the progress bar and start
-            self.scan_progress.grid(row=3, column=0, sticky="nw", pady=10)
-            self.scan_progress.start()
-
-            # codes to find data should be here
-            # to update the verbose you need to change the label eveytime verbose change in the progress
-            # for example: self.scan_verbose.configure(text=<the actual text you want to appear>)
-            # prova
-
-                # adding elements to the treeview
             for name, values in App.context.scan_result.result["ports"].items():
                 if scan_type == "DEEP":
                     # add single element to the treeview
                     scan_tree.insert("", "end", text=name, values=(values['state'], values['service'], values['version']))
                 else:
                     scan_tree.insert("", "end", text=name, values=(values['state'], values['service'], ''))
-            # os_detected = App.context.scan_result["os"]["name"]
-            # print(os_detected)
-            # accuracy = App.context.scan_result["os"]["accuracy"]
-            # print(accuracy)
 
-            # stopping the process and destroying it
-            self.scan_progress.stop()
             self.scan_progress.destroy()
             self.scan_verbose.destroy()
 
@@ -501,6 +493,8 @@ class App(customtkinter.CTk):
             scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
             scan_tree_scroll.grid(row=0, column=1, sticky="nsw")
             scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
+
+
 
             def cve_button_click():
                 # takes the element in the table
@@ -779,16 +773,8 @@ class App(customtkinter.CTk):
         if welcom_conf == "on":
             welcome_page_comm()
 
-    @staticmethod
-    def scan_observer(cls, queue):
-        process_observed, progress_bar = queue.get()
-        process_observed.join()
-        progress_bar.stop()
 
-    @staticmethod
-    def start_scan_process(cls, scan_object, shared_queue):
-        result = scan_object.start_scan()
-        shared_queue.put(result)
+
 
 
 if __name__ == "__main__":
