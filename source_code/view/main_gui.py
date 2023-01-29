@@ -110,6 +110,19 @@ class App(customtkinter.CTk):
         scan_aggro_var = customtkinter.StringVar(value="2")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
+        def error_popup():
+            top_error = customtkinter.CTkToplevel()
+            top_error.geometry(f"300x200")
+            top_error.title("Error")
+            
+            error_frame_main = customtkinter.CTkFrame(top_error)
+            error_frame_main.grid(sticky="nsew")
+            error_frame_main.place(relx=0.5, rely=0.5, anchor="c")
+            
+            error_label = customtkinter.CTkLabel(master= error_frame_main, text=" Errore di scrittura o di input, controllare la documentazione",
+                                                 image= self.error_icon, compound="left", font=customtkinter.CTkFont(size=20, weight="bold"))
+            error_label.grid(sticky="nsew")
+    
         # functions for button and other widgets
         def options_settings():
             window_options = customtkinter.CTkToplevel()
@@ -703,7 +716,7 @@ class App(customtkinter.CTk):
                 App.context.scan_result.result['Vulnerabilities'] = {'service': App.context.scan_result.cve_tmp}
                 report = Report(file)
                 report.create_report(App.context.scan_result.result)
-
+        
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")
         self.main_frame.grid(sticky="nsew")
