@@ -45,12 +45,10 @@ class App(customtkinter.CTk):
         conf_path = os.path.join("../persistence/storage/config.ini")
         icon_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), ("../persistence/storage/icons"))
 
-        self.error_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "error_icon.png")), size=(20, 20))
-
         # configuration window main
         self.title("NetGun")
-        self.geometry(f"1920x1080")  # default geometry
-        # self.geometry("{}x{}".format(mon_width, mon_height))
+        # self.geometry(f"1300x800")  # default geometry
+        self.geometry("{}x{}".format(mon_width, mon_height))
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=4)
 
@@ -74,6 +72,7 @@ class App(customtkinter.CTk):
         self.document_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "doc_light.png")), size=(25, 25))
         self.search_logo = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "search_light.png")),
                                                   size=(25, 25))
+        self.error_icon = customtkinter.CTkImage(Image.open(os.path.join(icon_path, "error_icon.png")), size=(20, 20))
         self.speedtest_logo = customtkinter.CTkImage(
             Image.open(os.path.join(icon_path, "Speedtest_Logo_July_2016.svg_.png")), size=(150, 150))
 
@@ -418,8 +417,6 @@ class App(customtkinter.CTk):
                 if App.context.option_var4 == "0":
                     App.context.option_var4 = ""
 
-
-
                 print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2,
                                                      App.context.option_var3, App.context.option_var4))
                 top.destroy()
@@ -451,7 +448,6 @@ class App(customtkinter.CTk):
                     (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
                                                     x != ""]
 
-
                 print("Ip: {}".format(ip))
                 print("Port: {}".format(port))
                 print("TCP/UDP: {}".format(tcp_udp))
@@ -463,15 +459,14 @@ class App(customtkinter.CTk):
                 # initialize tree structure
                 scan_tree = ttk.Treeview(self.tree_frame, height=10)
 
-                # progress bar, implemented but not started yet
+                # progress bar
                 self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
                 # the progress bar needs the label too
                 self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...")
                 # label scannning
-                self.scan_verbose.grid(row=3, column=1, sticky="nw", pady=10)
-
+                self.scan_verbose.grid(row=3, column=1, sticky="nsew", pady=10, padx=20)
                 # let appear the progress bar and start
-                self.scan_progress.grid(row=3, column=0, sticky="nw", pady=10)
+                self.scan_progress.grid(row=3, column=0, sticky="nsew", pady=10, padx=20)
 
                 # set number columns
                 scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
@@ -504,7 +499,6 @@ class App(customtkinter.CTk):
             App.context.scan_result.cve_tmp = {}
             pprint(result)
 
-
             for name, values in App.context.scan_result.result["ports"].items():
                 if scan_type == "DEEP":
                     # add single element to the treeview
@@ -518,13 +512,20 @@ class App(customtkinter.CTk):
             print("Scan finished.")
 
             # positioning the treeview when start scanning
-            scan_tree.grid(row=0, column=0, sticky="nsew")
+            scan_tree.grid(row=2, column=0, sticky="nsew")
+            
+            os_name = "OS: " + App.context.scan_result.result["os"]
+            scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
+            scan_os.grid(row=0, column=0, pady=10)
+            
+            status_name = "Status: " + App.context.scan_result.result["status"]
+            status_label = customtkinter.CTkLabel(master=self.tree_frame, text=status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
+            status_label.grid(row=1, column=0, pady=10)
+            
             # add the scrollbar
             scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
             scan_tree_scroll.grid(row=0, column=1, sticky="nsw")
             scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
-
-
 
             def cve_button_click():
                 # takes the element in the table
@@ -677,43 +678,32 @@ class App(customtkinter.CTk):
                 top_misconf.geometry(f"900x700")
                 top_misconf.title("Misconfiguration")
 
-            def delete_wid_frame():
-                for widget in self.tree_frame.winfo_children():
-                    widget.destroy()
-
-                for widget in more_frame.winfo_children():
-                    widget.destroy()
-
             # frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
-            more_frame.grid(row=1, column=0, sticky="nsew")
+            more_frame.grid(row=3, column=0, sticky="nsew")
 
             # more buttons
             tips_button = customtkinter.CTkButton(master=more_frame, text="Tips", image=self.shortcut_icon,
                                                   compound="right", command=tips_button_click,
                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
-            tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=20)
+            tips_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=30)
 
             misconf_button = customtkinter.CTkButton(master=more_frame, text="Misconfiguration",
                                                      image=self.shortcut_icon, compound="right",
                                                      command=misconf_button_click,
                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
-            misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=20)
+            misconf_button.grid(row=0, column=1, sticky="nsew", pady=10, padx=30)
 
             # button to open the cve file
             cve_button = customtkinter.CTkButton(master=more_frame, text="Open CVE", image=self.shortcut_icon,
                                                  compound="right", command=cve_button_click,
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
 
-            cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
+            cve_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=30)
 
             if scan_type == "SHALLOW":
                 cve_button.destroy()
 
-
-            cancel_button = customtkinter.CTkButton(master=more_frame, text="Clear", command=delete_wid_frame,
-                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
-            cancel_button.grid(row=0, column=3, sticky="nsew", pady=10, padx=20)
 
         def export_file():
             file = filedialog.asksaveasfilename(filetypes=[("PDF file", "*.pdf")],
