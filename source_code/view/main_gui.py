@@ -545,118 +545,122 @@ class App(customtkinter.CTk):
             scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
 
             def cve_button_click():
-                # takes the element in the table
-                item_focus = scan_tree.focus()
+                try:
+                    # takes the element in the table
+                    item_focus = scan_tree.focus()
 
-                # takes name and version
-                name_focus = scan_tree.item(item_focus, "text")
-                version_focus = App.context.scan_result.result['ports'][name_focus]['version']
+                    # takes name and version
+                    name_focus = scan_tree.item(item_focus, "text")
+                    version_focus = App.context.scan_result.result['ports'][name_focus]['version']
 
-                # create a top level window
-                top_cve = customtkinter.CTkToplevel()
-                top_cve.geometry(f"900x700")
-                top_cve.title(name_focus)
+                    # find all the cve here and codes after start the tree
+                    global data_cve
 
-                main_frame_cve = customtkinter.CTkFrame(top_cve, fg_color="transparent")
-                main_frame_cve.grid(sticky="nsew")
-                main_frame_cve.place(relx=0.5, rely=0.5, anchor="c")
+                    data_cve = Cve(version_focus).search_cve()
 
-                # adding all the frame i need (3)
-                frame_cve_1 = customtkinter.CTkFrame(main_frame_cve, width=800)
-                frame_cve_1.grid(row=0, column=0, pady=10, padx=10, sticky="new")
+                    # create a top level window
+                    top_cve = customtkinter.CTkToplevel()
+                    top_cve.geometry(f"900x700")
+                    top_cve.title(name_focus)
 
-                # adding a frame only to separate frames
-                sep = customtkinter.CTkFrame(frame_cve_1, fg_color="transparent", height=50)
-                sep.grid(row=0, column=1, padx=10)
+                    main_frame_cve = customtkinter.CTkFrame(top_cve, fg_color="transparent")
+                    main_frame_cve.grid(sticky="nsew")
+                    main_frame_cve.place(relx=0.5, rely=0.5, anchor="c")
 
-                frame_cve_2 = customtkinter.CTkFrame(main_frame_cve, height=300)
-                frame_cve_2.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
+                    # adding all the frame i need (3)
+                    frame_cve_1 = customtkinter.CTkFrame(main_frame_cve, width=800)
+                    frame_cve_1.grid(row=0, column=0, pady=10, padx=10, sticky="new")
 
-                frame_cve_3 = customtkinter.CTkFrame(main_frame_cve, height=50, fg_color="transparent")
-                frame_cve_3.grid(row=2, column=0, pady=10, padx=10, sticky="sew")
+                    # adding a frame only to separate frames
+                    sep = customtkinter.CTkFrame(frame_cve_1, fg_color="transparent", height=50)
+                    sep.grid(row=0, column=1, padx=10)
 
-                servicing = "Service:   {}".format(version_focus)
-                # services label in the right
-                label_services = customtkinter.CTkLabel(frame_cve_1, text=servicing,
-                                                        font=customtkinter.CTkFont(size=15, weight="bold"),
-                                                        text_color="white")
-                label_services.grid(row=0, column=2)
+                    frame_cve_2 = customtkinter.CTkFrame(main_frame_cve, height=300)
+                    frame_cve_2.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
 
-                # progress bar for research cve
-                prog_bar = customtkinter.CTkProgressBar(frame_cve_3, mode="indeterminate")
-                prog_bar.grid(row=2, column=0, pady=10)
-                prog_bar.start()
+                    frame_cve_3 = customtkinter.CTkFrame(main_frame_cve, height=50, fg_color="transparent")
+                    frame_cve_3.grid(row=2, column=0, pady=10, padx=10, sticky="sew")
 
-                # find all the cve here and codes after start the tree
-                global data_cve
-                data_cve = Cve(version_focus).search_cve()
+                    servicing = "Service:   {}".format(version_focus)
+                    # services label in the right
+                    label_services = customtkinter.CTkLabel(frame_cve_1, text=servicing,
+                                                            font=customtkinter.CTkFont(size=15, weight="bold"),
+                                                            text_color="white")
+                    label_services.grid(row=0, column=2)
 
-                tree_cve = ttk.Treeview(frame_cve_2, height=10)
+                    # progress bar for research cve
+                    prog_bar = customtkinter.CTkProgressBar(frame_cve_3, mode="indeterminate")
+                    prog_bar.grid(row=2, column=0, pady=10)
+                    prog_bar.start()
 
-                tree_cve["columns"] = ("colonna1", "colonna2")
+                    tree_cve = ttk.Treeview(frame_cve_2, height=10)
 
-                tree_cve.heading("#0", text="ID")
-                tree_cve.heading("colonna1", text="Description")
-                tree_cve.heading("colonna2", text="Reference")
+                    tree_cve["columns"] = ("colonna1", "colonna2")
 
-                App.context.number_cve = 0
+                    tree_cve.heading("#0", text="ID")
+                    tree_cve.heading("colonna1", text="Description")
+                    tree_cve.heading("colonna2", text="Reference")
 
-                # for name, values in data_cve.items():
-                for i in range(len(data_cve)):
-                    tree_cve.insert("", "end", text=data_cve[i]['id'],
-                                    values=(data_cve[i]['description'], data_cve[i]['resource']))
-                    App.context.number_cve += 1
+                    App.context.number_cve = 0
 
-                App.context.scan_result.cve_tmp[version_focus] = data_cve
+                    # for name, values in data_cve.items():
+                    for i in range(len(data_cve)):
+                        tree_cve.insert("", "end", text=data_cve[i]['id'],
+                                        values=(data_cve[i]['description'], data_cve[i]['resource']))
+                        App.context.number_cve += 1
 
-                tree_cve.column("#0", width=150)
-                tree_cve.column("colonna1", width=500)
-                tree_cve.column("colonna2", width=150)
+                    App.context.scan_result.cve_tmp[version_focus] = data_cve
 
-                # debugging varaible for the numbers of cve on a single service
-                # add 2 text boxes on the top left and right
-                text_cve = customtkinter.CTkLabel(master=frame_cve_1, height=70,
-                                                  font=customtkinter.CTkFont(size=15, weight="bold"),
-                                                  text_color="white")
-                # need for the color change
-                if App.context.number_cve <= 5:
-                    text_cve.configure(fg_color="green")
-                elif 6 <= App.context.number_cve <= 15:
-                    text_cve.configure(fg_color="orange")
-                else:
-                    text_cve.configure(fg_color="red")
+                    tree_cve.column("#0", width=150)
+                    tree_cve.column("colonna1", width=500)
+                    tree_cve.column("colonna2", width=150)
 
-                # stopping prog bar
-                prog_bar.stop()
-                prog_bar.destroy()
+                    # debugging varaible for the numbers of cve on a single service
+                    # add 2 text boxes on the top left and right
+                    text_cve = customtkinter.CTkLabel(master=frame_cve_1, height=70,
+                                                      font=customtkinter.CTkFont(size=15, weight="bold"),
+                                                      text_color="white")
+                    # need for the color change
+                    if App.context.number_cve <= 5:
+                        text_cve.configure(fg_color="green")
+                    elif 6 <= App.context.number_cve <= 15:
+                        text_cve.configure(fg_color="orange")
+                    else:
+                        text_cve.configure(fg_color="red")
 
-                texting = "Numbers of CVE:  {}".format(App.context.number_cve)
-                text_cve.configure(text=texting, corner_radius=6)
-                text_cve.grid(row=0, column=0, sticky="w")
+                    # stopping prog bar
+                    prog_bar.stop()
+                    prog_bar.destroy()
 
-                tree_cve.grid(row=0, column=0, sticky="nsew")  # positioning the tree
-                # set the scrollbar
-                tree_cve_scroll = customtkinter.CTkScrollbar(frame_cve_2, command=scan_tree.yview)
-                tree_cve_scroll.grid(row=0, column=1, sticky="nsw")
-                tree_cve.configure(yscrollcommand=scan_tree_scroll.set)
+                    texting = "Numbers of CVE:  {}".format(App.context.number_cve)
+                    text_cve.configure(text=texting, corner_radius=6)
+                    text_cve.grid(row=0, column=0, sticky="w")
 
-                def open_link():
-                    item_link = tree_cve.focus()
+                    tree_cve.grid(row=0, column=0, sticky="nsew")  # positioning the tree
+                    # set the scrollbar
+                    tree_cve_scroll = customtkinter.CTkScrollbar(frame_cve_2, command=scan_tree.yview)
+                    tree_cve_scroll.grid(row=0, column=1, sticky="nsw")
+                    tree_cve.configure(yscrollcommand=scan_tree_scroll.set)
 
-                    name_link = tree_cve.item(item_link, "text")
-                    link = ""
-                    for number in range(len(data_cve)):
-                        if name_link in data_cve[number].values():
-                            link = data_cve[number]['resource']
+                    def open_link():
+                        item_link = tree_cve.focus()
 
-                    if link == "":
-                        print("Link non trovato!")
-                    web.open(link, new=2)
+                        name_link = tree_cve.item(item_link, "text")
+                        link = ""
+                        for number in range(len(data_cve)):
+                            if name_link in data_cve[number].values():
+                                link = data_cve[number]['resource']
 
-                link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon,
-                                                      compound="right", command=open_link,
-                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
-                link_button.grid(row=1, column=0, sticky="sew", pady=10)
+                        if link == "":
+                            print("Link non trovato!")
+                        web.open(link, new=2)
+
+                    link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon,
+                                                          compound="right", command=open_link,
+                                                          font=customtkinter.CTkFont(size=20, weight="bold"))
+                    link_button.grid(row=1, column=0, sticky="sew", pady=10)
+                except Exception as request_exception:
+                    error_popup(request_exception)
 
             def tips_button_click():
                 item_focus = scan_tree.focus()
