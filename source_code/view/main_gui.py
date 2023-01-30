@@ -644,9 +644,14 @@ class App(customtkinter.CTk):
                     item_link = tree_cve.focus()
 
                     name_link = tree_cve.item(item_link, "text")
-                    url_link = data_cve[name_link][0]['resource']
+                    link = ""
+                    for number in range(len(data_cve)):
+                        if name_link in data_cve[number].values():
+                            link = data_cve[number]['resource']
 
-                    web.open(url_link, new=2)
+                    if link == "":
+                        print("Link non trovato!")
+                    web.open(link, new=2)
 
                 link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon,
                                                       compound="right", command=open_link,
