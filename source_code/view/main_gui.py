@@ -541,7 +541,7 @@ class App(customtkinter.CTk):
 
             # add the scrollbar
             scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
-            scan_tree_scroll.grid(row=0, column=1, sticky="nsw")
+            scan_tree_scroll.grid(row=2, column=1, sticky="nsw")
             scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
 
             def cve_button_click():
@@ -652,7 +652,7 @@ class App(customtkinter.CTk):
                                 link = data_cve[number]['resource']
 
                         if link == "":
-                            print("Link non trovato!")
+                            error_popup(Exception("Link not found!"))
                         web.open(link, new=2)
 
                     link_button = customtkinter.CTkButton(master=frame_cve_2, text="Open Link", image=self.link_icon,
