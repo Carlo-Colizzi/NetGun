@@ -474,9 +474,9 @@ class App(customtkinter.CTk):
                 # the progress bar needs the label too
                 self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...", font=customtkinter.CTkFont(size=25, weight="bold"))
                 # label scannning
-                self.scan_verbose.grid(row=3, column=1, sticky="nsew", pady=10, padx=20)
+                self.scan_verbose.grid(row=3, column=0, sticky="nsew", pady=10, padx=30)
                 # let appear the progress bar and start
-                self.scan_progress.grid(row=3, column=0, sticky="nsew", pady=10, padx=20)
+                self.scan_progress.grid(row=4, column=0, sticky="nsew", pady=10, padx=30)
 
                 # set number columns
                 scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
@@ -813,12 +813,12 @@ class App(customtkinter.CTk):
         self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ",
                                                             image=self.folder_icon, compound="right", anchor="e",
                                                             command=export_file)
-        self.report_button_folder.grid(row=4, column=0, padx=10, pady=50, sticky="se")
+        self.report_button_folder.grid(row=5, column=0, padx=10, pady=50, sticky="se")
 
         # welcome frame button on the bottom main frame
         self.welcome_button = customtkinter.CTkButton(self.main_frame, text="", image=self.profile_icon,
                                                       command=welcome_page_comm, width=30)
-        self.welcome_button.grid(row=4, column=1, sticky="se", pady=50)
+        self.welcome_button.grid(row=5, column=1, sticky="se", pady=50)
 
         # start the welcome message at login
         if welcom_conf == "on":
