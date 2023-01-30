@@ -528,7 +528,7 @@ class App(customtkinter.CTk):
             
             status_name = "Status: " + App.context.scan_result.result["status"]
             status_label = customtkinter.CTkLabel(master=self.tree_frame, text=status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
-            status_label.grid(row=0, column=0, pady=10)
+            status_label.grid(row=0, column=0, pady=10, sticky="nw")
 
             if "os" in App.context.scan_result.result:
                 if "name" in App.context.scan_result.result["os"]:
@@ -537,7 +537,7 @@ class App(customtkinter.CTk):
                 os_name = "OS: Not Found"
 
             scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
-            scan_os.grid(row=1, column=0, pady=10)
+            scan_os.grid(row=1, column=0, pady=10, sticky="nw")
 
             # add the scrollbar
             scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
