@@ -465,9 +465,15 @@ class App(customtkinter.CTk):
                 print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4))
                 print("Advanced_Option_List: ", App.context.advanced_option_list)
 
+                style = ttk.Style()
+                style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 12)) # Modify the font of the body
+
+                style.configure("mystyle.Treeview.Heading", font=('Calibri', 15,'bold')) # Modify the font of the headings
+                style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})]) # Remove the borders
                 # initialize tree structure
-                scan_tree = ttk.Treeview(self.tree_frame, height=10)
+                scan_tree = ttk.Treeview(self.tree_frame, height=15, style="mystyle.Treeview")
                 self.scan_tree = scan_tree
+
 
                 # progress bar
                 self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
@@ -485,7 +491,9 @@ class App(customtkinter.CTk):
                 scan_tree.heading("colonna1", text="State")
                 scan_tree.heading("colonna2", text="Version")
                 scan_tree.heading("colonna3", text="Service")
-                scan_tree.column("colonna3", stretch=NO, width=350)
+                scan_tree.column("colonna1", stretch=NO, width=265)
+                scan_tree.column("colonna2", stretch=NO, width=265)
+                scan_tree.column("colonna3", stretch=NO, width=450)
 
                 # date examples
                 App.context.target = Target(ip, port)
@@ -525,7 +533,6 @@ class App(customtkinter.CTk):
             # positioning the treeview when start scanning
             scan_tree.grid(row=2, column=0, sticky="nsew")
 
-            
             status_name = "Status: " + App.context.scan_result.result["status"]
             status_label = customtkinter.CTkLabel(master=self.tree_frame, text=status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
             status_label.grid(row=0, column=0, pady=10, sticky="nw")
@@ -804,10 +811,10 @@ class App(customtkinter.CTk):
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
 
         # frame with a tree view for the table
-        self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=300)
-        self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
-        #self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=400, width=1200)
+        #self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=300)
         #self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
+        self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=400, width=1200)
+        self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
 
         # report folder button
         self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ",
