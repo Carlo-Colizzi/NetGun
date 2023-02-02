@@ -98,7 +98,7 @@ class App(customtkinter.CTk):
         port_var = customtkinter.StringVar(value="1-1024")
         tcp_udp_var = customtkinter.StringVar(value="TCP")
         scan_type_var = customtkinter.StringVar(value="DEEP")
-        scan_aggro_var = customtkinter.StringVar(value="2")
+        scan_aggro_var = customtkinter.StringVar(value="4")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
 
         def error_popup(exception):
