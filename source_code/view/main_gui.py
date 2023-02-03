@@ -93,6 +93,7 @@ class App(customtkinter.CTk):
         customtkinter.set_appearance_mode(system_color)
         customtkinter.set_default_color_theme("dark-blue")
 
+        #variables
         color_option_variable = customtkinter.StringVar(value=system_color)
         ip_var = customtkinter.StringVar(value="127.0.0.1")
         port_var = customtkinter.StringVar(value="1-1024")
@@ -100,6 +101,13 @@ class App(customtkinter.CTk):
         scan_type_var = customtkinter.StringVar(value="DEEP")
         scan_aggro_var = customtkinter.StringVar(value="4")
         chechbox_welcome_var = customtkinter.StringVar(value=welcom_conf)
+                
+        # main button's dim variables
+        main_font = customtkinter.CTkFont(size=18)
+        main_width = 120
+        main_height = 40
+        quadr_width = 40
+        quadr_height = 40
 
         def error_popup(exception):
             top_error = customtkinter.CTkToplevel()
@@ -752,13 +760,13 @@ class App(customtkinter.CTk):
                 App.context.scan_result.result['Vulnerabilities'] = {'service': App.context.scan_result.cve_tmp}
                 report = Report(file)
                 report.create_report(App.context.scan_result.result)
-        
+ 
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")
         self.main_frame.grid(sticky="nsew")
         self.main_frame.place(relx=0.5, rely=0.5, anchor="c")
 
-        # label
+        # label title of NetGun
         self.main_frame_label = customtkinter.CTkLabel(self.main_frame, text=" NetGun", image=self.logo_icon,
                                                        compound="left",
                                                        font=customtkinter.CTkFont(size=40, weight="bold"))
@@ -766,7 +774,7 @@ class App(customtkinter.CTk):
 
         # options button
         self.options_button = customtkinter.CTkButton(self.main_frame, text="", image=self.option_icon, compound="top",
-                                                      command=options_settings, width=25)
+                                                      command=options_settings, width=quadr_width, height=quadr_height)
         self.options_button.grid(row=0, column=1, sticky="e")
 
         # buttons and text in main
@@ -777,37 +785,38 @@ class App(customtkinter.CTk):
         '''Step through every column from the first column to the last column'''
         # placeholders entry
         self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address",
-                                               textvariable=ip_var)
+                                               textvariable=ip_var, width=main_width, height=main_height,
+                                               font=main_font)
         self.ip_entry.grid(row=0, column=0, sticky="w", padx=10)
 
         self.port_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="Port",
-                                                 textvariable=port_var, width=90)
+                                                 textvariable=port_var, width=main_width, height=main_height, font=main_font)
         self.port_entry.grid(row=0, column=1, sticky="w", padx=10)
 
         # option menus
         self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"],
-                                                          variable=tcp_udp_var, width=100)
+                                                          variable=tcp_udp_var, width=main_width, height=main_height, font=main_font)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
 
         # advanced settings to top level with all check box
         self.type_adv_option = customtkinter.CTkButton(master=self.center_frame, text="Advanced",
                                                        image=self.shortcut_icon, compound="right", command=open_top_adv,
-                                                       width=100)
+                                                       width=main_width, height=main_height, font=main_font)
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
         # other options menu
         self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["SHALLOW", "DEEP"],
-                                                            variable=scan_type_var, width=100)
+                                                            variable=scan_type_var, width=main_width, height=main_height, font=main_font)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
         self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0", "1", "2", "3", "4"],
-                                                             variable=scan_aggro_var, width=10)
+                                                             variable=scan_aggro_var, width=quadr_width, height=quadr_height, font=main_font)
         self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
 
         # button scan
         self.scan_button = customtkinter.CTkButton(self.center_frame, text="Scan ", image=self.search_logo,
-                                                   compound="right", font=customtkinter.CTkFont(size=18), width=70,
-                                                   height=25, command=start_scan)
+                                                   compound="right", font=main_font, width=main_width,
+                                                   height=main_height, command=start_scan)
         self.scan_button.grid(row=0, column=6, sticky="nsew", padx=10)
 
         # frame with a tree view for the table
@@ -819,21 +828,17 @@ class App(customtkinter.CTk):
         # report folder button
         self.report_button_folder = customtkinter.CTkButton(self.main_frame, text="Export Report  ",
                                                             image=self.folder_icon, compound="right", anchor="e",
-                                                            command=export_file)
+                                                            command=export_file, width=main_width, height=main_height, font=main_font)
         self.report_button_folder.grid(row=5, column=0, padx=10, pady=50, sticky="se")
 
         # welcome frame button on the bottom main frame
         self.welcome_button = customtkinter.CTkButton(self.main_frame, text="", image=self.profile_icon,
-                                                      command=welcome_page_comm, width=30)
+                                                      command=welcome_page_comm, width=quadr_width, height=quadr_height)
         self.welcome_button.grid(row=5, column=1, sticky="se", pady=50)
 
         # start the welcome message at login
         if welcom_conf == "on":
             welcome_page_comm()
-
-
-
-
 
 if __name__ == "__main__":
     # get the size of the first screen from screeninfo
