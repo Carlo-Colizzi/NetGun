@@ -1,4 +1,3 @@
-import multiprocessing
 import sys
 from pprint import pprint
 
@@ -7,14 +6,11 @@ from source_code.business_logic.cve_exploit.cve import Cve
 from source_code.business_logic.scanner.filter import Filter
 from source_code.business_logic.scanner.scan import Scan
 from source_code.business_logic.scanner.target import Target
-from source_code.business_logic.report_py.report import Report
+from source_code.business_logic.report.report import Report
 import threading
-import asyncio
 from tkinter import *
-import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from tkinter.filedialog import asksaveasfile
 import customtkinter
 import screeninfo
 import webbrowser as web
@@ -23,7 +19,7 @@ import configparser
 from PIL import Image
 from source_code.business_logic.test_network_performance.network_test import Network_test
 from source_code.business_logic.application_context.context import Context
-from source_code.business_logic.scanner import scan, scan_result
+from source_code.business_logic.scanner import scan_result
 
 print(vars())
 
