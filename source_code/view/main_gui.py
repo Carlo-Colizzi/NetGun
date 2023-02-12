@@ -719,6 +719,30 @@ class App(customtkinter.CTk):
                 top_misconf.geometry(f"900x700")
                 top_misconf.title("Misconfiguration")
 
+                misconf_frame = customtkinter.CTkFrame(top_misconf)
+                misconf_frame.grid(sticky="nsew")
+                misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
+
+                service_label = customtkinter.CTkLabel(top_misconf, text=service_focus,
+                                                       font=customtkinter.CTkFont(size=40, weight="bold"))
+                service_label.grid(sticky="nw", pady=10, padx=30)
+
+                tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", width=350)
+                tool_install.grid(row=0, column=0, sticky="nsew", pady=10)
+                tool_install.insert("end", "anche un testo preso da json o config")
+                tool_install.configure(state="disabled")
+
+                test_type = customtkinter.CTkLabel(top_misconf, text="Test type", font=main_font)
+                test_type.grid(row=1, column=0, sticky="nsew", pady=10) 
+
+                description_label = customtkinter.CTkLabel(top_misconf, text="Description", font=main_font)
+                description_label.grid(row=2, column=0, sticky="nsew", pady=10)
+
+                command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", width=350)
+                command_textbox.grid(row=3, column=0, sticky="nsew", pady=10)
+                command_textbox.insert("end", "anche un testo preso da json o config")
+                command_textbox.configure(state="disabled")
+
             # frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
             more_frame.grid(row=3, column=0, sticky="nsew")
