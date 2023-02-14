@@ -14,26 +14,22 @@ class Cve:
     def search_cve(self) -> dict:
         """ Research CVE given a group of services from the Scan Result. 
         Return  a dictionary with Version, CVE-id, CVE description and resources where the user can read  """
-        results_tmp = {}
         response_version = requests.get(self.path,
                                         params={"keywordSearch": self.versions},
                                         headers=self.header)
         try:
             if response_version.status_code == 200:
                 data = response_version.json()
-                results_tmp = Cve.get_vulnerabilities(data, self.versions)
+                results = Cve.get_vulnerabilities(data)
             else:
                 raise Exception()
         except Exception as e:
             raise Exception("National Vulnerabilities Database not reachable")
-        # results = results_tmp
-        self.results = results_tmp
-        return results_tmp
+        return results
 
     @classmethod
-    def get_vulnerabilities(cls, data: dict, version) -> dict:
+    def get_vulnerabilities(cls, data: dict) -> dict:
         """ Create a list of dictionary with Version, CVE-id, CVE Description e References"""
-        # results = {"vulnerabilities": []}
         results = []
         for cve in data["vulnerabilities"]:
             if len(cve["cve"]["references"]) > 0:
@@ -44,5 +40,5 @@ class Cve:
         return results
 
 
-#cve_element = Cve("Apache httpd 2.2.8")
-#pprint(cve_element.search_cve())
+cve_element = Cve("Apache httpd 2.2.8")
+pprint(cve_element.search_cve())

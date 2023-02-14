@@ -31,7 +31,6 @@ class Report:
         """
         create a report of scan results, cve search and os detection
         :param result_scan:  scan result which have to be written on a pdf
-        :param result_cve: research cve result which have to be written on a pdf
         """
         pdf = FPDF()
         pdf.add_page()
@@ -59,8 +58,8 @@ class Report:
                                             align_data='C', align_header='C', emphasize_data=['open'],
                                             emphasize_headers=['ports', 'service', 'version', 'state', 'accuracy',
                                                                'name'],
-                                            emphaize_header_color=(3, 0, 138), emphaize_data_color=(0, 100, 0),
-                                            emphaize_header_style="Times", emphaize_data_style="Times",
+                                            emphasize_header_color=(3, 0, 138), emphasize_data_color=(0, 100, 0),
+                                            emphasize_header_style="Times", emphasize_data_style="Times",
                                             type_table="horizontal", pdf=pdf)
                 pdf.ln()
                 i += 1
@@ -68,9 +67,9 @@ class Report:
         for key, values in result_cve.items():
             pdf = Report.draw_table_pdf(table_data=Report.create_table(values, key), title="CVE Result", title_size=16,
                                         data_size=12, align_data='L', align_header='L', emphasize_data=['open'],
-                                        emphasize_headers=[], emphaize_header_color=(0, 0, 0),
-                                        emphaize_data_color=(0, 100, 0),
-                                        emphaize_header_style="Times", emphaize_data_style="Times",
+                                        emphasize_headers=[], emphasize_header_color=(0, 0, 0),
+                                        emphasize_data_color=(0, 100, 0),
+                                        emphasize_header_style="Times", emphasize_data_style="Times",
                                         type_table="vertical",
                                         pdf=pdf)
             pdf.ln()
@@ -145,8 +144,8 @@ class Report:
 
     @classmethod
     def draw_table_pdf(cls, table_data: list, title="", title_size=14, data_size=10, align_data='L', align_header='L',
-                       emphasize_data=['*'], emphasize_headers=['*'], emphaize_header_color=(0, 0, 0),
-                       emphaize_data_color=(0, 0, 0), emphaize_header_style="Times", emphaize_data_style="Times",
+                       emphasize_data=['*'], emphasize_headers=['*'], emphasize_header_color=(0, 0, 0),
+                       emphasize_data_color=(0, 0, 0), emphasize_header_style="Times", emphasize_data_style="Times",
                        type_table="horizontal", pdf=None):
 
         """
@@ -167,10 +166,10 @@ class Report:
                             Default 'L'.
         :param emphasize_data:  which data  are to be emphasized (list). Default all data(*).
         :param emphasize_headers: which header are to be emphasized(list). Default all headers(*).
-        :param emphaize_header_color: used to set font color of the header. Default (0, 0, 0)  = black.
-        :param emphaize_data_color: used to set font color of the data. Default (0, 0, 0) = black.
-        :param emphaize_header_style: used to set font style of the header. Default 'Times'.
-        :param emphaize_data_style: used to set font style of the data. Default 'Times'.
+        :param emphasize_data_color: used to set font color of the data. Default (0, 0, 0) = black.
+        :param emphasize_header_style: used to set font style of the header. Default 'Times'.
+        :param emphasize_data_style: used to set font style of the data. Default 'Times'.
+        :param emphasize_header_color: used to set font color of the header. Default (0, 0, 0) = black.
         :param type_table: used to draw a table vertical or horizontal in the pdf. Default horizontal.
         :param pdf: used to draw in your pdf        :return:
         """
@@ -202,14 +201,14 @@ class Report:
             data = table_data[1:]
             pdf = Report.add_horizontal_table_headers(headers, pdf, col_width, line_height, align_header,
                                                       emphasize_headers,
-                                                      emphaize_header_color, emphaize_header_style)
+                                                      emphasize_header_color, emphasize_header_style)
             x_right = pdf.get_x()
             pdf.ln(line_height)
             y2 = pdf.get_y()
             pdf.line(x_left, y1, x_right, y1)
             pdf.line(x_left, y2, x_right, y2)
             pdf = Report.add_horizontal_table_data(data, pdf, col_width, line_height, align_data, emphasize_data,
-                                                   emphaize_data_color, emphaize_data_style)
+                                                   emphasize_data_color, emphasize_data_style)
 
         elif type_table == "vertical":
             pdf.line(x_left, y1, x_right, y1)
@@ -217,7 +216,7 @@ class Report:
 
             pdf = Report.add_vertical_table_data(table_data, pdf, col_width, line_height, align_header,
                                                  emphasize_headers,
-                                                 emphaize_header_color, emphaize_header_style)
+                                                 emphasize_header_color, emphasize_header_style)
             pdf.ln(line_height)
 
         y3 = pdf.get_y()

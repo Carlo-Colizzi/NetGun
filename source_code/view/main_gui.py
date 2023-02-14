@@ -2,7 +2,7 @@ import sys
 from pprint import pprint
 
 sys.path.insert(0, "../../../NetGun_Classe03")
-from source_code.business_logic.cve_exploit.cve import Cve
+from source_code.business_logic.cve.cve import Cve
 from source_code.business_logic.scanner.filter import Filter
 from source_code.business_logic.scanner.scan import Scan
 from source_code.business_logic.scanner.target import Target
