@@ -76,6 +76,7 @@ class Report:
             pdf.ln()
 
         pdf.output(self.path)
+        return True
 
     @classmethod
     def create_table(cls, results: dict, key: str) -> list:
@@ -353,6 +354,11 @@ class Report:
                     indexes.append(index)
 
         return indexes
+
+
+#report = Report()
+#dict = {}
+#report.create_report(dict)
 
 """
 report = Report()
