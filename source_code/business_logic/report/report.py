@@ -22,6 +22,7 @@ class Report:
     __HORIZONTAL_TABLE = ["ports", "os"]
 
     def __init__(self, path=""):
+        assert  len(path) < 256, "Filename too long"
         if path == "" or path == " ":
             self.path = "report.pdf"
         else:
