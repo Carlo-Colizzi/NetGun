@@ -778,6 +778,7 @@ class App(customtkinter.CTk):
             # fob.close()
             if hasattr(App.context, 'scan_result'):
                 App.context.scan_result.result['Vulnerabilities'] = {'service': App.context.scan_result.cve_tmp}
+                pprint(App.context.scan_result.result)
                 report = Report(file)
                 report.create_report(App.context.scan_result.result)
  
