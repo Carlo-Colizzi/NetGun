@@ -1,3 +1,5 @@
+import re
+
 from PIL import Image
 from fpdf import FPDF, XPos, YPos
 import os
@@ -17,16 +19,24 @@ def get_max_height(row: list()):
 
 
 class Report:
+    __path_re = r'^\/?([\w\-.]+\/)*[\w\-.]+\.[\w\-.]+$'
     # Lists used to decide which table to create
     __VERTICAL_TABLE = ["service"]
     __HORIZONTAL_TABLE = ["ports", "os"]
 
     def __init__(self, path=""):
-        assert len(path) < 256, "Filename too long"
+        assert Report.check_path(), "Wrong FileName inserted"
         if path == "" or path == " ":
             self.path = "report.pdf"
         else:
             self.path = path
+
+    @classmethod
+    def check_path(cls, path):
+        if len(path) <= 256 and re.match(cls.__path_re, path):
+            return True
+        else:
+            return False
 
     def create_report(self, result_scan: dict):
         """
@@ -76,7 +86,6 @@ class Report:
             pdf.ln()
 
         pdf.output(self.path)
-        return True
 
     @classmethod
     def create_table(cls, results: dict, key: str) -> list:
