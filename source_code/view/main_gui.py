@@ -105,6 +105,7 @@ class App(customtkinter.CTk):
         quadr_height = 40
 
         def error_popup(exception):
+            '''This is an error message, it shows an exception message taken with the error in given function'''
             top_error = customtkinter.CTkToplevel()
             top_error.geometry(f"800x100")
             top_error.title("Error")
@@ -122,6 +123,7 @@ class App(customtkinter.CTk):
     
         # functions for button and other widgets
         def options_settings():
+            '''Option settings popup, in this method you can change the color appearance and set it with save button'''
             window_options = customtkinter.CTkToplevel()
             window_options.geometry(f"400x200")
             window_options.title("Options")
@@ -168,6 +170,7 @@ class App(customtkinter.CTk):
             save_app_button.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 
         def manual_command():
+            '''When you press this button will pop-up a dialog with the given manual'''
             # welcome frame and window
             manual_window = customtkinter.CTkToplevel()
             manual_window.geometry(f"800x400")
@@ -187,6 +190,7 @@ class App(customtkinter.CTk):
             manual_label.configure(state="disabled")
 
         def speed_test_button():
+            '''Run a speedtest powered by Ookla in the nearest and better server'''
             speed_test_window = customtkinter.CTkToplevel()
             speed_test_window.geometry(f"600x400")
             speed_test_window.title("Speed Test")
@@ -294,6 +298,7 @@ class App(customtkinter.CTk):
             # progress_bar_speedtest.grid(row=0, column=0, sticky="nsew", pady=10)
 
         def welcome_page_comm():
+            '''Welcome page is a simple dialog with all the main links and buttons to other dialogs, you can toggle if open or not at login with the checkbox'''
             # welcome frame and window
             welcome_window = customtkinter.CTkToplevel()
             welcome_window.geometry(f"600x650")
@@ -358,6 +363,7 @@ class App(customtkinter.CTk):
             chechbox_save.grid(row=5, column=0, sticky="e", pady=10)
 
         def open_top_adv():
+            '''Dialog checkbox for advanced options (OS detection, Disable PING, SYN scan, ACK scan), SYN and ACK are not compatible together, default it set all to none.'''
             # started window and frame
             adv_window = customtkinter.CTkToplevel()
             adv_window.geometry(f"500x300")
@@ -426,6 +432,7 @@ class App(customtkinter.CTk):
 
         # a debugging function in terminal
         def start_scan():
+            '''The scan itself is powered bu nmap, it takes ip, port, advanced options, aggressivity and mode from other fields and start scanning'''
             try:
                 def scan_observer(progress_bar, scan_object, result,values):
 
@@ -555,6 +562,7 @@ class App(customtkinter.CTk):
             scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
 
             def cve_button_click():
+                '''Open a dialog with the common CVE and Vulnerabilty, all link can be selected and opened'''
                 try:
                     # takes the element in the table
                     item_focus = scan_tree.focus()
@@ -673,6 +681,7 @@ class App(customtkinter.CTk):
                     error_popup(request_exception)
 
             def tips_button_click():
+                '''This dialog would show simple tips'''
                 item_focus = scan_tree.focus()
 
                 # takes name and service
@@ -703,6 +712,7 @@ class App(customtkinter.CTk):
                 description_serv.grid(row=1, column=0, sticky="nsew")
 
             def misconf_button_click():
+                '''Misconfiguration for the selected service, most common ones will open'''
                 item_focus = scan_tree.focus()
 
                 # takes name and service
@@ -769,6 +779,7 @@ class App(customtkinter.CTk):
 
 
         def export_file():
+            '''Export file will open a dialog window to select the path to save the file report.pdf'''
             file = filedialog.asksaveasfilename(filetypes=[("PDF file", "*.pdf")],
                                                 defaultextension='.pdf',
                                                 title='Export Report')
@@ -802,18 +813,20 @@ class App(customtkinter.CTk):
         self.center_frame = customtkinter.CTkFrame(self.main_frame, fg_color="transparent")
         self.center_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=20)
 
-        '''Step through every column from the first column to the last column'''
         # placeholders entry
+        '''Ip placeholder, here will go the ip address. EXAMPLE: "192.168.1.109"'''
         self.ip_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="IP Address",
                                                textvariable=ip_var, width=main_width, height=main_height,
                                                font=main_font)
         self.ip_entry.grid(row=0, column=0, sticky="w", padx=10)
 
+        '''Port placeholder, here will go the port range. EXAMPLE: "1-104"'''
         self.port_entry = customtkinter.CTkEntry(master=self.center_frame, placeholder_text="Port",
                                                  textvariable=port_var, width=main_width, height=main_height, font=main_font)
         self.port_entry.grid(row=0, column=1, sticky="w", padx=10)
 
         # option menus
+        '''TCP/UDP, select one of the 2 types. EXAMPLE: "TCP"'''
         self.tcp_udp_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["TCP", "UDP"],
                                                           variable=tcp_udp_var, width=main_width, height=main_height, font=main_font)
         self.tcp_udp_option.grid(row=0, column=2, sticky="w", padx=10)
@@ -825,10 +838,12 @@ class App(customtkinter.CTk):
         self.type_adv_option.grid(row=0, column=3, sticky="w", padx=10)
 
         # other options menu
+        '''The scan type mode, how hard can be the scan, select one of the list, default is SHALLOW. EXAMPLE: "DEEP"'''
         self.scan_type_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["SHALLOW", "DEEP"],
                                                             variable=scan_type_var, width=main_width, height=main_height, font=main_font)
         self.scan_type_option.grid(row=0, column=4, sticky="w", padx=10)
 
+        '''Aggressivity placeholder, aggressivity misured in a scale 0 to 4, from the slowest to the fastest. EXAMPLE: "4"'''
         self.scan_aggro_option = customtkinter.CTkOptionMenu(master=self.center_frame, values=["0", "1", "2", "3", "4"],
                                                              variable=scan_aggro_var, width=quadr_width, height=quadr_height, font=main_font)
         self.scan_aggro_option.grid(row=0, column=5, sticky="w", padx=10)
