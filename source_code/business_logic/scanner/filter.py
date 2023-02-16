@@ -1,6 +1,8 @@
 import os
 
+"""@author: Carlo Colizzi"""
 class Filter:
+    """Class Manager of the scan filtering"""
     __TRANSPORT_PROTOCOLS_SUPPORTED = {"tcp":"","udp":"-sU"}
     __ADVANCED_OPTIONS_SUPPORTED ={"OS detection" : "O","Disable PING" : "Pn", "SYN scan" : "PS", "ACK scan" : "PA"}
 
@@ -30,7 +32,7 @@ class Filter:
         return output
     @classmethod
     def advanced_option_convert(self, advanced_options : list[str]):
-        "O comment manc"
+        "Convert a List of advanced options already mapped with the dictionary, in the original List"
         for i in range(len(advanced_options)):
             advanced_options[i] = Filter.__ADVANCED_OPTIONS_SUPPORTED[advanced_options[i]]
 

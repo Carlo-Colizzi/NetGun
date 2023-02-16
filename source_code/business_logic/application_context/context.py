@@ -1,6 +1,8 @@
 from source_code.persistence.storage_manager import Storage_manager
 
+"""@author: Carlo Colizzi"""
 class Context:
+    """This class represents the Entire Application Context, using a Singleton Design Pattern"""
     __istance = None
 
     class __impl:

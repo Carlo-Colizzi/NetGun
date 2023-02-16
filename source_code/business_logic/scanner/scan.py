@@ -2,13 +2,13 @@ import nmap
 from pprint import pprint
 from source_code.business_logic.scanner.target import Target
 from source_code.business_logic.scanner.filter import Filter
-from source_code.business_logic.scanner.observer_progress import Observer_progress
-
+"""@author: Carlo Colizzi"""
 class Scan:
+    """Class Manager of the scan functionality"""
+
     __MODES_SUPPORTED = {"SHALLOW": "","DEEP" : "-sV"}
 
     def __init__(self, target : Target = None, filter : filter = None, scan_mode : str = "SHALLOW"):
-        self.observer = Observer_progress()
         self.observer.update(10)
         assert scan_mode in Scan.__MODES_SUPPORTED, "Invalid Mode Selected. Use SHALLOW or DEEP"
         assert target is not None, "Target is not selected"

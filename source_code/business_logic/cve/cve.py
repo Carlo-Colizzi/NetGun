@@ -1,8 +1,10 @@
 import requests
 from pprint import pprint
 
-
+"""@author: Giulio Incoronato"""
 class Cve:
+    """This class represents a single CVE"""
+
     path = "https://services.nvd.nist.gov/rest/json/cves/2.0?"
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " \
                             "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
@@ -39,6 +41,6 @@ class Cve:
 
         return results
 
-
-cve_element = Cve("Apache httpd 2.2.8")
-pprint(cve_element.search_cve())
+if __name__ == "__main__":
+    cve_element = Cve("Apache httpd 2.2.8")
+    pprint(cve_element.search_cve())

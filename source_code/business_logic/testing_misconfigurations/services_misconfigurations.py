@@ -1,7 +1,9 @@
 import xml.etree.ElementTree as ET
 from source_code.business_logic.testing_misconfigurations.misconfiguration import Misconfiguration
 
+"""@author: Carlo Colizzi"""
 class Services_misconfigurations:
+    """This class represents a collection of misconfigurations"""
 
     def __init__(self, misconfigurations_dict):
         self.misconfigurations_dict = misconfigurations_dict

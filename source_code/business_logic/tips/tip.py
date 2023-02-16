@@ -1,7 +1,11 @@
 import xml.etree.ElementTree as ET
 from source_code.business_logic.testing_misconfigurations.misconfiguration import Misconfiguration
 import pprint
+
+
+"""@author: Carlo Colizzi"""
 class Tip:
+    """This class represents a single Tip"""
 
     def __int__(self):
         pass

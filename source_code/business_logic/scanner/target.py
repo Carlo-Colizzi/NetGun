@@ -1,6 +1,8 @@
 import re
 
+"""@author: Carlo Colizzi"""
 class Target:
+    """Class Manager of the scan Target"""
 
     def __init__(self, ip: str = "127.0.0.1", ports_range: str = "1-65535"):
         assert Target.check_ip(ip) == True, "Invalid IPv4 Address, use the IPv4 standard format please"
