@@ -99,7 +99,7 @@ class App(customtkinter.CTk):
                 
         # main button's dim variables
         main_font = customtkinter.CTkFont(size=18)
-        main_width = 120
+        main_width = 150
         main_height = 40
         quadr_width = 40
         quadr_height = 40
