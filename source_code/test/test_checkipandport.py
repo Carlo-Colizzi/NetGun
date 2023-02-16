@@ -2,7 +2,6 @@ import pytest
 from source_code.business_logic.scanner.target import Target
 
 
-"""Testing di unità"""
 class Test_check_ip_and_port:
 
     @pytest.mark.TC1_1_01
