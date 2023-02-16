@@ -1,4 +1,5 @@
 
+"""@author: Carlo Colizzi"""
 class Scan_result:
     """Class Manager of the obtained data"""
 

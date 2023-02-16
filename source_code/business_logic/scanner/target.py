@@ -1,5 +1,6 @@
 import re
 
+"""@author: Carlo Colizzi"""
 class Target:
     """Class Manager of the scan Target"""
 

@@ -1,5 +1,7 @@
 import pyautogui
 import time
+
+"""@author: Carlo Colizzi"""
 class Misconfiguration:
     """This class represents a single misconfiguration"""
 

@@ -2,6 +2,7 @@ import nmap
 from pprint import pprint
 from source_code.business_logic.scanner.target import Target
 from source_code.business_logic.scanner.filter import Filter
+"""@author: Carlo Colizzi"""
 class Scan:
     """Class Manager of the scan functionality"""
 

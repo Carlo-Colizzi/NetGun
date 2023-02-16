@@ -21,9 +21,8 @@ from source_code.business_logic.test_network_performance.network_test import Net
 from source_code.business_logic.application_context.context import Context
 from source_code.business_logic.scanner import scan_result
 
-print(vars())
 
-
+"""@author: Antonio Mazzarella"""
 class App(customtkinter.CTk):
     context = None
 

@@ -1,7 +1,7 @@
 import requests
 from pprint import pprint
 
-
+"""@author: Giulio Incoronato"""
 class Cve:
     """This class represents a single CVE"""
 

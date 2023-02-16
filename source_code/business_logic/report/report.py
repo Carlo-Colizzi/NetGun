@@ -17,7 +17,7 @@ def get_max_height(row: list()):
             max = element_lenght
     return max
 
-
+"""@author: Giulio Incoronato"""
 class Report:
     """Class Manager of the Report functionality"""
     __path_re = r'^\/?([\w\-.]+\/)*[\w\-.]+\.[\w\-.]+$'

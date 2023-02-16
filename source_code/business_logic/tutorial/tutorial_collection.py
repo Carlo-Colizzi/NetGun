@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 from source_code.business_logic.tutorial.tutorial import Tutorial
 
-
+"""@author: Carlo Colizzi"""
 class Tutorial_collection:
     """This class represents a collection of Tutorials (Helps)"""
 

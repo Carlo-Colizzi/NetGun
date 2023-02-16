@@ -1,5 +1,6 @@
 import os
 
+"""@author: Carlo Colizzi"""
 class Filter:
     """Class Manager of the scan filtering"""
     __TRANSPORT_PROTOCOLS_SUPPORTED = {"tcp":"","udp":"-sU"}

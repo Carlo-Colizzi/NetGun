@@ -1,6 +1,7 @@
 import math
 import speedtest
 
+"""@author: Carlo Colizzi"""
 class Network_test:
     """Class used for Test Network Performance"""
 

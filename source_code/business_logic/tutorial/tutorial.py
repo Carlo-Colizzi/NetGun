@@ -1,5 +1,6 @@
 
 
+"""@author: Carlo Colizzi"""
 class Tutorial:
     """This class represents a single Tutorial (Help)"""
 

@@ -5,6 +5,7 @@ from source_code.business_logic.testing_misconfigurations.services_misconfigurat
 from source_code.business_logic.tips.tip import Tip
 from source_code.business_logic.tutorial.tutorial_collection import Tutorial_collection
 
+"""@author: Carlo Colizzi"""
 class Storage_manager:
     """This class manage all the persistent files, using a Facade Design Pattern"""
     MISCONFIGURATIONS_XML_PATH = "../persistence/storage/misconfiguration.xml"
