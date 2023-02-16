@@ -30,6 +30,7 @@ class Filter:
         return output
     @classmethod
     def advanced_option_convert(self, advanced_options : list[str]):
+        "O comment manc"
         for i in range(len(advanced_options)):
             advanced_options[i] = Filter.__ADVANCED_OPTIONS_SUPPORTED[advanced_options[i]]
 
