@@ -41,6 +41,6 @@ class Cve:
 
         return results
 
-
-cve_element = Cve("Apache httpd 2.2.8")
-pprint(cve_element.search_cve())
+if __name__ == "__main__":
+    cve_element = Cve("Apache httpd 2.2.8")
+    pprint(cve_element.search_cve())
