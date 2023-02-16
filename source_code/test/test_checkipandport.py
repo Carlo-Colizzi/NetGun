@@ -2,8 +2,8 @@ import pytest
 from source_code.business_logic.scanner.target import Target
 
 
-"""Testing di unità"""
-class Test_checkipandport:
+
+class Test_check_ip_and_port:
 
     def test_long_ip_lenght(self):
         assert Target.check_ip("1.0-1.000000000000000000000") == False, "IP non rispetta la lunghezza"
