@@ -19,6 +19,7 @@ def get_max_height(row: list()):
 
 
 class Report:
+    """Class Manager of the Report functionality"""
     __path_re = r'^\/?([\w\-.]+\/)*[\w\-.]+\.[\w\-.]+$'
     # Lists used to decide which table to create
     __VERTICAL_TABLE = ["service"]

@@ -2,6 +2,7 @@ import math
 import speedtest
 
 class Network_test:
+    """Class used for Test Network Performance"""
 
     def __init__(self):
         try:

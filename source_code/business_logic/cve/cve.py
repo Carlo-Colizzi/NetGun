@@ -3,6 +3,8 @@ from pprint import pprint
 
 
 class Cve:
+    """This class represents a single CVE"""
+
     path = "https://services.nvd.nist.gov/rest/json/cves/2.0?"
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " \
                             "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}

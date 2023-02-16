@@ -1,6 +1,7 @@
 
 
 class Tutorial:
+    """This class represents a single Tutorial (Help)"""
 
     def __int__(self):
         pass
