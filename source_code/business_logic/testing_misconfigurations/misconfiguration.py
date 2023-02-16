@@ -1,6 +1,7 @@
 import pyautogui
 import time
 class Misconfiguration:
+    """This class represents a single misconfiguration"""
 
     def __int__(self):
         pass

@@ -6,6 +6,7 @@ from source_code.business_logic.tips.tip import Tip
 from source_code.business_logic.tutorial.tutorial_collection import Tutorial_collection
 
 class Storage_manager:
+    """This class manage all the persistent files, using a Facade Design Pattern"""
     MISCONFIGURATIONS_XML_PATH = "../persistence/storage/misconfiguration.xml"
     MISCONFIGURATIONS_PKL_PATH = "../persistence/storage/misconfigurations.pkl"
 
