@@ -3,19 +3,22 @@
 </center>
 
 <p align="center">
-    <img src="https://cdn.discordapp.com/attachments/1077602859127951390/1077602980725010562/NetgunLogo13.png" width="250" height="245" alt="NETGUN">
+    <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077697212634636308/NetgunLogo13_Telefono.png"alt="NETGUN">
 </p>
 
+<center>
 <i>Repo metadata</i>
 
-<a href="https://github.com/MyCr4ck/NetGun_Classe03/releases/"><img src="https://img.shields.io/github/release/MyCr4ck/NetGun_Classe03?include_prereleases=&sort=semver&color=blue" alt="GitHub release"></a>
-<a href="https://github.com/MyCr4ck/NetGun_Classe03/issues"><img src="https://img.shields.io/github/issues/MyCr4ck/NetGun_Classe03" alt="issues - NetGun_Classe03"></a>
+  <a href="https://github.com/MyCr4ck/NetGun_Classe03/releases/"><img src="https://img.shields.io/github/release/MyCr4ck/NetGun_Classe03?include_prereleases=&sort=semver&color=blue" alt="GitHub release"></a>
+  <a href="https://github.com/MyCr4ck/NetGun_Classe03/issues"><img src="https://img.shields.io/github/issues/MyCr4ck/NetGun_Classe03" alt="issues - NetGun_Classe03"></a>
+
+</center>
 
 <div align="center">
 </div>
 <h2>Documentation</h2>
-<div align="center">
-<a href="https://github.com/MyCr4ck/NetGun_Classe03/tree/main/Documentation" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" alt="view - Documentation"></a>
+  <div align="left">
+  <a href="https://github.com/MyCr4ck/NetGun_Classe03/tree/main/Documentation" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" alt="view - Documentation"></a>
 </div>
 
 ### Contributors
@@ -38,15 +41,70 @@ Per la seguente installazione verrà considerato esclusivamente il sistema opera
 - Digitare il comando:
 
     ```shell
-    sudo apt install ./NetGun<release_number>.deb
+    sudo apt install ./NetGun_<release_number>.deb
     ```
 - Avvia <strong>NetGun</strong> sul terminale.
 
 - <strong>Benvenuto in NetGun!</strong>
 
+## How to Use
+### Main feature
+<div>
+  <div align="center">
+  <i>Localhost: 127.0.0.1</i>
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
+</div>
+Il programma funziona tramite un'<strong>API NMAP</strong>, avrà quindi bisogno di vari dati in input.
+I primi tra tutti sono L'<strong>IP</strong> e le <strong>PORTE</strong>:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
+</div>
+Poi si passa al <strong>Protocollo</strong>:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
+</div>
+Nella sezione <strong>Advanced</strong> bisogna aggiungere i filtri ulteriori di ricerca, nel nostro caso ci sono 3 possibilità che possono andare in simultanea,<strong>ACK scan e SYN scan</strong> non possono essere usate insieme.
+Quindi selezionare i filtri aggiuntivi e premere OK:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077702303034908712/Immagine_2023-02-16_140002.png">
+</div>
+Scegliere l'intesità e il numero di dati da prendere in considerazione attraverso <strong>SHALLOW e DEEP</strong>:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077703822513811618/Immagine_2023-02-16_140012.png">
+</div>
+Ed infine il tempo dello scan che va dal più lento, 0, a 4 il più veloce, usata in particolare in funzione stealth o per non caricare e appesantire la macchina target, definita <strong>Aggressività</strong>:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704441064591400/Immagine_2023-02-16_140023.png">
+</div>
+Una volta fatto partire lo scan si avrà questa tabella:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704860113309777/ImmagineNetgun_6.png">
+</div>
+
+### CVE analysis
+Il nostro programma presenta la funzione di <strong>searchCVE</strong>, trova quindi tutte le malconfigurazioni trovate in tempo reale, basta quindi cliccare un oggetto sulla tabella e schiacciare openCVE:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077706089442844762/ImmagineNetgun_7.png">
+</div>
+
+### Speedtest by OOkla
+Il nostro programma presenta nella sezione messaggio di benvenuto un comodo Speedtest powered by OOkla, se non è la prima volta basta cliccare sull'icona del profilo in basso a destra e poi su Speedtest:
+<div>
+  <div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077707035849785455/image.png">
+</div>
+
 ## Galleria
 <i>I dati variano da scan a scan, il link e riferimenti sono puramente casuali</i>
 <div>
+  <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204933058671/ImmagineNetgun_1.png">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204555579555/ImmagineNetgun_2.png">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204199055370/ImmagineNetgun_4.png">
