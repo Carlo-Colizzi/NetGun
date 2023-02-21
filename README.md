@@ -16,7 +16,7 @@
 
 <div align="center">
 </div>
-<h2>Documentation</h2>
+<i>Documentation</i>
   <div align="left">
   <a href="https://github.com/MyCr4ck/NetGun_Classe03/tree/main/Documentation" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" alt="view - Documentation"></a>
 </div>
