@@ -25,7 +25,7 @@
 
 ## Introduzione
 NetGun ha l’obiettivo di essere un Framework per il Penetration Testing (Testing Black Box di infrastrutture in rete). 
-È possibile racchiudere il sistema in 3 componenti principali. La componente per lo scanning, la componente per l’enumerazione dei dati raccolti, e le utilities che assistono l’utente in tutte le fasi del pre e post scanning.
+È possibile racchiudere il sistema in 3 componenti principali: La componente per lo scanning, la componente per l’enumerazione dei dati raccolti, e le utilities che assistono l’utente in tutte le fasi del pre e post scanning.
 Inoltre ha il fine di facilitare una pratica complessa come i Penetration Test, così da permettere ai PT di concentrarsi su aspetti più delicati, automatizzando e velocizzando le task alla base di questo tipo di Testing.
 
 ## Installazione
