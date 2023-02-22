@@ -706,7 +706,7 @@ class App(customtkinter.CTk):
 
                     # create a top level window
                     top_tips = customtkinter.CTkToplevel()
-                    top_tips.geometry(f"900x700")
+                    top_tips.geometry(f"700x500")
                     top_tips.title("Tips")
 
                     tips_frame_main = customtkinter.CTkFrame(top_tips)
@@ -719,22 +719,33 @@ class App(customtkinter.CTk):
                     default_port = tip.default_port
                     description = tip.description
 
+                    acronym_frame = customtkinter.CTkFrame(tips_frame_main)
+                    acronym_frame.grid(sticky="nsew")
 
+                    acronym_label = customtkinter.CTkLabel(master=acronym_frame, text="Service: ",
+                                                           font=customtkinter.CTkFont(size=18,weight="bold"),
+                                                           text_color="white", fg_color="blue")
+                    acronym_label.grid(row=0, column=0, sticky="nw", padx=10)
 
-                    acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text="Service: " + name,
+                    acronym_label2 =customtkinter.CTkLabel(master=acronym_frame, text=name,
                                                            font=customtkinter.CTkFont(size=18))
-                    acronym_label.grid(row=0, column=0, sticky="nw")
+                    acronym_label2.grid(row=0, column=1, sticky="nw", padx=10)
 
-                    def_port = customtkinter.CTkLabel(master=tips_frame_main, text="Default Port: "+ default_port,
+                    def_port = customtkinter.CTkLabel(master=acronym_frame, text="Default Port: ",
+                                                      font=customtkinter.CTkFont(size=18,weight="bold"),
+                                                           text_color="white", fg_color="blue")
+                    def_port.grid(row=0, column=2, sticky="ne", padx=10)
+
+                    def_port2 = customtkinter.CTkLabel(master=acronym_frame, text=default_port,
                                                       font=customtkinter.CTkFont(size=18))
-                    def_port.grid(row=0, column=1, sticky="ne")
+                    def_port2.grid(row=0, column=3, sticky="ne", padx=10)
 
                     #description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
                     #description_serv.grid(row=1, column=0, sticky="nsew")
                     description_serv = customtkinter.CTkTextbox(
-                        master=tips_frame_main, wrap="word", width=350, font=main_font)
+                        master=tips_frame_main, wrap="word", width=500, font=main_font)
                     description_serv.grid(
-                        row=1, column=0, sticky="nsew", pady=10)
+                        row=1, column=0, sticky="nsew", pady=20)
                     description_serv.insert("end", description)
                     description_serv.configure(state="disabled")
                 except Exception as e:
