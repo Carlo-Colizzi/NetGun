@@ -701,7 +701,7 @@ class App(customtkinter.CTk):
                     # takes name and service
                     name_focus = scan_tree.item(item_focus, "text")
                     if name_focus == "":
-                        raise Exception("Nessun servizio selezionato!")
+                        raise Exception("Nessun servizio selezionato!!")
                     service_focus = App.context.scan_result.result["ports"][name_focus]['service']
 
                     # create a top level window
