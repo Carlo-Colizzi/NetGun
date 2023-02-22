@@ -581,6 +581,7 @@ class App(customtkinter.CTk):
                     name_focus = scan_tree.item(item_focus, "text")
                     if name_focus == "":
                         raise Exception("Nessun servizio selezionato!")
+
                     version_focus = App.context.scan_result.result['ports'][name_focus]['version']
 
                     # find all the cve here and codes after start the tree
@@ -694,39 +695,44 @@ class App(customtkinter.CTk):
 
             def tips_button_click():
                 '''This dialog would show simple tips'''
-                item_focus = scan_tree.focus()
+                try:
+                    item_focus = scan_tree.focus()
 
-                # takes name and service
-                name_focus = scan_tree.item(item_focus, "text")
-                service_focus = App.context.scan_result.result["ports"][name_focus]['service']
+                    # takes name and service
+                    name_focus = scan_tree.item(item_focus, "text")
+                    if name_focus == "":
+                        raise Exception("Nessun servizio selezionato!")
+                    service_focus = App.context.scan_result.result["ports"][name_focus]['service']
 
-                # create a top level window
-                top_tips = customtkinter.CTkToplevel()
-                top_tips.geometry(f"900x700")
-                top_tips.title("Tips")
+                    # create a top level window
+                    top_tips = customtkinter.CTkToplevel()
+                    top_tips.geometry(f"900x700")
+                    top_tips.title("Tips")
 
-                tips_frame_main = customtkinter.CTkFrame(top_tips)
-                tips_frame_main.grid(sticky="nsew")
-                tips_frame_main.place(relx=0.5, rely=0.5, anchor="c")
+                    tips_frame_main = customtkinter.CTkFrame(top_tips)
+                    tips_frame_main.grid(sticky="nsew")
+                    tips_frame_main.place(relx=0.5, rely=0.5, anchor="c")
 
-                # acronym of the service
-                tip = App.context.tip[service_focus]
-                name = tip.name
-                default_port = tip.default_port
-                description = tip.description
+                    # acronym of the service
+                    tip = App.context.tip[service_focus]
+                    name = tip.name
+                    default_port = tip.default_port
+                    description = tip.description
 
 
 
-                acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text="Service: " + name,
-                                                       font=customtkinter.CTkFont(size=18))
-                acronym_label.grid(row=0, column=0, sticky="nw")
+                    acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text="Service: " + name,
+                                                           font=customtkinter.CTkFont(size=18))
+                    acronym_label.grid(row=0, column=0, sticky="nw")
 
-                def_port = customtkinter.CTkLabel(master=tips_frame_main, text="Default Port: "+ default_port,
-                                                  font=customtkinter.CTkFont(size=18))
-                def_port.grid(row=0, column=1, sticky="ne")
+                    def_port = customtkinter.CTkLabel(master=tips_frame_main, text="Default Port: "+ default_port,
+                                                      font=customtkinter.CTkFont(size=18))
+                    def_port.grid(row=0, column=1, sticky="ne")
 
-                description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
-                description_serv.grid(row=1, column=0, sticky="nsew")
+                    description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
+                    description_serv.grid(row=1, column=0, sticky="nsew")
+                except Exception as e:
+                    error_popup(e)
 
             def misconf_button_click():
                 '''Misconfiguration for the selected service, most common ones will open'''
