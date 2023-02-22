@@ -723,14 +723,14 @@ class App(customtkinter.CTk):
 
                     acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text="Service: " + name,
                                                            font=customtkinter.CTkFont(size=18))
-                    acronym_label.grid(row=0, column=0, sticky="nw")
+                    acronym_label.grid(row=0, column=0, sticky="nw", padx=20, pady=20)
 
                     def_port = customtkinter.CTkLabel(master=tips_frame_main, text="Default Port: "+ default_port,
                                                       font=customtkinter.CTkFont(size=18))
-                    def_port.grid(row=0, column=1, sticky="ne")
+                    def_port.grid(row=0, column=1, sticky="ne", padx=20, pady=20)
 
                     description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
-                    description_serv.grid(row=1, column=0, sticky="nsew")
+                    description_serv.grid(row=1, column=0, sticky="nsew", padx=20, pady=20)
                 except Exception as e:
                     error_popup(e)
 
