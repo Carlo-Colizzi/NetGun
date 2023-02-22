@@ -2,92 +2,92 @@
 <tips_collection>
 
 	<ftp>
-		<acronym>File Transfer Protocol</acronym>
-		<description>SSH or Secure Shell or Secure Socket Shell, is a network protocol that gives users a secure way to access a computer over an unsecured network.</description>
+		<name>FTP - File Transfer Protocol</name>
+		<description>The File Transfer Protocol (FTP) is a standard network protocol used for the transfer of computer files between a client and server on a computer network.</description>
 		<default_port>21/tcp</default_port>
 	</ftp>
 	<ssh>
-		<acronym>Secure Shell(SSH)</acronym>
+		<name>SSH - Secure Shell</name>
 		<description>SSH or Secure Shell or Secure Socket Shell, is a network protocol that gives users a secure way to access a computer over an unsecured network.</description>
 		<default_port>22/tcp</default_port>
 	</ssh>
 	<telnet>
-		<acronym>Telnet</acronym>
+		<name>Telnet</name>
 		<description>Telnet is a network protocol that gives users a UNsecure way to access a computer over a network.</description>
 		<default_port>23/tcp</default_port>
 	</telnet>
 	<domain>
-		<acronym>DNS - Domain Name System</acronym>
+		<name>DNS - Domain Name System</name>
 		<description>The Domain Name Systems (DNS) is the phonebook of the Internet. Humans access information online through domain names, like nytimes.com or espn.com. Web browsers interact through Internet Protocol (IP) addresses. DNS translates domain names to IP addresses so browsers can load Internet resources.</description>
 		<default_port>53/tcp or 53/udp</default_port>
 	</domain>
 	<tftp>
-		<acronym>TFTP - Trivial File Transfer Protocol</acronym>
+		<name>TFTP - Trivial File Transfer Protocol</name>
 		<description>TFTP uses UDP port 69 and requires no authentication—clients read from, and write to servers using the datagram format outlined in RFC 1350. Due to deficiencies within the protocol (namely lack of authentication and no transport security), it is uncommon to find servers on the public Internet. Within large internal networks, however, TFTP is used to serve configuration files and ROM images to VoIP handsets and other devices.</description>
 		<default_port>69/udp</default_port>
 	</tftp>
 	<http>
-		<acronym>HTTP - Hypertext Transfer Protocol</acronym>
+		<name>HTTP - Hypertext Transfer Protocol</name>
 		<description>HTTP is a standard application-level protocol used for exchanging files on the World Wide Web.</description>
 		<default_port>80/tcp</default_port>
 	</http>
 	<https>
-		<acronym>HTTPs - Hypertext transfer protocol secure</acronym>
+		<name>HTTPs - Hypertext transfer protocol secure</name>
 		<description>HTTPS is the secure version of HTTP, which is the primary protocol used to send data between a web browser and a website. HTTPS is encrypted in order to increase security of data transfer. This is particularly important when users transmit sensitive data, such as by logging into a bank account, email service, or health insurance provider.</description>
 		<default_port>443/tcp</default_port>
 	</https>
 	<netbios-ns>
-		<acronym>NetBios Name Service</acronym>
+		<name>NetBios Name Service</name>
 		<description>Netbios Name Service provides name resolution for computers and network devices. Every machine should have a name inside the NetBios network. To request a name, a machine should send a "Name Query" packet in broadcast and if anyone answer that it is already using that name, the machine can use that name. If there is a Name Service server, the computer could ask the Name Service server if someone is using the name that it wants to use.</description>
 		<default_port>137/tcp or 137/udp</default_port>
 	</netbios-ns>
 	<netbios-dgm>
-		<acronym>NetBios Datagram Distribution Service</acronym>
+		<name>NetBios Datagram Distribution Service</name>
 		<description>NetBios Datagram Distribution Service provides to send Datagram over UDP on the network, using NetBios names. A datagram is sent with a "Direct Unique" or "Direct Group" packet if it's being sent to a particular NetBIOS name, or a "Broadcast" packet if it's being sent to all NetBIOS names on the network.</description>
 		<default_port>138/udp</default_port>
 	</netbios-dgm>
 	<netbios-ssn>
-		<acronym>NetBios Session Service</acronym>
+		<name>NetBios Session Service</name>
 		<description>NetBios Session Service provides Session mode. Session mode lets two computers establish a connection for a "conversation", allows larger messages to be handled, and provides error detection and recovery. The connection is over TCP.</description>
 		<default_port>139/tcp</default_port>
 	</netbios-ssn>
 	<ldap>
-		<acronym>LDAP - Lightweight Directory Access Protocol</acronym>
+		<name>LDAP - Lightweight Directory Access Protocol</name>
 		<description>LDAP (Lightweight Directory Access Protocol) is a software protocol for enabling anyone to locate organizations, individuals, and other resources such as files and devices in a network, whether on the public Internet or on a corporate intranet. LDAP is a "lightweight" (smaller amount of code) version of Directory Access Protocol (DAP).</description>
 		<default_port>389/tcp or 636/tcp</default_port>
 	</ldap>
 	<tcpwrapped>
-		<acronym>LDAP - Lightweight Directory Access Protocol</acronym>
+		<name>LDAP - Lightweight Directory Access Protocol</name>
 		<description>LDAP (Lightweight Directory Access Protocol) is a software protocol for enabling anyone to locate organizations, individuals, and other resources such as files and devices in a network, whether on the public Internet or on a corporate intranet. LDAP is a "lightweight" (smaller amount of code) version of Directory Access Protocol (DAP).</description>
 		<default_port>389/tcp or 636/tcp</default_port>
 	</tcpwrapped>
 	<microsoft-ds>
-		<acronym>SMB - Server Message Block</acronym>
+		<name>SMB - Server Message Block</name>
 		<description>Server Message Block in modern language is also known as Common Internet File System. The system operates as an application-layer network protocol primarily used for offering shared access to files, printers, serial ports, and other sorts of communications between nodes on a network.</description>
 		<default_port>445/tcp</default_port>
 	</microsoft-ds>
 	<rtsp>
-		<acronym>RTSP - Real Time Streaming Protocol</acronym>
+		<name>RTSP - Real Time Streaming Protocol</name>
 		<description>The Real Time Streaming Protocol (RTSP) is a network control protocol designed for use in entertainment and communications systems to control streaming media servers. The protocol is used for establishing and controlling media sessions between end points. Clients of media servers issue VHS-style commands, such as play, record and pause, to facilitate real-time control of the media streaming from the server to a client (Video On Demand) or from a client to the server (Voice Recording).</description>
 		<default_port>554/tcp</default_port>
 	</rtsp>
 	<ms-sql-s>
-		<acronym>MSSQL - Microsoft SQL Server</acronym>
+		<name>MSSQL - Microsoft SQL Server</name>
 		<description>Microsoft SQL Server is a relational database management system developed by Microsoft. As a database server, it is a software product with the primary function of storing and retrieving data as requested by other software applications—which may run either on the same computer or on another computer across a network (including the Internet).</description>
 		<default_port>1433/tcp</default_port>
 	</ms-sql-s>
 	<mysql>
-		<acronym>MySQL</acronym>
+		<name>MySQL</name>
 		<description>MySQL is a freely available open source Relational Database Management System (RDBMS) that uses Structured Query Language (SQL). </description>
 		<default_port>3306/tcp</default_port>
 	</mysql>
 	<ms-wbt-server>
-		<acronym>RDP - Remote Desktop Protocol</acronym>
+		<name>RDP - Remote Desktop Protocol</name>
 		<description>Remote Desktop Protocol (RDP) is a proprietary protocol developed by Microsoft, which provides a user with a graphical interface to connect to another computer over a network connection. The user employs RDP client software for this purpose, while the other computer must run RDP server software</description>
 		<default_port>3389/tcp</default_port>
 	</ms-wbt-server>
 	<smtp>
-		<acronym>SMTP - Simple Mail Transfer Protocol</acronym>
+		<name>SMTP - Simple Mail Transfer Protocol</name>
 		<description>SMTP (Simple Mail Transfer Protocol) is a TCP/IP protocol used in sending and receiving e-mail. However, since it is limited in its ability to queue messages at the receiving end, it is usually used with one of two other protocols, POP3 or IMAP, that let the user save messages in a server mailbox and download them periodically from the server.</description>
 		<default_port>25/tcp</default_port>
 	</smtp>

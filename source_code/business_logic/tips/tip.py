@@ -13,7 +13,7 @@ class Tip:
     def print_toString(self):
         """Print all the object's variable"""
         print("service: ",self.service)
-        print("acronym: ", self.acronym)
+        print("name: ", self.name)
         print("description: ",self.description)
         print("default_port: ",self.default_port)
 

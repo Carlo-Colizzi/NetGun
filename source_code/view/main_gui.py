@@ -696,7 +696,7 @@ class App(customtkinter.CTk):
 
                 # takes name and service
                 name_focus = scan_tree.item(item_focus, "text")
-                service_focus = App.context.scan_result.result[name]['service']
+                service_focus = App.context.scan_result.result["ports"][name_focus]['service']
 
                 # create a top level window
                 top_tips = customtkinter.CTkToplevel()
@@ -708,17 +708,22 @@ class App(customtkinter.CTk):
                 tips_frame_main.place(relx=0.5, rely=0.5, anchor="c")
 
                 # acronym of the service
-                acronym_text = "Acronym:" + service_focus
+                tip = App.context.tip[service_focus]
+                name = tip.name
+                default_port = tip.default_port
+                description = tip.description
 
-                acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text=acronym_text,
+
+
+                acronym_label = customtkinter.CTkLabel(master=tips_frame_main, text="Service: " + name,
                                                        font=customtkinter.CTkFont(size=18))
                 acronym_label.grid(row=0, column=0, sticky="nw")
 
-                def_port = customtkinter.CTkLabel(master=tips_frame_main, text=name_focus,
+                def_port = customtkinter.CTkLabel(master=tips_frame_main, text="Default Port: "+ default_port,
                                                   font=customtkinter.CTkFont(size=18))
                 def_port.grid(row=0, column=1, sticky="ne")
 
-                description_serv = customtkinter.CTkLabel(master=tips_frame_main, text="Description should be there")
+                description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
                 description_serv.grid(row=1, column=0, sticky="nsew")
 
             def misconf_button_click():
