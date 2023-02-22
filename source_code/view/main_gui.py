@@ -433,94 +433,104 @@ class App(customtkinter.CTk):
         # a debugging function in terminal
         def start_scan():
             '''The scan itself is powered bu nmap, it takes ip, port, advanced options, aggressivity and mode from other fields and start scanning'''
-            try:
-                def scan_observer(progress_bar, scan_object, result,values):
+            #try:
+            def scan_observer(progress_bar, scan_object, result, values):
 
-                    thread = threading.Thread(target=start_scan_process, args=(scan_object, result))
-                    thread.daemon = True
-                    thread.start()
+                thread = threading.Thread(target=start_scan_process, args=(scan_object, result))
+                thread.daemon = True
+                thread.start()
 
-                    thread.join()
-                    progress_bar.stop()
-                    scan_end(values)
+                thread.join()
+                progress_bar.stop()
+                scan_end(values)
 
-                def start_scan_process(scan_object, result):
-                    result.update(scan_object.start_scan())
+            def start_scan_process(scan_object, result):
+                result.update(scan_object.start_scan())
 
-                print("Starting scan...")
-                if hasattr(self, "scan_tree"):
-                    self.scan_tree.destroy()
-                if hasattr(self, "tips_button"):
-                    self.tips_button.destroy()
-                if hasattr(self, "cve_button"):
-                    self.cve_button.destroy()
-                if hasattr(self, "misconf_button"):
-                    self.misconf_button.destroy()
+            print("Starting scan...")
+            if hasattr(self, "tree_frame"):
+                self.tree_frame = customtkinter.CTkFrame(self.main_frame, height=400, width=1200)
+                self.tree_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=20)
+            if hasattr(self, "scan_tree"):
+                self.scan_tree.grid_forget()
+            if hasattr(self, "tips_button"):
+                self.tips_button.grid_forget()
+            if hasattr(self, "cve_button"):
+                self.cve_button.grid_forget()
+            if hasattr(self, "misconf_button"):
+                self.misconf_button.grid_forget()
+            if hasattr(self, "status_label"):
+                self.status_label.grid_forget()
+            if hasattr(self, "scan_os"):
+                self.scan_os.grid_forget()
+            if hasattr(self, "scan_tree_scroll"):
+                self.scan_tree_scroll.grid_forget()
 
+            ip = ip_var.get()
+            port = port_var.get()
+            tcp_udp = tcp_udp_var.get()
+            scan_type = scan_type_var.get()
+            scan_aggro = int(scan_aggro_var.get())
+            App.context.advanced_option_list = [x for x in list(
+                (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
+                                                x != ""]
 
-                ip = ip_var.get()
-                port = port_var.get()
-                tcp_udp = tcp_udp_var.get()
-                scan_type = scan_type_var.get()
-                scan_aggro = int(scan_aggro_var.get())
-                App.context.advanced_option_list = [x for x in list(
-                    (App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4)) if
-                                                    x != ""]
+            print("Ip: {}".format(ip))
+            print("Port: {}".format(port))
+            print("TCP/UDP: {}".format(tcp_udp))
+            print("Type: {}".format(scan_type))
+            print("Aggro: {}".format(scan_aggro))
+            print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2,
+                                                 App.context.option_var3, App.context.option_var4))
+            print("Advanced_Option_List: ", App.context.advanced_option_list)
 
-                print("Ip: {}".format(ip))
-                print("Port: {}".format(port))
-                print("TCP/UDP: {}".format(tcp_udp))
-                print("Type: {}".format(scan_type))
-                print("Aggro: {}".format(scan_aggro))
-                print("Advanced: {} {} {} {}".format(App.context.option_var1, App.context.option_var2, App.context.option_var3, App.context.option_var4))
-                print("Advanced_Option_List: ", App.context.advanced_option_list)
+            style = ttk.Style()
+            style.configure("mystyle.Treeview", highlightthickness=0, bd=0,
+                            font=('Calibri', 12))  # Modify the font of the body
 
-                style = ttk.Style()
-                style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Calibri', 12)) # Modify the font of the body
+            style.configure("mystyle.Treeview.Heading", font=('Calibri', 15, 'bold'))  # Modify the font of the headings
+            style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
+            # initialize tree structure
+            self.scan_tree = ttk.Treeview(self.tree_frame, height=15, style="mystyle.Treeview")
 
-                style.configure("mystyle.Treeview.Heading", font=('Calibri', 15,'bold')) # Modify the font of the headings
-                style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})]) # Remove the borders
-                # initialize tree structure
-                scan_tree = ttk.Treeview(self.tree_frame, height=15, style="mystyle.Treeview")
-                self.scan_tree = scan_tree
+            # progress bar
+            self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
+            # the progress bar needs the label too
+            self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...",
+                                                       font=customtkinter.CTkFont(size=25, weight="bold"))
+            # label scannning
+            self.scan_verbose.grid(row=3, column=0, sticky="nsew", pady=10, padx=30)
+            # let appear the progress bar and start
+            self.scan_progress.grid(row=4, column=0, sticky="nsew", pady=10, padx=30)
 
+            # set number columns
+            self.scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
 
-                # progress bar
-                self.scan_progress = customtkinter.CTkProgressBar(master=self.main_frame, mode="indeterminate")
-                # the progress bar needs the label too
-                self.scan_verbose = customtkinter.CTkLabel(master=self.main_frame, text="Scanning...", font=customtkinter.CTkFont(size=25, weight="bold"))
-                # label scannning
-                self.scan_verbose.grid(row=3, column=0, sticky="nsew", pady=10, padx=30)
-                # let appear the progress bar and start
-                self.scan_progress.grid(row=4, column=0, sticky="nsew", pady=10, padx=30)
+            self.scan_tree.heading("#0", text="PORT")
+            self.scan_tree.heading("colonna1", text="State")
+            self.scan_tree.heading("colonna2", text="Version")
+            self.scan_tree.heading("colonna3", text="Service")
+            self.scan_tree.column("colonna1", stretch=NO, width=265)
+            self.scan_tree.column("colonna2", stretch=NO, width=265)
+            self.scan_tree.column("colonna3", stretch=NO, width=450)
 
-                # set number columns
-                scan_tree["columns"] = ("colonna1", "colonna2", "colonna3")
+            # date examples
+            App.context.target = Target(ip, port)
+            App.context.filter = Filter(tcp_udp.lower(), App.context.advanced_option_list, scan_aggro)
 
-                scan_tree.heading("#0", text="PORT")
-                scan_tree.heading("colonna1", text="State")
-                scan_tree.heading("colonna2", text="Version")
-                scan_tree.heading("colonna3", text="Service")
-                scan_tree.column("colonna1", stretch=NO, width=265)
-                scan_tree.column("colonna2", stretch=NO, width=265)
-                scan_tree.column("colonna3", stretch=NO, width=450)
+            scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
 
-                # date examples
-                App.context.target = Target(ip, port)
-                App.context.filter = Filter(tcp_udp.lower(), App.context.advanced_option_list, scan_aggro)
+            result = {}
 
-                scan_tmp = Scan(App.context.target, App.context.filter, scan_type)
+            shared_values = (result, self.scan_tree, scan_type)
+            thread_scan_observer = threading.Thread(target=scan_observer,
+                                                    args=(self.scan_progress, scan_tmp, result, shared_values))
+            thread_scan_observer.daemon = True
 
-                result = {}
-
-                shared_values = (result, scan_tree, scan_type)
-                thread_scan_observer = threading.Thread(target=scan_observer, args=(self.scan_progress, scan_tmp, result, shared_values))
-                thread_scan_observer.daemon = True
-
-                thread_scan_observer.start()
-                self.scan_progress.start()
-            except Exception as e:
-                error_popup(e)
+            thread_scan_observer.start()
+            self.scan_progress.start()
+            #except Exception as e:
+             #   error_popup(e)
 
         def scan_end(values):
             result, scan_tree, scan_type = values
@@ -535,31 +545,31 @@ class App(customtkinter.CTk):
                 else:
                     scan_tree.insert("", "end", text=name, values=(values['state'], values['service'], ''))
 
-            self.scan_progress.destroy()
-            self.scan_verbose.destroy()
+            self.scan_progress.grid_forget()
+            self.scan_verbose.grid_forget()
 
             print("Scan finished.")
 
             # positioning the treeview when start scanning
             scan_tree.grid(row=2, column=0, sticky="nsew")
 
-            status_name = "Status: " + App.context.scan_result.result["status"]
-            status_label = customtkinter.CTkLabel(master=self.tree_frame, text=status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
-            status_label.grid(row=0, column=0, pady=10, sticky="nw")
+            self.status_name = "Status: " + App.context.scan_result.result["status"]
+            self.status_label = customtkinter.CTkLabel(master=self.tree_frame, text=self.status_name, font=customtkinter.CTkFont(size=20, weight="bold"))
+            self.status_label.grid(row=0, column=0, pady=10, sticky="nw")
 
             if "os" in App.context.scan_result.result:
                 if "name" in App.context.scan_result.result["os"]:
-                    os_name = "OS: " + App.context.scan_result.result["os"]["name"]
+                    self.os_name = "OS: " + App.context.scan_result.result["os"]["name"]
             else:
-                os_name = "OS: Not Found"
+                self.os_name = "OS: Not Found"
 
-            scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
-            scan_os.grid(row=1, column=0, pady=10, sticky="nw")
+            self.scan_os = customtkinter.CTkLabel(master=self.tree_frame, text=self.os_name, font=customtkinter.CTkFont(size=20, weight="bold"))
+            self.scan_os.grid(row=1, column=0, pady=10, sticky="nw")
 
             # add the scrollbar
-            scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
-            scan_tree_scroll.grid(row=2, column=1, sticky="nsw")
-            scan_tree.configure(yscrollcommand=scan_tree_scroll.set)
+            self.scan_tree_scroll = customtkinter.CTkScrollbar(self.tree_frame, command=scan_tree.yview)
+            self.scan_tree_scroll.grid(row=2, column=1, sticky="nsw")
+            self.scan_tree.configure(yscrollcommand=self.scan_tree_scroll.set)
 
             def cve_button_click():
                 '''Open a dialog with the common CVE and Vulnerabilty, all link can be selected and opened'''
@@ -658,7 +668,7 @@ class App(customtkinter.CTk):
                     # set the scrollbar
                     tree_cve_scroll = customtkinter.CTkScrollbar(frame_cve_2, command=scan_tree.yview)
                     tree_cve_scroll.grid(row=0, column=1, sticky="nsw")
-                    tree_cve.configure(yscrollcommand=scan_tree_scroll.set)
+                    tree_cve.configure(yscrollcommand=self.scan_tree_scroll.set)
 
                     def open_link():
                         item_link = tree_cve.focus()

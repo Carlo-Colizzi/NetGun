@@ -26,7 +26,7 @@ class Report:
     __HORIZONTAL_TABLE = ["ports", "os"]
 
     def __init__(self, path=""):
-        assert Report.check_path(), "Wrong FileName inserted"
+        assert Report.check_path(path), "Wrong FileName inserted"
         if path == "" or path == " ":
             self.path = "report.pdf"
         else:
