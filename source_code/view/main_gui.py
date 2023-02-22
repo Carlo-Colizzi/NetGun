@@ -579,6 +579,8 @@ class App(customtkinter.CTk):
 
                     # takes name and version
                     name_focus = scan_tree.item(item_focus, "text")
+                    if name_focus == "":
+                        raise Exception("Nessun servizio selezionato")
                     version_focus = App.context.scan_result.result['ports'][name_focus]['version']
 
                     # find all the cve here and codes after start the tree
