@@ -729,8 +729,14 @@ class App(customtkinter.CTk):
                                                       font=customtkinter.CTkFont(size=18))
                     def_port.grid(row=0, column=1, sticky="ne")
 
-                    description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
-                    description_serv.grid(row=1, column=0, sticky="nsew")
+                    #description_serv = customtkinter.CTkLabel(master=tips_frame_main, text=description)
+                    #description_serv.grid(row=1, column=0, sticky="nsew")
+                    description_serv = customtkinter.CTkTextbox(
+                        master=tips_frame_main, wrap="word", width=350, font=main_font)
+                    description_serv.grid(
+                        row=1, column=0, sticky="nsew", pady=10)
+                    description_serv.insert("end", description)
+                    description_serv.configure(state="disabled")
                 except Exception as e:
                     error_popup(e)
 
