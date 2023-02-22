@@ -137,7 +137,7 @@
 			</testType>
 			<description>
 				fuf is a fest web fuzzer written in Go that allows typical directory discovery,
-				virtual host discovery (without DNS records) and GET and POST parameter fuzzing.
+				virtual host discovery (without DNS records), GET and POST parameter fuzzing.
 				In order to perform this kind of attack:
 				- ffuf -w [wordlist file] -u https://[URL] -H [HOST]
 			</description>
