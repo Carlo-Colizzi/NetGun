@@ -790,17 +790,21 @@ class App(customtkinter.CTk):
 
         def export_file():
             '''Export file will open a dialog window to select the path to save the file report.pdf'''
-            file = filedialog.asksaveasfilename(filetypes=[("PDF file", "*.pdf")],
-                                                defaultextension='.pdf',
-                                                title='Export Report')
-            # fob = open(file, 'w')
-            # fob.write("Hello, world!")
-            # fob.close()
-            if hasattr(App.context, 'scan_result'):
-                App.context.scan_result.result['Vulnerabilities'] = {'service': App.context.scan_result.cve_tmp}
-                pprint(App.context.scan_result.result)
-                report = Report(file)
-                report.create_report(App.context.scan_result.result)
+
+            try:
+                file = filedialog.asksaveasfilename(filetypes=[("PDF file", "*.pdf")],
+                                                    defaultextension='.pdf',
+                                                    title='Export Report')
+                # fob = open(file, 'w')
+                # fob.write("Hello, world!")
+                # fob.close()
+                if hasattr(App.context, 'scan_result'):
+                    App.context.scan_result.result['Vulnerabilities'] = {'service': App.context.scan_result.cve_tmp}
+                    pprint(App.context.scan_result.result)
+                    report = Report(file)
+                    report.create_report(App.context.scan_result.result)
+            except Exception as e:
+                error_popup(e)
  
         # main frame with options and label
         self.main_frame = customtkinter.CTkFrame(self, fg_color="transparent")

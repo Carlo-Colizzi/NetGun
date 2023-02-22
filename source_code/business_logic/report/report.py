@@ -17,7 +17,10 @@ def get_max_height(row: list()):
             max = element_lenght
     return max
 
+
 """@author: Giulio Incoronato"""
+
+
 class Report:
     """Class Manager of the Report functionality"""
     __path_re = r'^\/?([\w\-.]+\/)*[\w\-.]+\.[\w\-.]+$'
@@ -44,6 +47,9 @@ class Report:
         create a report of scan results, cve search and os detection
         :param result_scan:  scan result which have to be written on a pdf
         """
+        if len(result_scan["ports"]) == 0:
+            raise Exception("There aren't data for create a report")
+
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Times", size=30)
@@ -58,8 +64,6 @@ class Report:
         pdf.set_author("NetGun")
         pdf.multi_cell(0, pdf.font_size * 2.5, "Report", border=0, align='C', max_line_height=50, markdown=True)
         pdf.set_font(size=10)
-
-        result_cve = result_scan["Vulnerabilities"]
 
         titles = ["Scan Result", "OS Detection"]
         i = 0
@@ -76,14 +80,17 @@ class Report:
                 pdf.ln()
                 i += 1
 
-        for key, values in result_cve.items():
-            pdf = Report.draw_table_pdf(table_data=Report.create_table(values, key), title="CVE Result", title_size=16,
-                                        data_size=12, align_data='L', align_header='L', emphasize_data=['open'],
-                                        emphasize_headers=[], emphasize_header_color=(0, 0, 0),
-                                        emphasize_data_color=(0, 100, 0),
-                                        emphasize_header_style="Times", emphasize_data_style="Times",
-                                        type_table="vertical",
-                                        pdf=pdf)
+        if hasattr(result_scan, "Vulnerabilities"):
+            result_cve = result_scan["Vulnerabilities"]
+            for key, values in result_cve.items():
+                pdf = Report.draw_table_pdf(table_data=Report.create_table(values, key), title="CVE Result",
+                                            title_size=16,
+                                            data_size=12, align_data='L', align_header='L', emphasize_data=['open'],
+                                            emphasize_headers=[], emphasize_header_color=(0, 0, 0),
+                                            emphasize_data_color=(0, 100, 0),
+                                            emphasize_header_style="Times", emphasize_data_style="Times",
+                                            type_table="vertical",
+                                            pdf=pdf)
             pdf.ln()
 
         pdf.output(self.path)
@@ -366,9 +373,9 @@ class Report:
         return indexes
 
 
-#report = Report()
-#dict = {}
-#report.create_report(dict)
+# report = Report()
+# dict = {}
+# report.create_report(dict)
 
 """
 report = Report()
