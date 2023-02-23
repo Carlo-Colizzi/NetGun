@@ -776,16 +776,12 @@ class App(customtkinter.CTk):
                     # data
                     path = "../persistence/storage/misconfiguration.xml"
                     service_misconf = App.context.misconfiguration
-                    misconf = service_misconf.misconfigurations_dict[service_focus][0]
+                    misconf = service_misconf.misconfigurations_dict[service_focus]
                     print("QUa va giusto 3.0")
-                    misconf_tool_installation = misconf.tool_installation
-                    misconf_test_type = misconf.testType
-                    misconf_description = misconf.description
-                    misconf_command = misconf.command
 
                     # create a top level window
                     top_misconf = customtkinter.CTkToplevel()
-                    top_misconf.geometry(f"700x600")
+                    top_misconf.geometry(f"700x700")
                     top_misconf.title("Misconfiguration")
 
                     misconf_frame = customtkinter.CTkFrame(top_misconf, fg_color="transparent")
@@ -793,26 +789,39 @@ class App(customtkinter.CTk):
                     misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
 
                     service_label = customtkinter.CTkLabel(misconf_frame, text=service_focus,
-                                                       font=customtkinter.CTkFont(size=35, weight="bold"))
-                    service_label.grid(row=0,sticky="new", pady=10, padx=30)
+                                                           font=customtkinter.CTkFont(size=35, weight="bold"))
+                    service_label.grid(row=0, sticky="new", pady=10, padx=30)
 
-                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, font=main_font)
-                    tool_install.grid(row=2, column=0, sticky="nsew", pady=10)
-                    tool_install.insert("end", misconf_tool_installation)
-                    tool_install.configure(state="disabled")
+                    for i in misconf:
+                        misconf_tool_installation = i.tool_installation
+                        misconf_test_type = i.testType
+                        misconf_description = i.description
+                        misconf_command = i.command
 
-                    test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
-                    test_type.grid(row=1, column=0, sticky="nsew", pady=10)
+                        f = 0
+                        f+=1
 
-                    description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
-                    description_label.grid(row=3, column=0, sticky="nsew", pady=10)
-                    description_label.insert("end", misconf_description)
-                    description_label.configure(state="disabled", fg_color="transparent")
+                        test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
+                        test_type.grid(row=f, column=0, sticky="nsew", pady=10)
+                        f += 1
+                        tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, font=main_font)
+                        tool_install.grid(row=f, column=0, sticky="nsew", pady=10)
+                        tool_install.insert("end", misconf_tool_installation)
+                        tool_install.configure(state="disabled")
+                        f += 1
+                        description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
+                        description_label.grid(row=f, column=0, sticky="nsew", pady=10)
+                        description_label.insert("end", misconf_description)
+                        description_label.configure(state="disabled", fg_color="transparent")
 
-                    command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, font=main_font)
-                    command_textbox.grid(row=4, column=0, sticky="nsew", pady=10)
-                    command_textbox.insert("end", misconf_command)
-                    command_textbox.configure(state="disabled")
+                        f += 1
+
+                        command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, font=main_font)
+                        command_textbox.grid(row=f, column=0, sticky="nsew", pady=10)
+                        command_textbox.insert("end", misconf_command)
+                        command_textbox.configure(state="disabled")
+
+                        f += 1
                 except Exception as e:
                     error_popup(e)
 
