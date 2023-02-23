@@ -779,8 +779,17 @@ class App(customtkinter.CTk):
 
                         test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type,
                                                            font=customtkinter.CTkFont(size=18, weight="bold"),
-                                                           fg_color="#0d2626", text_color="white")
+                                                           fg_color="#008bd3", text_color="white",
+                                                           corner_radius=5)
                         test_type.grid(row=f, column=0, sticky="nsew", pady=10)
+                        f += 1
+                        description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
+                        description_label.grid(row=f, column=0, sticky="nsew", pady=10)
+                        new_miscon = "Description:\n" + misconf_description
+                        description_label.insert("end", new_miscon)
+                        description_label.configure(state="disabled", fg_color="transparent")
+
+
                         f += 1
                         tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, width=650,
                                                                 font=main_font)
@@ -789,16 +798,12 @@ class App(customtkinter.CTk):
                         tool_install.configure(state="disabled")
 
                         f += 1
+
                         command_tool = customtkinter.CTkButton(master=misconf_frame, text="Install",width=main_width, height=main_height,
                                                                  image=self.shortcut_icon,
                                                                  compound="right", command=i.install_tool,
                                                                  font=main_font)
                         command_tool.grid(row=f, column=0, sticky="se", pady=10)
-                        f += 1
-                        description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
-                        description_label.grid(row=f, column=0, sticky="nsew", pady=10)
-                        description_label.insert("end", misconf_description)
-                        description_label.configure(state="disabled", fg_color="transparent")
 
                         f += 1
 
