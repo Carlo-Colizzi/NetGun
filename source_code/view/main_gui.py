@@ -1,6 +1,5 @@
 import sys
 from pprint import pprint
-
 sys.path.insert(0, "../../../NetGun_Classe03")
 from source_code.business_logic.cve.cve import Cve
 from source_code.business_logic.scanner.filter import Filter
@@ -757,8 +756,24 @@ class App(customtkinter.CTk):
                     item_focus = scan_tree.focus()
 
                     # takes name and service
-                    name_focus = "Names focus"#scan_tree.item(item_focus, "text")
-                    service_focus = "Service focus name"#App.context.scan_result.result[name]['service']
+                    name_focus = scan_tree.item(item_focus, "text")
+                    if name_focus == "":
+                        raise Exception("Nessun servizio selezionato!!")
+
+                    service_focus = App.context.scan_result.result["ports"][name_focus]['service']
+
+                    if service_focus not in App.context.misconfiguration:
+                        raise Exception("Misconfiguration data not available for service: " + service_focus)
+
+                    #name_focus = "Names focus" #scan_tree.item(item_focus, "text")
+                    #service_focus = "Service focus name" #App.context.scan_result.result[name]['service']
+
+                    # data
+                    misconf = App.context.misconfiguration[service_focus]
+                    misconf_tool_installation = misconf.tool_installation
+                    misconf_test_type = misconf.testType
+                    misconf_description = misconf.description
+                    misconf_command = misconf.command
 
                     # create a top level window
                     top_misconf = customtkinter.CTkToplevel()
@@ -775,20 +790,20 @@ class App(customtkinter.CTk):
 
                     tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
                     tool_install.grid(row=2, column=0, sticky="nsew", pady=10)
-                    tool_install.insert("end", "anche un testo preso da json o config")
+                    tool_install.insert("end", misconf_tool_installation)
                     tool_install.configure(state="disabled")
 
-                    test_type = customtkinter.CTkLabel(misconf_frame, text="Test type", font=main_font)
+                    test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
                     test_type.grid(row=1, column=0, sticky="nsew", pady=10)
 
                     description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
                     description_label.grid(row=3, column=0, sticky="nsew", pady=10)
-                    description_label.insert("end", "anche un testo preso da json o config")
+                    description_label.insert("end", misconf_description)
                     description_label.configure(state="disabled", fg_color="transparent")
 
                     command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
                     command_textbox.grid(row=4, column=0, sticky="nsew", pady=10)
-                    command_textbox.insert("end", "anche un testo preso da json o config")
+                    command_textbox.insert("end", misconf_command)
                     command_textbox.configure(state="disabled")
                 except Exception as e:
                     error_popup(e)
