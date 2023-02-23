@@ -774,7 +774,7 @@ class App(customtkinter.CTk):
 
                     # data
                     path = "../persistence/storage/misconfiguration.xml"
-                    service_misconf = Services_misconfigurations.inizialize_object_from_file_xml(path)
+                    service_misconf = App.context.misconfiguration
                     misconf = service_misconf.misconfigurations_dict[service_focus][0]
                     print("QUa va giusto 3.0")
                     misconf_tool_installation = misconf.tool_installation
