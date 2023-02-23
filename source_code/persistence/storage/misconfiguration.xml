@@ -11,20 +11,6 @@
 			</testType>
 			<description>
 				In order to perform this kind of attack:
-				- ftp *IP* *PORT*
-				- Try to login with username: anonymous
-			</description>
-			<command>ftp #IP# #PORT# </command>
-		</misconfiguration>
-		<misconfiguration>
-			<tool_installation>
-				apt install ftp
-			</tool_installation>
-			<testType>
-				Login with anonymous user credential
-			</testType>
-			<description>
-				In order to perform this kind of attack:
 				- ftp IP PORT
 				- Try to login with username: anonymous
 			</description>
