@@ -753,42 +753,45 @@ class App(customtkinter.CTk):
 
             def misconf_button_click():
                 '''Misconfiguration for the selected service, most common ones will open'''
-                item_focus = scan_tree.focus()
+                try:
+                    item_focus = scan_tree.focus()
 
-                # takes name and service
-                name_focus = "Names focus"#scan_tree.item(item_focus, "text")
-                service_focus = "Service focus name"#App.context.scan_result.result[name]['service']
+                    # takes name and service
+                    name_focus = "Names focus"#scan_tree.item(item_focus, "text")
+                    service_focus = "Service focus name"#App.context.scan_result.result[name]['service']
 
-                # create a top level window
-                top_misconf = customtkinter.CTkToplevel()
-                top_misconf.geometry(f"700x600")
-                top_misconf.title("Misconfiguration")
+                    # create a top level window
+                    top_misconf = customtkinter.CTkToplevel()
+                    top_misconf.geometry(f"700x600")
+                    top_misconf.title("Misconfiguration")
 
-                misconf_frame = customtkinter.CTkFrame(top_misconf, fg_color="transparent")
-                misconf_frame.grid(sticky="nsew")
-                misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
+                    misconf_frame = customtkinter.CTkFrame(top_misconf, fg_color="transparent")
+                    misconf_frame.grid(sticky="nsew")
+                    misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
 
-                service_label = customtkinter.CTkLabel(misconf_frame, text=service_focus,
+                    service_label = customtkinter.CTkLabel(misconf_frame, text=service_focus,
                                                        font=customtkinter.CTkFont(size=35, weight="bold"))
-                service_label.grid(row=0,sticky="new", pady=10, padx=30)
+                    service_label.grid(row=0,sticky="new", pady=10, padx=30)
 
-                tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
-                tool_install.grid(row=2, column=0, sticky="nsew", pady=10)
-                tool_install.insert("end", "anche un testo preso da json o config")
-                tool_install.configure(state="disabled")
+                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
+                    tool_install.grid(row=2, column=0, sticky="nsew", pady=10)
+                    tool_install.insert("end", "anche un testo preso da json o config")
+                    tool_install.configure(state="disabled")
 
-                test_type = customtkinter.CTkLabel(misconf_frame, text="Test type", font=main_font)
-                test_type.grid(row=1, column=0, sticky="nsew", pady=10)
+                    test_type = customtkinter.CTkLabel(misconf_frame, text="Test type", font=main_font)
+                    test_type.grid(row=1, column=0, sticky="nsew", pady=10)
 
-                description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
-                description_label.grid(row=3, column=0, sticky="nsew", pady=10)
-                description_label.insert("end", "anche un testo preso da json o config")
-                description_label.configure(state="disabled", fg_color="transparent")
+                    description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
+                    description_label.grid(row=3, column=0, sticky="nsew", pady=10)
+                    description_label.insert("end", "anche un testo preso da json o config")
+                    description_label.configure(state="disabled", fg_color="transparent")
 
-                command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
-                command_textbox.grid(row=4, column=0, sticky="nsew", pady=10)
-                command_textbox.insert("end", "anche un testo preso da json o config")
-                command_textbox.configure(state="disabled")
+                    command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
+                    command_textbox.grid(row=4, column=0, sticky="nsew", pady=10)
+                    command_textbox.insert("end", "anche un testo preso da json o config")
+                    command_textbox.configure(state="disabled")
+                except Exception as e:
+                    error_popup(e)
 
             # frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
