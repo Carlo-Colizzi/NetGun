@@ -516,6 +516,7 @@ class App(customtkinter.CTk):
                 self.scan_tree.column("colonna2", stretch=NO, width=265)
                 self.scan_tree.column("colonna3", stretch=NO, width=450)
 
+
                 # date examples
                 App.context.target = Target(ip, port)
                 App.context.filter = Filter(tcp_udp.lower(), App.context.advanced_option_list, scan_aggro)
