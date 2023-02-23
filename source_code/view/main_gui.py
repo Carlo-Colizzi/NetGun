@@ -792,6 +792,7 @@ class App(customtkinter.CTk):
                                                            font=customtkinter.CTkFont(size=35, weight="bold"))
                     service_label.grid(row=0, sticky="new", pady=10, padx=30)
 
+                    #carlo sei bello come gravino
                     for i in misconf:
                         misconf_tool_installation = i.tool_installation
                         misconf_test_type = i.testType
