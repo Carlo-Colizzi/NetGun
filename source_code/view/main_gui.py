@@ -745,11 +745,9 @@ class App(customtkinter.CTk):
                         raise Exception("Nessun servizio selezionato!!")
 
                     service_focus = App.context.scan_result.result["ports"][name_focus]['service']
-                    print("QUa va giusto")
                     # if service_focus not in App.context.misconfiguration:
                     #    raise Exception("Misconfiguration data not available for service: " + service_focus)
 
-                    print("QUa va giusto 2.0")
                     # name_focus = "Names focus" #scan_tree.item(item_focus, "text")
                     # service_focus = "Service focus name" #App.context.scan_result.result[name]['service']
 
@@ -757,7 +755,6 @@ class App(customtkinter.CTk):
                     path = "../persistence/storage/misconfiguration.xml"
                     service_misconf = App.context.misconfiguration
                     misconf = service_misconf.misconfigurations_dict[service_focus]
-                    print("QUa va giusto 3.0")
 
                     # create a top level window
                     top_misconf = customtkinter.CTkToplevel()
@@ -780,7 +777,9 @@ class App(customtkinter.CTk):
                         misconf_description = i.description
                         misconf_command = i.command
 
-                        test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
+                        test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type,
+                                                           font=customtkinter.CTkFont(size=18, weight="bold"),
+                                                           fg_color="#0d2626", text_color="white")
                         test_type.grid(row=f, column=0, sticky="nsew", pady=10)
                         f += 1
                         tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, width=650,
