@@ -50,7 +50,7 @@
 			<tool_installation>apt install ffuf</tool_installation>
 			<testType>Directory Busting with ffuf</testType>
 			<description>ffuf is a fast web fuzzer written in Go that allows typical directory discovery, virtual host discovery (without DNS records), GET and POST parameter fuzzing.</description>
-			<command>ffuf -w [wordlist file] -u https://[URL] -H [HOST]</command>
+			<command>ffuf -w [wordlist file] -u [URL] -H [HOST]</command>
 		</misconfiguration>
 	</http>
 
