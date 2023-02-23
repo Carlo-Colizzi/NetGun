@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=netgun
+Comment=Tool for port scanning
+Exec=netgun
+Icon=/NetGun_Classe03/source_code/persistence/storage/icons/netgun_logo.png
+Categorise=tool;
+Terminal=true
+StartupNotify=true
+StartupWMClass=netgun
