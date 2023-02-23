@@ -296,7 +296,7 @@ class App(customtkinter.CTk):
             welcome_label = customtkinter.CTkTextbox(master=frame_welcome, width=350, height=70, wrap="word")
             welcome_label.grid(row=1, sticky="w", pady=15)
             welcome_label.insert("end",
-                                 "Benvenuto, questo è NetGun, il programma perfetto per esperti e non, in ambito di ethical hacking. Buon hack a tutti!")
+                                 "Benvenuto, questo è NetGun, il coltellino svizzero dei Penetration Tester, quì potrai trovare una suite di utilities da utilizzare durante il BlackBox Testing di Infrastrutture di rete.")
             welcome_label.configure(state="disabled")
 
             # button to open the manuale in a toplevel window
