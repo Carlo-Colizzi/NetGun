@@ -38,7 +38,7 @@
 			<tool_installation>apt install dirb</tool_installation>
 			<testType>Directory Busting with Dirbuster</testType>
 			<description>DIRB is a Web Content Scanner. It looks for existing (and/or hidden) Web Objects. It basically works by launching a dictionary based attack against a web server and analyzing the responses. </description>
-			<command>dirb http://[IP]/ [wordlist]</command>
+			<command>dirb [IP] [wordlist]</command>
 		</misconfiguration>
 		<misconfiguration>
 			<tool_installation>apt install gobuster</tool_installation>
