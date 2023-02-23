@@ -795,7 +795,7 @@ class App(customtkinter.CTk):
                                                        font=customtkinter.CTkFont(size=35, weight="bold"))
                     service_label.grid(row=0,sticky="new", pady=10, padx=30)
 
-                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
+                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, font=main_font)
                     tool_install.grid(row=2, column=0, sticky="nsew", pady=10)
                     tool_install.insert("end", misconf_tool_installation)
                     tool_install.configure(state="disabled")
@@ -808,7 +808,7 @@ class App(customtkinter.CTk):
                     description_label.insert("end", misconf_description)
                     description_label.configure(state="disabled", fg_color="transparent")
 
-                    command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
+                    command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, font=main_font)
                     command_textbox.grid(row=4, column=0, sticky="nsew", pady=10)
                     command_textbox.insert("end", misconf_command)
                     command_textbox.configure(state="disabled")
