@@ -510,8 +510,8 @@ class App(customtkinter.CTk):
 
                 self.scan_tree.heading("#0", text="PORT")
                 self.scan_tree.heading("colonna1", text="State")
-                self.scan_tree.heading("colonna2", text="Version")
-                self.scan_tree.heading("colonna3", text="Service")
+                self.scan_tree.heading("colonna2", text="Service")
+                self.scan_tree.heading("colonna3", text="Version")
                 self.scan_tree.column("colonna1", stretch=NO, width=265)
                 self.scan_tree.column("colonna2", stretch=NO, width=265)
                 self.scan_tree.column("colonna3", stretch=NO, width=450)
