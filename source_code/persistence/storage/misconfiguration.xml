@@ -3,133 +3,79 @@
 
 	<ftp>
 		<misconfiguration>
-			<tool_installation>
-				apt install ftp
-			</tool_installation>
+			<tool_installation>apt install ftp</tool_installation>
 			<testType>
 				Login with anonymous user credential
 			</testType>
-			<description>
-				In order to perform this kind of attack:
+			<description>In order to perform this kind of attack:
 				- ftp IP PORT
-				- Try to login with username: anonymous
-			</description>
-			<command>
-				ftp [IP] [PORT]
-			</command>
+				- Try to login with username: anonymous</description>
+			<command>ftp [IP] [PORT]</command>
 		</misconfiguration>
 	</ftp>
 	<smb>
 		<misconfiguration>
-			<tool_installation>
-				apt install samba
-			</tool_installation>
-			<testType>
-				Questo è un esempio
-			</testType>
-			<description>
-				In order to perform this kind of attack:
+			<tool_installation>apt install samba</tool_installation>
+			<testType>Questo è un esempio</testType>
+			<description>In order to perform this kind of attack:
 				- ftp [IP] [PORT]
-				- Try to login with username: anonymous
-			</description>
-			<command>
-				ftp [IP] [PORT]
-			</command>
+				- Try to login with username: anonymous</description>
+			<command>ftp [IP] [PORT]</command>
 		</misconfiguration>
 	</smb>
 	<mysql>
 		<misconfiguration>
-			<tool_installation>
-				apt install sqlmap
-			</tool_installation>
-			<testType>
-				Exploit a SQL injection
-			</testType>
-			<description>
-				sqlmap is an open source penetration testing tool that automates
+			<tool_installation>apt install sqlmap</tool_installation>
+			<testType>Exploit a SQL injection</testType>
+			<description>sqlmap is an open source penetration testing tool that automates
 				the process of detecting and exploiting SQL injection flaws and
 				taking over of database servers.
 				In order to perform this kind of attack:
-				- sqlmap -u [URL] --batch
-			</description>
-			<command>
-				sqlmap -u [URL] --batch
-			</command>
+				- sqlmap -u [URL] --batch</description>
+			<command>sqlmap -u [URL] --batch</command>
 		</misconfiguration>
 	</mysql>
 	<smtp>
 		<misconfiguration>
-			<tool_installation>
-				apt install smtp-user-enum
-			</tool_installation>
-			<testType>
-				Enumerate a SMTP service
-			</testType>
-			<description>
-				Username guessing tool primarily for use against the default Solaris SMTP service.
+			<tool_installation>apt install smtp-user-enum</tool_installation>
+			<testType>Enumerate a SMTP service</testType>
+			<description>Username guessing tool primarily for use against the default Solaris SMTP service.
 				Can use either EXPN, VRFY or RCPT TO.
 				In order to perform this kind of attack:
-				- smtp-user-enum -M VRFY -u [USER] -t [IP]
-			</description>
-			<command>
-				smtp-user-enum -M [METHOD] -u [USER] -t [IP]
-			</command>
+				- smtp-user-enum -M VRFY -u [USER] -t [IP]</description>
+			<command>smtp-user-enum -M [METHOD] -u [USER] -t [IP]</command>
 		</misconfiguration>
 	</smtp>
 	<http>
 		<misconfiguration>
-			<tool_installation>
-				apt install dirb
-			</tool_installation>
-			<testType>
-				Enumerate a Web Application
-			</testType>
-			<description>
-				DIRB is a Web Content Scanner. It looks for existing (and/or hidden)
+			<tool_installation>apt install dirb</tool_installation>
+			<testType>Enumerate a Web Application</testType>
+			<description>DIRB is a Web Content Scanner. It looks for existing (and/or hidden)
 				Web Objects.It basically works by launching a dictionary based attack
 				against a web server and analyzing the responses.
 				In order to perform this kind of attack:
 				- dirb http://[IP]/ [wordlist file]
-				- Wordlist file in Kali has stored in /usr/share/wordlists/dirb/
-			</description>
-			<command>
-				dirb http://[IP]/ [wordlist]
-			</command>
+				- Wordlist file in Kali has stored in /usr/share/wordlists/dirb/</description>
+			<command>dirb http://[IP]/ [wordlist]</command>
 		</misconfiguration>
 		<misconfiguration>
-			<tool_installation>
-				apt install gobuster
-			</tool_installation>
-			<testType>
-				Enumerate a Web Application
-			</testType>
-			<description>
-				Gobuster is an aggressive scanner that helps you find hidden Directories,
+			<tool_installation>apt install gobuster</tool_installation>
+			<testType>Enumerate a Web Application</testType>
+			<description>Gobuster is an aggressive scanner that helps you find hidden Directories,
 				URLs, Sub-Domains,and S3 Buckets seamlessly.
 				In order to perform this kind of attack:
 				- gobuster dir -u [url] -w [wordlist file]
-				- Wordlist file in Kali has stored in /usr/share/wordlists/dirb/
-			</description>
-			<command>
-				gobuster dir -u 10.10.171.247:80 -w [wordlist]
-			</command>
+				- Wordlist file in Kali has stored in /usr/share/wordlists/dirb/</description>
+			<command>gobuster dir -u 10.10.171.247:80 -w [wordlist]</command>
 		</misconfiguration>
 		<misconfiguration>
-			<tool_installation>
-				apt install ffuf
-			</tool_installation>
-			<testType>
-				Enumerate a Web Application
-			</testType>
-			<description>
-				fuf is a fest web fuzzer written in Go that allows typical directory discovery,
+			<tool_installation>apt install ffuf</tool_installation>
+			<testType>Enumerate a Web Application</testType>
+			<description>fuf is a fest web fuzzer written in Go that allows typical directory discovery,
 				virtual host discovery (without DNS records), GET and POST parameter fuzzing.
 				In order to perform this kind of attack:
-				- ffuf -w [wordlist file] -u https://[URL] -H [HOST]
-			</description>
-			<command>
-				ffuf -w [wordlist file] -u https://[URL] -H [HOST]
-			</command>
+				- ffuf -w [wordlist file] -u https://[URL] -H [HOST]</description>
+			<command>ffuf -w [wordlist file] -u https://[URL] -H [HOST]</command>
 		</misconfiguration>
 	</http>
 
