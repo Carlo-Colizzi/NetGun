@@ -736,75 +736,89 @@ class App(customtkinter.CTk):
 
             def misconf_button_click():
                 '''Misconfiguration for the selected service, most common ones will open'''
-                #try:
-                item_focus = scan_tree.focus()
+                try:
+                    item_focus = scan_tree.focus()
 
-                # takes name and service
-                name_focus = scan_tree.item(item_focus, "text")
-                if name_focus == "":
-                    raise Exception("Nessun servizio selezionato!!")
+                    # takes name and service
+                    name_focus = scan_tree.item(item_focus, "text")
+                    if name_focus == "":
+                        raise Exception("Nessun servizio selezionato!!")
 
-                service_focus = App.context.scan_result.result["ports"][name_focus]['service']
-                print("QUa va giusto")
-                # if service_focus not in App.context.misconfiguration:
-                #    raise Exception("Misconfiguration data not available for service: " + service_focus)
+                    service_focus = App.context.scan_result.result["ports"][name_focus]['service']
+                    print("QUa va giusto")
+                    # if service_focus not in App.context.misconfiguration:
+                    #    raise Exception("Misconfiguration data not available for service: " + service_focus)
 
-                print("QUa va giusto 2.0")
-                # name_focus = "Names focus" #scan_tree.item(item_focus, "text")
-                # service_focus = "Service focus name" #App.context.scan_result.result[name]['service']
+                    print("QUa va giusto 2.0")
+                    # name_focus = "Names focus" #scan_tree.item(item_focus, "text")
+                    # service_focus = "Service focus name" #App.context.scan_result.result[name]['service']
 
-                # data
-                path = "../persistence/storage/misconfiguration.xml"
-                service_misconf = App.context.misconfiguration
-                misconf = service_misconf.misconfigurations_dict[service_focus]
-                print("QUa va giusto 3.0")
+                    # data
+                    path = "../persistence/storage/misconfiguration.xml"
+                    service_misconf = App.context.misconfiguration
+                    misconf = service_misconf.misconfigurations_dict[service_focus]
+                    print("QUa va giusto 3.0")
 
-                # create a top level window
-                top_misconf = customtkinter.CTkToplevel()
-                top_misconf.geometry(f"700x700")
-                top_misconf.title("Misconfiguration")
+                    # create a top level window
+                    top_misconf = customtkinter.CTkToplevel()
+                    top_misconf.geometry(f"750x700")
+                    top_misconf.title("Misconfiguration")
 
-                misconf_frame = customtkinter.CTkScrollableFrame(top_misconf, fg_color="transparent", width=500, height=550)
-                misconf_frame.grid(sticky="nsew")
-                misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
+                    misconf_frame = customtkinter.CTkScrollableFrame(top_misconf, fg_color="transparent", width=700, height=650)
+                    misconf_frame.grid(sticky="nsew")
+                    misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
 
-                service_label = customtkinter.CTkLabel(misconf_frame, text=service_focus,
-                                                       font=customtkinter.CTkFont(size=35, weight="bold"))
-                service_label.grid(row=0, sticky="new", pady=10, padx=30)
+                    service_label = customtkinter.CTkLabel(misconf_frame, text=service_focus,
+                                                           font=customtkinter.CTkFont(size=35, weight="bold"))
+                    service_label.grid(row=0, sticky="new", pady=10, padx=30)
 
-                # carlo sei bello come gravino
-                f = 1
-                for i in misconf:
-                    misconf_tool_installation = i.tool_installation
-                    misconf_test_type = i.testType
-                    misconf_description = i.description
-                    misconf_command = i.command
+                    # carlo sei bello come gravino
+                    f = 1
+                    for i in misconf:
+                        misconf_tool_installation = i.tool_installation
+                        misconf_test_type = i.testType
+                        misconf_description = i.description
+                        misconf_command = i.command
 
-                    test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
-                    test_type.grid(row=f, column=0, sticky="nsew", pady=10)
-                    f += 1
-                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, width= 450,
-                                                            font=main_font)
-                    tool_install.grid(row=f, column=0, sticky="nsew", pady=10)
-                    tool_install.insert("end", misconf_tool_installation)
-                    tool_install.configure(state="disabled")
-                    f += 1
-                    description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
-                    description_label.grid(row=f, column=0, sticky="nsew", pady=10)
-                    description_label.insert("end", misconf_description)
-                    description_label.configure(state="disabled", fg_color="transparent")
+                        test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
+                        test_type.grid(row=f, column=0, sticky="nsew", pady=10)
+                        f += 1
+                        tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, width=650,
+                                                                font=main_font)
+                        tool_install.grid(row=f, column=0, sticky="nsew", pady=10)
+                        tool_install.insert("end", misconf_tool_installation)
+                        tool_install.configure(state="disabled")
 
-                    f += 1
+                        f += 1
+                        command_tool = customtkinter.CTkButton(master=misconf_frame, text="Install",width=main_width, height=main_height,
+                                                                 image=self.shortcut_icon,
+                                                                 compound="right", command="",
+                                                                 font=main_font)
+                        command_tool.grid(row=f, column=0, sticky="se", pady=10)
+                        f += 1
+                        description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
+                        description_label.grid(row=f, column=0, sticky="nsew", pady=10)
+                        description_label.insert("end", misconf_description)
+                        description_label.configure(state="disabled", fg_color="transparent")
 
-                    command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80,
-                                                               font=main_font)
-                    command_textbox.grid(row=f, column=0, sticky="nsew", pady=10)
-                    command_textbox.insert("end", misconf_command)
-                    command_textbox.configure(state="disabled")
+                        f += 1
 
-                    f += 1
-                #except Exception as e:
-                    #error_popup(e)
+                        command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80,width=650,
+                                                                   font=main_font)
+                        command_textbox.grid(row=f, column=0, sticky="nsew", pady=10)
+                        command_textbox.insert("end", misconf_command)
+                        command_textbox.configure(state="disabled")
+
+                        f += 1
+
+                        command_esegui = customtkinter.CTkButton(master=misconf_frame, text="RUN", image=self.shortcut_icon,
+                                                  compound="right", command="",width=main_width, height=main_height,
+                                                  font=main_font)
+                        command_esegui.grid(row=f, column=0, sticky="se", pady=10)
+
+                        f += 1
+                except Exception as e:
+                    error_popup(e)
 
             # frame for more buttons
             more_frame = customtkinter.CTkFrame(self.tree_frame, width=500, fg_color="transparent")
