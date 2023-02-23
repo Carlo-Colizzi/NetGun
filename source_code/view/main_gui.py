@@ -792,7 +792,7 @@ class App(customtkinter.CTk):
                         f += 1
                         command_tool = customtkinter.CTkButton(master=misconf_frame, text="Install",width=main_width, height=main_height,
                                                                  image=self.shortcut_icon,
-                                                                 compound="right", command="",
+                                                                 compound="right", command=i.install_tool,
                                                                  font=main_font)
                         command_tool.grid(row=f, column=0, sticky="se", pady=10)
                         f += 1
@@ -812,7 +812,7 @@ class App(customtkinter.CTk):
                         f += 1
 
                         command_esegui = customtkinter.CTkButton(master=misconf_frame, text="RUN", image=self.shortcut_icon,
-                                                  compound="right", command="",width=main_width, height=main_height,
+                                                  compound="right", command=i.test_misconfiguration,width=main_width, height=main_height,
                                                   font=main_font)
                         command_esegui.grid(row=f, column=0, sticky="se", pady=10)
 

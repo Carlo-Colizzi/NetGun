@@ -21,6 +21,11 @@ class Misconfiguration:
         time.sleep(0.05)
         pyautogui.typewrite(self.command)
 
+    def install_tool(self):
+        """Opens a new terminal and write in the command used for install the tool used for test the misconfiguration"""
+        pyautogui.hotkey('ctrl', 'alt', 't')
+        time.sleep(0.05)
+        pyautogui.typewrite(self.tool_installation)
 
 if __name__ == "__main__":
     m = Misconfiguration()
