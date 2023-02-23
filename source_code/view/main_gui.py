@@ -969,5 +969,6 @@ if __name__ == "__main__":
     mon_width = first_monitor.width
     mon_height = first_monitor.height
 
+
     app = App()
     app.mainloop()
