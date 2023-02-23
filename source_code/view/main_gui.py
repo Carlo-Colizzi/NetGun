@@ -171,26 +171,6 @@ class App(customtkinter.CTk):
                                                       command=save_app_conf)
             save_app_button.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 
-        def manual_command():
-            '''When you press this button will pop-up a dialog with the given manual'''
-            # welcome frame and window
-            manual_window = customtkinter.CTkToplevel()
-            manual_window.geometry(f"800x400")
-            manual_window.title("MANUAL")
-            manual_window.columnconfigure(0, weight=1)
-            manual_window.rowconfigure(0, weight=1)
-
-            manual_frame = customtkinter.CTkFrame(master=manual_window, fg_color="transparent")
-            manual_frame.grid(padx=30, pady=30, sticky="nsew")
-            manual_frame.place(relx=0.5, rely=0.5, anchor="center")
-            manual_frame.columnconfigure(0, weight=1)
-            manual_frame.rowconfigure(0, weight=1)
-
-            manual_label = customtkinter.CTkTextbox(master=manual_frame, wrap="word", width=750, height=350)
-            manual_label.grid(row=0, column=0, sticky="nsew")
-            manual_label.insert("end", "anche un testo preso da json o config")
-            manual_label.configure(state="disabled")
-
         def speed_test_button():
             '''Run a speedtest powered by Ookla in the nearest and better server'''
             speed_test_window = customtkinter.CTkToplevel()
@@ -321,7 +301,7 @@ class App(customtkinter.CTk):
 
             # button to open the manuale in a toplevel window
             manual_button = customtkinter.CTkButton(master=frame_welcome, text="Manual", image=self.document_logo,
-                                                    compound="right", command=manual_command,
+                                                    compound="right", command=lambda: web.open("https://github.com/MyCr4ck/NetGun_Classe03/blob/main/Documentation/MANUALE%20D_USO.pdf", new=2),
                                                     font=customtkinter.CTkFont(size=18))
             manual_button.grid(row=2, sticky="nsew", pady=15)
 
