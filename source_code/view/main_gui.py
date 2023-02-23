@@ -780,7 +780,9 @@ class App(customtkinter.CTk):
                         misconf_description = i.description
                         misconf_command = i.command
 
-                        test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
+                        test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type,
+                                                           font=customtkinter.CTkFont(size=18, weight="bold"),
+                                                           fg_color="#0d2626", text_color="white")
                         test_type.grid(row=f, column=0, sticky="nsew", pady=10)
                         f += 1
                         tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, width=650,
