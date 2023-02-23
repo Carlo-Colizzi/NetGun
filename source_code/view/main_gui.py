@@ -6,6 +6,9 @@ from source_code.business_logic.scanner.filter import Filter
 from source_code.business_logic.scanner.scan import Scan
 from source_code.business_logic.scanner.target import Target
 from source_code.business_logic.report.report import Report
+from source_code.business_logic.testing_misconfigurations.misconfiguration import Misconfiguration
+from source_code.business_logic.testing_misconfigurations.services_misconfigurations import Services_misconfigurations
+
 import threading
 from tkinter import *
 from tkinter import ttk
@@ -761,15 +764,19 @@ class App(customtkinter.CTk):
                         raise Exception("Nessun servizio selezionato!!")
 
                     service_focus = App.context.scan_result.result["ports"][name_focus]['service']
+                    print("QUa va giusto")
+                   #if service_focus not in App.context.misconfiguration:
+                    #    raise Exception("Misconfiguration data not available for service: " + service_focus)
 
-                    if service_focus not in App.context.misconfiguration:
-                        raise Exception("Misconfiguration data not available for service: " + service_focus)
-
+                    print("QUa va giusto 2.0")
                     #name_focus = "Names focus" #scan_tree.item(item_focus, "text")
                     #service_focus = "Service focus name" #App.context.scan_result.result[name]['service']
 
                     # data
-                    misconf = App.context.misconfiguration[service_focus]
+                    path = "../persistence/storage/misconfiguration.xml"
+                    service_misconf = Services_misconfigurations.inizialize_object_from_file_xml(path)
+                    misconf = service_misconf.misconfigurations_dict[service_focus][0]
+                    print("QUa va giusto 3.0")
                     misconf_tool_installation = misconf.tool_installation
                     misconf_test_type = misconf.testType
                     misconf_description = misconf.description
