@@ -756,35 +756,37 @@ class App(customtkinter.CTk):
                 item_focus = scan_tree.focus()
 
                 # takes name and service
-                name_focus = scan_tree.item(item_focus, "text")
-                service_focus = App.context.scan_result.result[name]['service']
+                name_focus = "Names focus"#scan_tree.item(item_focus, "text")
+                service_focus = "Service focus name"#App.context.scan_result.result[name]['service']
 
                 # create a top level window
                 top_misconf = customtkinter.CTkToplevel()
-                top_misconf.geometry(f"900x700")
+                top_misconf.geometry(f"700x600")
                 top_misconf.title("Misconfiguration")
 
-                misconf_frame = customtkinter.CTkFrame(top_misconf)
+                misconf_frame = customtkinter.CTkFrame(top_misconf, fg_color="transparent")
                 misconf_frame.grid(sticky="nsew")
                 misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
 
-                service_label = customtkinter.CTkLabel(top_misconf, text=service_focus,
-                                                       font=customtkinter.CTkFont(size=40, weight="bold"))
-                service_label.grid(sticky="nw", pady=10, padx=30)
+                service_label = customtkinter.CTkLabel(misconf_frame, text=service_focus,
+                                                       font=customtkinter.CTkFont(size=35, weight="bold"))
+                service_label.grid(row=0,sticky="new", pady=10, padx=30)
 
-                tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", width=350)
-                tool_install.grid(row=0, column=0, sticky="nsew", pady=10)
+                tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
+                tool_install.grid(row=2, column=0, sticky="nsew", pady=10)
                 tool_install.insert("end", "anche un testo preso da json o config")
                 tool_install.configure(state="disabled")
 
-                test_type = customtkinter.CTkLabel(top_misconf, text="Test type", font=main_font)
-                test_type.grid(row=1, column=0, sticky="nsew", pady=10) 
+                test_type = customtkinter.CTkLabel(misconf_frame, text="Test type", font=main_font)
+                test_type.grid(row=1, column=0, sticky="nsew", pady=10)
 
-                description_label = customtkinter.CTkLabel(top_misconf, text="Description", font=main_font)
-                description_label.grid(row=2, column=0, sticky="nsew", pady=10)
+                description_label = customtkinter.CTkTextbox(misconf_frame, wrap="word", font=main_font)
+                description_label.grid(row=3, column=0, sticky="nsew", pady=10)
+                description_label.insert("end", "anche un testo preso da json o config")
+                description_label.configure(state="disabled", fg_color="transparent")
 
-                command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", width=350)
-                command_textbox.grid(row=3, column=0, sticky="nsew", pady=10)
+                command_textbox = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=50)
+                command_textbox.grid(row=4, column=0, sticky="nsew", pady=10)
                 command_textbox.insert("end", "anche un testo preso da json o config")
                 command_textbox.configure(state="disabled")
 
