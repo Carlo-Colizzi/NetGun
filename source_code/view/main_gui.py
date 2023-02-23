@@ -784,7 +784,7 @@ class App(customtkinter.CTk):
                 top_misconf.geometry(f"700x700")
                 top_misconf.title("Misconfiguration")
 
-                misconf_frame = customtkinter.CTkFrame(top_misconf, fg_color="transparent")
+                misconf_frame = customtkinter.CTkScrollableFrame(top_misconf, fg_color="transparent", width=500, height=550)
                 misconf_frame.grid(sticky="nsew")
                 misconf_frame.place(relx=0.5, rely=0.5, anchor="c")
 
@@ -803,7 +803,7 @@ class App(customtkinter.CTk):
                     test_type = customtkinter.CTkLabel(misconf_frame, text=misconf_test_type, font=main_font)
                     test_type.grid(row=f, column=0, sticky="nsew", pady=10)
                     f += 1
-                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80,
+                    tool_install = customtkinter.CTkTextbox(master=misconf_frame, wrap="word", height=80, width= 450,
                                                             font=main_font)
                     tool_install.grid(row=f, column=0, sticky="nsew", pady=10)
                     tool_install.insert("end", misconf_tool_installation)
