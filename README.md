@@ -28,9 +28,8 @@
 - [Antonio Mazzarella 0512112830](https://github.com/InfiniteSephiroth)
 
 ## Introduzione
-NetGun ha l’obiettivo di essere un Framework per il Penetration Testing (Testing Black Box di infrastrutture in rete). 
-È possibile racchiudere il sistema in 3 componenti principali: La componente per lo scanning, la componente per l’enumerazione dei dati raccolti, e le utilities che assistono l’utente in tutte le fasi del pre e post scanning.
-Inoltre ha il fine di facilitare una pratica complessa come i Penetration Test, così da permettere ai PT di concentrarsi su aspetti più delicati, automatizzando e velocizzando le task alla base di questo tipo di Testing.
+NetGun è un Vulnerability Scanner. Permette di scannerizzare infrastrutture di Rete, enumerare i servizi in esecuzione su queste, scovare CVE e Misconfigurations.
+Ha il fine di facilitare una pratica complessa come i Penetration Test, così da permettere ai PT di concentrarsi su aspetti più delicati, automatizzando e velocizzando le task alla base di questo tipo di Testing.
 
 ## Installazione
 Per la seguente installazione verrà considerato esclusivamente il sistema operativo [Kali linux](https://www.kali.org/):
