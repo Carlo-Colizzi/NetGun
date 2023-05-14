@@ -29,7 +29,7 @@
 
 ## Introduzione
 NetGun è un Vulnerability Scanner scritto in Python. Permette di scannerizzare infrastrutture di Rete, enumerare i servizi in esecuzione su queste, scovare CVE e Misconfigurations.
-Ha il fine di facilitare una pratica complessa come i Penetration Test, così da permettere ai PT di concentrarsi su aspetti più delicati, automatizzando e velocizzando le task alla base di questo tipo di Testing.
+Ha il fine di facilitare una pratica complessa come il Penetration Testing, così da permettere ai PT di concentrarsi su aspetti più delicati, automatizzando e velocizzando le task alla base di questo tipo di Testing.
 
 ## Installazione
 Per la seguente installazione verrà considerato esclusivamente il sistema operativo [Kali linux](https://www.kali.org/):
