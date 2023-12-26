@@ -16,7 +16,6 @@
 </center>
 
 <div align="center">
-</div>
 <i>Documentation</i>
   <div align="left">
   <a href="https://github.com/MyCr4ck/NetGun_Classe03/tree/main/Documentation" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" alt="view - Documentation"></a>
@@ -45,14 +44,16 @@ pip install -r requirements.txt
 ```
 
 ## How to Use
-<div>
-  <p>> Here you can set the details of the scan</p>
+<p>> Here you can set the details of the scan</p>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
 </div>
+
 <p>> You can set IPv4 and Port range</p>
 <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
 </div>
+
 <p>> Choose the protocol used by the researched services, TCP or UDP</p>
 <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
@@ -67,7 +68,7 @@ pip install -r requirements.txt
     <p><strong>Important: </strong>   you can't use SYN scan and ACK scan together</p>
   </ul>
 
-<div>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077702303034908712/Immagine_2023-02-16_140002.png">
 </div>
   <p>> Choose the scan mode:</p>
@@ -75,11 +76,11 @@ pip install -r requirements.txt
     <li><strong>SHALLOW</strong>: a shallow and stealth scan, do not look for services version</li>
     <li><strong>DEEP</strong>: a deep scan, look also for services version</li>
   </ul>
-<div>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077703822513811618/Immagine_2023-02-16_140012.png">
 </div>
 <p>> Choose the scan aggressivity, from 0 (slow and stealth) to 4 (fast)</p>
-<div>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704441064591400/Immagine_2023-02-16_140023.png">
 </div>
 <p>> When the scan terminate, you will see the results in such a table:</p>
@@ -89,21 +90,18 @@ pip install -r requirements.txt
 
 ### CVE analysis
 <p>> You can check all the CVEs of a specific service just selecting it and clicking "Open CVE". The Vulnerabilities are obtained through the National Vulnerability Database of U.S. government</p>
-<div>
-  <div align="center">
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077706089442844762/ImmagineNetgun_7.png">
 </div>
 
 ### Speedtest by OOkla
 <p>> You can also make a Speedtest:</p>
-<div>
-  <div align="center">
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077707035849785455/image.png">
 </div>
 
 ## Other Images
-<div>
-  <div align="center">
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204933058671/ImmagineNetgun_1.png">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204555579555/ImmagineNetgun_2.png">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204199055370/ImmagineNetgun_4.png">
