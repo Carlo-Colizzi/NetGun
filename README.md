@@ -46,21 +46,21 @@ pip install -r requirements.txt
 
 ## How to Use
 <div>
-  <p>Here you can set the details of the scan</p>
+  <p>> Here you can set the details of the scan</p>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
 </div>
-<p>you can set IPv4 and Port range</p>
+<p>> You can set IPv4 and Port range</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
 </div>
-<p>choice the protocol used by the researched services, TCP or UDP</p>
+<p>> Choice the protocol used by the researched services, TCP or UDP</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
 </div>
-  <p>choise the Advanced Options:</p>
+  <p>> Choise the Advanced Options:</p>
   <ul>
     <li><strong>OS detection</strong>: let to discover the OS used by the Target</li>
     <li><strong>Disable PING</strong>: during the scan the ping functionality will not be used</li>
