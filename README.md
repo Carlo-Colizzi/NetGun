@@ -54,7 +54,7 @@ pip install -r requirements.txt
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
 </div>
 <p>> Choose the protocol used by the researched services, TCP or UDP</p>
-<div>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
 </div>
   <p>> Choose the Advanced Options:</p>
