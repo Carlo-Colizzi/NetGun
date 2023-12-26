@@ -26,7 +26,6 @@
 NetGun is a Vulnerability Scanner written in Python. It allows to scan Network infrastructures, enumerate the services running on them, unearth CVEs and Misconfigurations.
 It aims to facilitate a complex practice such as Penetration Testing, so that PTs can focus on more delicate aspects, automating and speeding up the tasks behind this type of Testing.
 
-<br>
 ## NetGun allows you to
 <ul>
   <li> Detect open and closed ports on any accessible target host </li>
@@ -37,14 +36,14 @@ It aims to facilitate a complex practice such as Penetration Testing, so that PT
   <li> Detect CVEs on services</li>
 </ul>
 
-<br>
+
 ## Installation
 ```bash
 git clone https://github.com/Carlo-Colizzi/NetGun
 cd NetGun
 pip install -r requirements.txt
 ```
-<br>
+
 ## How to Use
 ### Main feature
 <div>
