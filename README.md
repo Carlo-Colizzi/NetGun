@@ -50,7 +50,7 @@ pip install -r requirements.txt
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
 </div>
 <p>> You can set IPv4 and Port range</p>
-<div>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
 </div>
 <p>> Choose the protocol used by the researched services, TCP or UDP</p>
