@@ -50,18 +50,24 @@ pip install -r requirements.txt
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
 </div>
-Il programma funziona tramite un'<strong>API NMAP</strong>, avrà quindi bisogno di vari dati in input.
-I primi tra tutti sono L'<strong>IP</strong> e le <strong>PORTE</strong>:
+<p>you can set IPv4 and Port range</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
 </div>
-Poi si passa al <strong>Protocollo</strong>:
+<p>choice the protocol used by the researched services, TCP or UDP</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
 </div>
-Nella sezione <strong>Advanced</strong> bisogna aggiungere i filtri ulteriori di ricerca, nel nostro caso ci sono 3 possibilità che possono andare in simultanea,<strong>ACK scan e SYN scan</strong> non possono essere usate insieme.
+  <p>choise the Advanced Options:</p>
+  <ul>
+    <il><strong>OS detection</strong>: let to discover the OS used by the Target</il>
+    <il><strong>Disable PING</strong>: during the scan the ping functionality will not be used</il>
+    <il><strong>SYN scan</strong>: SYN scan is the default and most popular scan option for good reason. It can be performed quickly, scanning thousands of ports per second on a fast network not hampered by intrusive firewalls. SYN scan is relatively unobtrusive and stealthy, since it never completes TCP connections.</il>
+    <il><strong>ACK scan</strong>:  Its probe packet has only the ACK flag set. When scanning unfiltered systems, open and closed ports will both return a RST packet. NetGun then labels them as unfiltered, meaning that they are reachable by the ACK packet, but whether they are open or closed is undetermined. Ports that don't respond, or send certain ICMP error messages back, are labeled filtered.</il>
+  </ul>
+<strong>ACK scan e SYN scan</strong> 
 Quindi selezionare i filtri aggiuntivi e premere OK:
 <div>
   <div align="center">
