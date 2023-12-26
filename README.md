@@ -75,6 +75,11 @@ pip install -r requirements.txt
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077702303034908712/Immagine_2023-02-16_140002.png">
 </div>
 Scegliere l'intesità e il numero di dati da prendere in considerazione attraverso <strong>SHALLOW e DEEP</strong>:
+  <p>> Choise the scan mode:</p>
+  <ul>
+    <li><strong>SHALLOW</strong>: a shallow and stealth scan, do not look for services version</li>
+    <li><strong>DEEP</strong>: a deep scan, look also for services version</li>
+  </ul>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077703822513811618/Immagine_2023-02-16_140012.png">
