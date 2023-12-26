@@ -46,8 +46,8 @@ pip install -r requirements.txt
 
 ## How to Use
 <div>
-  <div align="center">
   <p>Here you can set the details of the scan</p>
+  <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
 </div>
 Il programma funziona tramite un'<strong>API NMAP</strong>, avrà quindi bisogno di vari dati in input.
