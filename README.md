@@ -39,9 +39,11 @@ It aims to facilitate a complex practice such as Penetration Testing, so that PT
 
 
 ## Installation
-'''bash
-prova
-'''
+```bash
+git clone https://github.com/Carlo-Colizzi/NetGun
+cd NetGun
+pip install -r requirements.txt
+```
 
 ## How to Use
 ### Main feature
