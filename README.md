@@ -27,25 +27,12 @@
 - [Giulio  Incoronato 0512111363](https://github.com/ShackWove)
 - [Antonio Mazzarella 0512112830](https://github.com/InfiniteSephiroth)
 
-## Introduzione
-NetGun è un Vulnerability Scanner scritto in Python. Permette di scannerizzare infrastrutture di Rete, enumerare i servizi in esecuzione su queste, scovare CVE e Misconfigurations.
-Ha il fine di facilitare una pratica complessa come il Penetration Testing, così da permettere ai PT di concentrarsi su aspetti più delicati, automatizzando e velocizzando le task alla base di questo tipo di Testing.
+## Introduction
+NetGun is a Vulnerability Scanner written in Python. It allows to scan Network infrastructures, enumerate the services running on them, unearth CVEs and Misconfigurations.
+It aims to facilitate a complex practice such as Penetration Testing, so that PTs can focus on more delicate aspects, automating and speeding up the tasks behind this type of Testing.
 
-## Installazione
-Per la seguente installazione verrà considerato esclusivamente il sistema operativo [Kali linux](https://www.kali.org/):
+## Installation
 
-- Andare al seguente [link](https://github.com/MyCr4ck/NetGun_Classe03/releases/) e scaricare l'ultimo '<strong>.deb</strong>' disponibile.
-
-- Entrare da terminale nella cartella '<strong>Downloads</strong>'.
-
-- Digitare il comando:
-
-    ```shell
-    sudo apt install ./NetGun_<release_number>.deb
-    ```
-- Avvia <strong>NetGun</strong> sul terminale.
-
-- <strong>Benvenuto in NetGun!</strong>
 
 ## How to Use
 ### Main feature
