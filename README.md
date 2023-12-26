@@ -15,9 +15,8 @@
 
 </center>
 
-<div align="center">
 <i>Documentation</i>
-  <div align="left">
+<div align="left">
   <a href="https://github.com/MyCr4ck/NetGun_Classe03/tree/main/Documentation" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" alt="view - Documentation"></a>
 </div>
 
@@ -84,7 +83,7 @@ pip install -r requirements.txt
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704441064591400/Immagine_2023-02-16_140023.png">
 </div>
 <p>> When the scan terminate, you will see the results in such a table:</p>
-<div>
+<div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704860113309777/ImmagineNetgun_6.png">
 </div>
 
