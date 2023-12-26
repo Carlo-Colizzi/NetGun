@@ -95,7 +95,7 @@ pip install -r requirements.txt
 </div>
 
 ### CVE analysis
-<p>> You can check all the CVE of a specific service just selecting it and clicking "Open CVE". The Vulnerabilities are obtained through the National Vulnerability Database of U.S. government</p>
+<p>> You can check all the CVEs of a specific service just selecting it and clicking "Open CVE". The Vulnerabilities are obtained through the National Vulnerability Database of U.S. government</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077706089442844762/ImmagineNetgun_7.png">
