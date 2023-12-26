@@ -55,12 +55,12 @@ pip install -r requirements.txt
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
 </div>
-<p>> Choice the protocol used by the researched services, TCP or UDP</p>
+<p>> Choose the protocol used by the researched services, TCP or UDP</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
 </div>
-  <p>> Choise the Advanced Options:</p>
+  <p>> Choose the Advanced Options:</p>
   <ul>
     <li><strong>OS detection</strong>: let to discover the OS used by the Target</li>
     <li><strong>Disable PING</strong>: during the scan the ping functionality will not be used</li>
@@ -74,8 +74,7 @@ pip install -r requirements.txt
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077702303034908712/Immagine_2023-02-16_140002.png">
 </div>
-Scegliere l'intesità e il numero di dati da prendere in considerazione attraverso <strong>SHALLOW e DEEP</strong>:
-  <p>> Choise the scan mode:</p>
+  <p>> Choose the scan mode:</p>
   <ul>
     <li><strong>SHALLOW</strong>: a shallow and stealth scan, do not look for services version</li>
     <li><strong>DEEP</strong>: a deep scan, look also for services version</li>
@@ -84,7 +83,7 @@ Scegliere l'intesità e il numero di dati da prendere in considerazione attraver
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077703822513811618/Immagine_2023-02-16_140012.png">
 </div>
-Ed infine il tempo dello scan che va dal più lento, 0, a 4 il più veloce, usata in particolare in funzione stealth o per non caricare e appesantire la macchina target, definita <strong>Aggressività</strong>:
+<p>> Choose the scan aggressivity, from 0 (slow and stealth) to 4 (fast)</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704441064591400/Immagine_2023-02-16_140023.png">
