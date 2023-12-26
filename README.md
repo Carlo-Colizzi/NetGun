@@ -22,14 +22,21 @@
   <a href="https://github.com/MyCr4ck/NetGun_Classe03/tree/main/Documentation" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" alt="view - Documentation"></a>
 </div>
 
-### Contributors
-- [Carlo   Colizzi    0512112599](https://github.com/MyCr4ck)
-- [Giulio  Incoronato 0512111363](https://github.com/ShackWove)
-- [Antonio Mazzarella 0512112830](https://github.com/InfiniteSephiroth)
-
 ## Introduction
 NetGun is a Vulnerability Scanner written in Python. It allows to scan Network infrastructures, enumerate the services running on them, unearth CVEs and Misconfigurations.
 It aims to facilitate a complex practice such as Penetration Testing, so that PTs can focus on more delicate aspects, automating and speeding up the tasks behind this type of Testing.
+
+
+## NetGun allows you to
+<ul>
+  <li> Detect open and closed ports on any accessible target host </li>
+  <li> Detect the Operative System</li>
+  <li> Detect the services running  on each port</li>
+  <li> Detect firewalls</li>
+  <li> Detect tipical misconfitgurations</li>
+  <li> Detect CVEs on services</li>
+</ul>
+
 
 ## Installation
 
