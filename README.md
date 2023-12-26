@@ -66,8 +66,9 @@ pip install -r requirements.txt
     <li><strong>Disable PING</strong>: during the scan the ping functionality will not be used</li>
     <li><strong>SYN scan</strong>: SYN scan is the default and most popular scan option for good reason. It can be performed quickly, scanning thousands of ports per second on a fast network not hampered by intrusive firewalls. SYN scan is relatively unobtrusive and stealthy, since it never completes TCP connections.</li>
     <li><strong>ACK scan</strong>:  Its probe packet has only the ACK flag set. When scanning unfiltered systems, open and closed ports will both return a RST packet. NetGun then labels them as unfiltered, meaning that they are reachable by the ACK packet, but whether they are open or closed is undetermined. Ports that don't respond, or send certain ICMP error messages back, are labeled filtered.</li>
+    <p><strong>Important: </strong>   you can't use SYN scan and ACK scan together</p>
   </ul>
-<p><strong>Important: </strong>   you can't use SYN scan and ACK scan together</p>
+
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077702303034908712/Immagine_2023-02-16_140002.png">
