@@ -88,28 +88,27 @@ pip install -r requirements.txt
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704441064591400/Immagine_2023-02-16_140023.png">
 </div>
-Una volta fatto partire lo scan si avrà questa tabella:
+<p>> When the scan terminate, you will see the results in such a table:</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704860113309777/ImmagineNetgun_6.png">
 </div>
 
 ### CVE analysis
-Il nostro programma presenta la funzione di <strong>searchCVE</strong>, trova quindi tutte le malconfigurazioni trovate in tempo reale, basta quindi cliccare un oggetto sulla tabella e schiacciare openCVE:
+<p>> You can check all the CVE of a specific service just selecting it and clicking "Open CVE". The Vulnerabilities are obtained through the National Vulnerability Database of U.S. government</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077706089442844762/ImmagineNetgun_7.png">
 </div>
 
 ### Speedtest by OOkla
-Il nostro programma presenta nella sezione messaggio di benvenuto un comodo Speedtest powered by OOkla, se non è la prima volta basta cliccare sull'icona del profilo in basso a destra e poi su Speedtest:
+<p>> You can also make a Speedtest:</p>
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077707035849785455/image.png">
 </div>
 
-## Galleria
-<i>I dati variano da scan a scan, il link e riferimenti sono puramente casuali</i>
+## Other Images
 <div>
   <div align="center">
   <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204933058671/ImmagineNetgun_1.png">
