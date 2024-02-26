@@ -3,7 +3,7 @@
 </center>
 
 <p align="center">
-    <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077697212634636308/NetgunLogo13_Telefono.png"alt="NETGUN">
+    <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/netgun_logo.png"alt="NETGUN">
 </p>
 
 <center>
