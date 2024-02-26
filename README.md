@@ -68,7 +68,7 @@ pip install -r requirements.txt
   </ul>
 
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077702303034908712/Immagine_2023-02-16_140002.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/advanced_options.png">
 </div>
   <p>> Choose the scan mode:</p>
   <ul>
