@@ -45,17 +45,17 @@ pip install -r requirements.txt
 ## How to Use
 <p>> Here you can set the details of the scan</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077700432786358272/Immagine_2023-02-16_135725.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_details.png">
 </div>
 
 <p>> You can set IPv4 and Port range</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701097428369478/Immagine_2023-02-16_135935.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/set_ip_and_ports.png">
 </div>
 
 <p>> Choose the protocol used by the researched services, TCP or UDP</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077701557904228352/Immagine_2023-02-16_135946.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/protocol.png">
 </div>
   <p>> Choose the Advanced Options:</p>
   <ul>
@@ -76,33 +76,33 @@ pip install -r requirements.txt
     <li><strong>DEEP</strong>: a deep scan, look also for services version</li>
   </ul>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077703822513811618/Immagine_2023-02-16_140012.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/set_deep_or_shallow.png">
 </div>
 <p>> Choose the scan aggressivity, from 0 (slow and stealth) to 4 (fast)</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704441064591400/Immagine_2023-02-16_140023.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_aggressivity.png">
 </div>
 <p>> When the scan terminate, you will see the results in such a table:</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077704860113309777/ImmagineNetgun_6.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_result.png">
 </div>
 
 ### CVE analysis
 <p>> You can check all the CVEs of a specific service just selecting it and clicking "Open CVE". The Vulnerabilities are obtained through the National Vulnerability Database of U.S. government</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077706089442844762/ImmagineNetgun_7.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/search_cve.png">
 </div>
 
 ### Speedtest by OOkla
 <p>> You can also make a Speedtest:</p>
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077707035849785455/image.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/speedtest.png">
 </div>
 
 ## Other Images
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204933058671/ImmagineNetgun_1.png">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204555579555/ImmagineNetgun_2.png">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630204199055370/ImmagineNetgun_4.png">
-  <img src="https://cdn.discordapp.com/attachments/1051051902529437787/1077630203997720646/ImmagineNetgun_5.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_loading.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_and_cve_view.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/welcome.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_view.png">
 </div>
