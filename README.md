@@ -34,6 +34,11 @@ It aims to facilitate a complex practice such as Penetration Testing, so that PT
   <li> Detect CVEs on services</li>
 </ul>
 
+<div align="center">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_and_cve_view.png">
+  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_view.png">
+</div>
+
 
 ## Installation
 ```bash
@@ -102,7 +107,5 @@ pip install -r requirements.txt
 ## Other Images
 <div align="center">
   <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_loading.png">
-  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_and_cve_view.png">
   <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/welcome.png">
-  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_view.png">
 </div>
