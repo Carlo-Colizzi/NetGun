@@ -35,8 +35,8 @@ It aims to facilitate a complex practice such as Penetration Testing, so that PT
 </ul>
 
 <div align="center">
-  <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_and_cve_view.png">
   <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_view.png">
+    <img src="https://github.com/Carlo-Colizzi/NetGun/blob/main/source_code/persistence/storage/assets/scan_and_cve_view.png">
 </div>
 
 
